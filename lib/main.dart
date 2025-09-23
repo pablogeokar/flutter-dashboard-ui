@@ -98,15 +98,21 @@ class _DashboardPageState extends State<DashboardPage> {
                 },
               ),
               title: Text(_titles[_selectedIndex]),
+              surfaceTintColor: Colors.transparent,
+              shadowColor: Colors.transparent,
               actions: [
                 IconButton(
                   icon: const Icon(Icons.notifications),
                   onPressed: () {},
                 ),
-                const CircleAvatar(
-                  backgroundImage: AssetImage('assets/eikos.png'),
+                const SizedBox(width: 8),
+                Container(
+                  margin: const EdgeInsets.only(right: 16),
+                  child: const CircleAvatar(
+                    radius: 18,
+                    backgroundImage: AssetImage('assets/eikos.png'),
+                  ),
                 ),
-                const SizedBox(width: 16),
               ],
             ),
             drawer: ResponsiveDrawer(
@@ -132,18 +138,36 @@ class _DashboardPageState extends State<DashboardPage> {
       appBar: AppBar(
         automaticallyImplyLeading: false, // Don't show back button
         title: Text(_titles[_selectedIndex]),
+        surfaceTintColor: Colors.transparent,
+        shadowColor: Colors.transparent,
         actions: [
           IconButton(
             icon: const Icon(Icons.notifications),
             onPressed: () {},
           ),
-          const CircleAvatar(
-            backgroundImage: AssetImage('assets/eikos.png'),
+          const SizedBox(width: 8),
+          Container(
+            margin: const EdgeInsets.only(right: 16),
+            child: const CircleAvatar(
+              radius: 18,
+              backgroundImage: AssetImage('assets/eikos.png'),
+            ),
           ),
-          const SizedBox(width: 16),
         ],
       ),
-      body: _buildBodyContent(),
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              Theme.of(context).colorScheme.surface,
+              Theme.of(context).colorScheme.surfaceVariant.withOpacity(0.3),
+            ],
+          ),
+        ),
+        child: _buildBodyContent(),
+      ),
     );
   }
 
@@ -217,53 +241,70 @@ class ResponsiveDrawer extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+            // Enhanced header with logo
             Container(
-              padding: const EdgeInsets.all(16.0),
+              padding: const EdgeInsets.all(20.0),
               decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.primary,
+                gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [
+                    Theme.of(context).colorScheme.surface,
+                    Theme.of(context).colorScheme.surfaceVariant,
+                  ],
+                ),
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const CircleAvatar(
-                    radius: 30,
-                    backgroundImage: AssetImage('assets/eikos.png'),
+                  // Logo area - using image instead of CircleAvatar for rectangular logo
+                  Container(
+                    height: 60,
+                    width: 150,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Image.asset(
+                      'assets/eikos.png',
+                      fit: BoxFit.contain,
+                      color: Colors.white, // To enhance the white text visibility
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  Container(
+                    width: double.infinity,
+                    height: 1,
+                    color: Theme.of(context).colorScheme.outline,
                   ),
                   const SizedBox(height: 12),
                   Text(
-                    'Dashboard UI',
-                    style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                          color: Colors.white,
-                        ),
-                  ),
-                  Text(
                     'Admin Panel',
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          color: Colors.white70,
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                          color: Theme.of(context).colorScheme.onSurface,
                         ),
                   ),
                 ],
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: 24),
             Expanded(
               child: ListView.separated(
-                padding: EdgeInsets.zero,
+                padding: const EdgeInsets.only(left: 16, right: 16),
                 itemCount: items.length + 1, // +1 for the separator
                 separatorBuilder: (context, index) {
                   if (index == items.length) {
                     // Add a separator before the bottom items
                     return Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                      padding: const EdgeInsets.symmetric(vertical: 8.0),
                       child: Divider(
                         color: Theme.of(context).colorScheme.outline,
                       ),
                     );
                   }
                   return Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    padding: const EdgeInsets.symmetric(vertical: 2.0),
                     child: Divider(
-                      color: Theme.of(context).colorScheme.outline,
+                      color: Theme.of(context).colorScheme.outline.withOpacity(0.3),
                     ),
                   );
                 },
@@ -273,10 +314,13 @@ class ResponsiveDrawer extends StatelessWidget {
                     return _buildDrawerItem(context, item);
                   } else {
                     // Render the bottom items
-                    return Column(
-                      children: bottomItems
-                          .map((item) => _buildDrawerItem(context, item))
-                          .toList(),
+                    return Padding(
+                      padding: const EdgeInsets.only(top: 8.0),
+                      child: Column(
+                        children: bottomItems
+                            .map((item) => _buildDrawerItem(context, item))
+                            .toList(),
+                      ),
                     );
                   }
                 },
@@ -284,12 +328,22 @@ class ResponsiveDrawer extends StatelessWidget {
             ),
             Container(
               padding: const EdgeInsets.all(16.0),
-              child: Text(
-                'v1.0.0',
-                style: TextStyle(
-                  color: Theme.of(context).colorScheme.onSurfaceVariant,
-                  fontSize: 12,
-                ),
+              child: Row(
+                children: [
+                  Icon(
+                    Icons.info_outline,
+                    size: 16,
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  ),
+                  const SizedBox(width: 8),
+                  Text(
+                    'v1.0.0',
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
+                      fontSize: 12,
+                    ),
+                  ),
+                ],
               ),
             ),
           ],
@@ -299,18 +353,46 @@ class ResponsiveDrawer extends StatelessWidget {
   }
 
   Widget _buildDrawerItem(BuildContext context, DrawerItem item) {
-    return ListTile(
-      leading: Icon(item.icon),
-      title: Text(item.title),
-      selected: currentIndex == item.index,
-      selectedTileColor: Theme.of(context)
-          .colorScheme
-          .primary
-          .withOpacity(0.2),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(8),
+    return Container(
+      margin: const EdgeInsets.symmetric(vertical: 2.0),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10),
       ),
-      onTap: () => onTap(item.index),
+      child: ListTile(
+        leading: Icon(
+          item.icon,
+          color: currentIndex == item.index
+              ? Theme.of(context).colorScheme.primary
+              : Theme.of(context).colorScheme.onSurfaceVariant,
+        ),
+        title: Text(
+          item.title,
+          style: TextStyle(
+            fontWeight: currentIndex == item.index
+                ? FontWeight.w600
+                : FontWeight.normal,
+            color: currentIndex == item.index
+                ? Theme.of(context).colorScheme.primary
+                : Theme.of(context).colorScheme.onSurfaceVariant,
+          ),
+        ),
+        selected: currentIndex == item.index,
+        selectedTileColor: Theme.of(context)
+            .colorScheme
+            .primary
+            .withOpacity(0.15),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
+          side: BorderSide(
+            color: currentIndex == item.index
+                ? Theme.of(context).colorScheme.primary.withOpacity(0.5)
+                : Colors.transparent,
+            width: 0.5,
+          ),
+        ),
+        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        onTap: () => onTap(item.index),
+      ),
     );
   }
 }
@@ -369,82 +451,104 @@ class ResponsiveDashboard extends StatelessWidget {
 
   Widget _buildDashboardOverview(BuildContext context) {
     // Create a specific layout for the dashboard overview page
-    return Column(
-      children: [
-        // Top metrics row
-        Row(
-          children: [
-            Expanded(
-              child: DashboardCard(
-                title: 'Total Revenue',
-                subtitle: 'This Month',
-                icon: Icons.monetization_on,
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          // Top metrics row
+          Row(
+            children: [
+              Expanded(
+                child: DashboardCard(
+                  title: 'Total Revenue',
+                  subtitle: 'This Month',
+                  icon: Icons.monetization_on,
+                ),
               ),
-            ),
-            const SizedBox(width: 16),
-            Expanded(
-              child: DashboardCard(
-                title: 'Active Users',
-                subtitle: 'Online Now',
-                icon: Icons.people,
+              const SizedBox(width: 16),
+              Expanded(
+                child: DashboardCard(
+                  title: 'Active Users',
+                  subtitle: 'Online Now',
+                  icon: Icons.people,
+                ),
               ),
-            ),
-          ],
-        ),
-        const SizedBox(height: 16),
-        Row(
-          children: [
-            Expanded(
-              child: DashboardCard(
-                title: 'Conversion Rate',
-                subtitle: 'Last 30 Days',
-                icon: Icons.trending_up,
+            ],
+          ),
+          const SizedBox(height: 16),
+          Row(
+            children: [
+              Expanded(
+                child: DashboardCard(
+                  title: 'Conversion Rate',
+                  subtitle: 'Last 30 Days',
+                  icon: Icons.trending_up,
+                ),
               ),
-            ),
-            const SizedBox(width: 16),
-            Expanded(
-              child: DashboardCard(
-                title: 'Performance',
-                subtitle: 'System Health',
-                icon: Icons.speed,
+              const SizedBox(width: 16),
+              Expanded(
+                child: DashboardCard(
+                  title: 'Performance',
+                  subtitle: 'System Health',
+                  icon: Icons.speed,
+                ),
               ),
-            ),
-          ],
-        ),
-        const SizedBox(height: 16),
-        // Charts section
-        Expanded(
-          flex: 2,
-          child: Card(
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Revenue Overview',
-                    style: Theme.of(context).textTheme.titleLarge,
-                  ),
-                  const SizedBox(height: 8),
-                  Expanded(
-                    child: Container(
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          color: Theme.of(context).colorScheme.outline,
+            ],
+          ),
+          const SizedBox(height: 16),
+          // Charts section
+          Card(
+            child: Container(
+              height: 300, // Fixed height for the chart section
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(
+                  color: Theme.of(context).colorScheme.outline.withOpacity(0.3),
+                ),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Revenue Overview',
+                          style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                                fontWeight: FontWeight.w600,
+                              ),
                         ),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: const Center(
-                        child: Text('Chart would go here'),
+                        Text(
+                          'Last 30 days',
+                          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                color: Theme.of(context).colorScheme.onSurfaceVariant,
+                              ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 12),
+                    Expanded(
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8),
+                          color: Theme.of(context).colorScheme.surfaceVariant.withOpacity(0.2),
+                        ),
+                        child: const Center(
+                          child: Text(
+                            '📊 Chart would go here',
+                            style: TextStyle(fontSize: 16),
+                          ),
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
@@ -484,45 +588,222 @@ class ResponsiveDashboard extends StatelessWidget {
   }
 
   String _getCardTitle(int selectedIndex, int index) {
-    const titles = [
-      'Total Revenue',
-      'Active Users',
-      'Conversion Rate',
-      'Performance Metrics',
-      'System Status',
-      'Recent Activity',
-      'Growth Analytics',
-      'Engagement Rate',
+    const List<List<String>> titles = [
+      // Dashboard page
+      [
+        'Total Revenue',
+        'Active Users',
+        'Conversion Rate',
+        'Performance Metrics',
+        'System Status',
+        'Recent Activity',
+      ],
+      // Analytics page
+      [
+        'Total Revenue',
+        'Active Users',
+        'Conversion Rate',
+        'Performance Metrics',
+        'System Status',
+        'Recent Activity',
+        'Growth Analytics',
+        'Engagement Rate',
+      ],
+      // Reports page
+      [
+        'Sales Reports',
+        'Traffic Analysis',
+        'User Demographics',
+        'Revenue Growth',
+        'Performance Metrics',
+        'System Reports',
+      ],
+      // Projects page
+      [
+        'Active Projects',
+        'Completed Tasks',
+        'Team Productivity',
+        'Project Timeline',
+        'Resource Allocation',
+        'Budget Utilization',
+      ],
+      // Calendar page
+      [
+        'Upcoming Events',
+        'Team Calendar',
+        'Project Deadlines',
+        'Meeting Schedule',
+        'Task Reminders',
+        'Time Tracking',
+      ],
+      // Settings page
+      [
+        'System Settings',
+        'User Preferences',
+        'Security Options',
+        'Notification Settings',
+        'Privacy Controls',
+        'Backup & Sync',
+      ],
+      // Profile page
+      [
+        'User Profile',
+        'Account Settings',
+        'Privacy Settings',
+        'Connected Apps',
+        'Activity Log',
+        'Subscription Info',
+      ],
     ];
-    return titles[index % titles.length];
+    
+    final pageTitles = titles[selectedIndex % titles.length];
+    return pageTitles[index % pageTitles.length];
   }
 
   String _getCardSubtitle(int selectedIndex, int index) {
-    const subtitles = [
-      'This Month',
-      'Online Now',
-      'Last 30 Days',
-      'System Health',
-      'All Systems Go',
-      'Latest Updates',
-      'Q3 Growth',
-      'User Engagement',
+    const List<List<String>> subtitles = [
+      // Dashboard page
+      [
+        'This Month',
+        'Online Now',
+        'Last 30 Days',
+        'System Health',
+        'All Systems Go',
+        'Latest Updates',
+      ],
+      // Analytics page
+      [
+        'This Month',
+        'Online Now',
+        'Last 30 Days',
+        'System Health',
+        'All Systems Go',
+        'Latest Updates',
+        'Q3 Growth',
+        'User Engagement',
+      ],
+      // Reports page
+      [
+        'Monthly Report',
+        'Traffic Sources',
+        'Age Groups',
+        'Revenue Analysis',
+        'Performance Metrics',
+        'System Reports',
+      ],
+      // Projects page
+      [
+        'Active Projects',
+        'Tasks Completed',
+        'Team Efficiency',
+        'Timeline Overview',
+        'Resource Allocation',
+        'Budget Spent',
+      ],
+      // Calendar page
+      [
+        'Next 7 Days',
+        'Team Schedule',
+        'Project Milestones',
+        'Upcoming Meetings',
+        'Task Deadlines',
+        'Time Tracking',
+      ],
+      // Settings page
+      [
+        'System Configuration',
+        'User Preferences',
+        'Security Settings',
+        'Notification Preferences',
+        'Privacy Controls',
+        'Backup Settings',
+      ],
+      // Profile page
+      [
+        'Personal Information',
+        'Account Details',
+        'Privacy Settings',
+        'Connected Applications',
+        'Recent Activity',
+        'Subscription Details',
+      ],
     ];
-    return subtitles[index % subtitles.length];
+    
+    final pageSubtitles = subtitles[selectedIndex % subtitles.length];
+    return pageSubtitles[index % pageSubtitles.length];
   }
 
   IconData _getCardIcon(int selectedIndex, int index) {
-    const icons = [
-      Icons.monetization_on,
-      Icons.people,
-      Icons.trending_up,
-      Icons.speed,
-      Icons.check_circle,
-      Icons.notifications,
-      Icons.show_chart,
-      Icons.thumb_up,
+    const List<List<IconData>> icons = [
+      // Dashboard page
+      [
+        Icons.monetization_on,
+        Icons.people,
+        Icons.trending_up,
+        Icons.speed,
+        Icons.check_circle,
+        Icons.notifications,
+      ],
+      // Analytics page
+      [
+        Icons.monetization_on,
+        Icons.people,
+        Icons.trending_up,
+        Icons.speed,
+        Icons.check_circle,
+        Icons.notifications,
+        Icons.show_chart,
+        Icons.thumb_up,
+      ],
+      // Reports page
+      [
+        Icons.bar_chart,
+        Icons.traffic,
+        Icons.group,
+        Icons.attach_money,
+        Icons.speed,
+        Icons.insert_drive_file,
+      ],
+      // Projects page
+      [
+        Icons.folder,
+        Icons.check_circle,
+        Icons.group_work,
+        Icons.timeline,
+        Icons.assignment,
+        Icons.account_balance_wallet,
+      ],
+      // Calendar page
+      [
+        Icons.event,
+        Icons.today,
+        Icons.flag,
+        Icons.calendar_today,
+        Icons.alarm,
+        Icons.timer,
+      ],
+      // Settings page
+      [
+        Icons.settings,
+        Icons.person,
+        Icons.security,
+        Icons.notifications,
+        Icons.lock,
+        Icons.backup,
+      ],
+      // Profile page
+      [
+        Icons.person,
+        Icons.settings,
+        Icons.lock,
+        Icons.apps,
+        Icons.history,
+        Icons.card_membership,
+      ],
     ];
-    return icons[index % icons.length];
+    
+    final pageIcons = icons[selectedIndex % icons.length];
+    return pageIcons[index % pageIcons.length];
   }
 }
 
@@ -551,51 +832,96 @@ class DashboardCard extends StatelessWidget {
 
     int cardIndex = getIndex();
 
+    // Define different colors for different cards based on their index
+    final cardColors = [
+      Colors.blue.shade300,
+      Colors.green.shade300,
+      Colors.orange.shade300,
+      Colors.purple.shade300,
+      Colors.red.shade300,
+      Colors.teal.shade300,
+      Colors.indigo.shade300,
+      Colors.pink.shade300,
+    ];
+    
+    final colorIndex = cardIndex % cardColors.length;
+    final cardColor = cardColors[colorIndex];
+
     return Card(
-      elevation: 4,
+      elevation: 2,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+        side: BorderSide(
+          color: Theme.of(context).colorScheme.outline.withOpacity(0.2),
+          width: 0.5,
+        ),
+      ),
       child: Container(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.center,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Row(
-              children: [
-                Icon(
-                  icon,
-                  color: Theme.of(context).colorScheme.primary,
-                  size: 28,
-                ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: Text(
-                    title,
-                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 8),
-            Text(
-              subtitle,
-              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: Theme.of(context).colorScheme.onSurfaceVariant,
-                  ),
-            ),
-            const SizedBox(height: 8),
-            Container(
-              alignment: Alignment.centerRight,
-              child: Text(
-                '${(cardIndex * 100 + 50).toStringAsFixed(0)}',
-                style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                      fontWeight: FontWeight.bold,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(12),
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [
+              Theme.of(context).colorScheme.surface,
+              Theme.of(context).colorScheme.surfaceVariant,
+            ],
+          ),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Row(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      color: cardColor.withOpacity(0.2),
+                      borderRadius: BorderRadius.circular(12),
                     ),
+                    child: Icon(
+                      icon,
+                      color: cardColor,
+                      size: 24,
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Text(
+                      title,
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                            fontWeight: FontWeight.w600,
+                          ),
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                ],
               ),
-            ),
-          ],
+              const SizedBox(height: 8),
+              Text(
+                subtitle,
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
+                    ),
+                overflow: TextOverflow.ellipsis,
+              ),
+              const SizedBox(height: 12),
+              Container(
+                alignment: Alignment.centerRight,
+                child: Text(
+                  '${(cardIndex * 100 + 50).toStringAsFixed(0)}',
+                  style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                        fontWeight: FontWeight.w700,
+                        color: cardColor,
+                      ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
