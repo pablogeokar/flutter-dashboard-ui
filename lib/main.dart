@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'theme.dart';
 
 void main() {
   runApp(const MainApp());
@@ -14,7 +15,7 @@ class MainApp extends StatelessWidget {
       theme: ThemeData(
         useMaterial3: true,
         colorScheme: ColorScheme.fromSeed(
-          seedColor: Colors.blue,
+          seedColor: AppTheme.primary, // Your primary color from theme file
           brightness: Brightness.dark, // Material 3 dark theme
         ),
         // Additional Material 3 styling
@@ -77,9 +78,7 @@ class _DashboardPageState extends State<DashboardPage> {
                   ),
                 ),
                 // Main content area
-                Expanded(
-                  child: _buildMainContent(),
-                ),
+                Expanded(child: _buildMainContent()),
               ],
             ),
           );
@@ -141,10 +140,7 @@ class _DashboardPageState extends State<DashboardPage> {
         surfaceTintColor: Colors.transparent,
         shadowColor: Colors.transparent,
         actions: [
-          IconButton(
-            icon: const Icon(Icons.notifications),
-            onPressed: () {},
-          ),
+          IconButton(icon: const Icon(Icons.notifications), onPressed: () {}),
           const SizedBox(width: 8),
           Container(
             margin: const EdgeInsets.only(right: 16),
@@ -175,9 +171,7 @@ class _DashboardPageState extends State<DashboardPage> {
     // Placeholder content - will replace with actual dashboard cards
     return Padding(
       padding: const EdgeInsets.all(16.0),
-      child: ResponsiveDashboard(
-        selectedIndex: _selectedIndex,
-      ),
+      child: ResponsiveDashboard(selectedIndex: _selectedIndex),
     );
   }
 }
@@ -195,49 +189,27 @@ class ResponsiveDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final List<DrawerItem> items = [
-      const DrawerItem(
-        title: 'Dashboard',
-        icon: Icons.dashboard,
-        index: 0,
-      ),
-      const DrawerItem(
-        title: 'Analytics',
-        icon: Icons.analytics,
-        index: 1,
-      ),
+      const DrawerItem(title: 'Dashboard', icon: Icons.dashboard, index: 0),
+      const DrawerItem(title: 'Analytics', icon: Icons.analytics, index: 1),
       const DrawerItem(
         title: 'Reports',
         icon: Icons.insert_drive_file,
         index: 2,
       ),
-      const DrawerItem(
-        title: 'Projects',
-        icon: Icons.folder,
-        index: 3,
-      ),
-      const DrawerItem(
-        title: 'Calendar',
-        icon: Icons.calendar_today,
-        index: 4,
-      ),
+      const DrawerItem(title: 'Projects', icon: Icons.folder, index: 3),
+      const DrawerItem(title: 'Calendar', icon: Icons.calendar_today, index: 4),
     ];
 
     final List<DrawerItem> bottomItems = [
-      const DrawerItem(
-        title: 'Settings',
-        icon: Icons.settings,
-        index: 5,
-      ),
-      const DrawerItem(
-        title: 'Profile',
-        icon: Icons.person,
-        index: 6,
-      ),
+      const DrawerItem(title: 'Settings', icon: Icons.settings, index: 5),
+      const DrawerItem(title: 'Profile', icon: Icons.person, index: 6),
     ];
 
     return Drawer(
       child: Container(
-        color: Theme.of(context).colorScheme.surface, // Dark background for drawer
+        color: Theme.of(
+          context,
+        ).colorScheme.surface, // Dark background for drawer
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -245,14 +217,9 @@ class ResponsiveDrawer extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(20.0),
               decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  colors: [
-                    Theme.of(context).colorScheme.surface,
-                    Theme.of(context).colorScheme.surfaceVariant,
-                  ],
-                ),
+                color: Theme.of(
+                  context,
+                ).colorScheme.surface, // Match sidebar background
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -267,7 +234,7 @@ class ResponsiveDrawer extends StatelessWidget {
                     child: Image.asset(
                       'assets/eikos.png',
                       fit: BoxFit.contain,
-                      color: Colors.white, // To enhance the white text visibility
+                      // Remove color property to show logo in original colors
                     ),
                   ),
                   const SizedBox(height: 12),
@@ -280,8 +247,8 @@ class ResponsiveDrawer extends StatelessWidget {
                   Text(
                     'Admin Panel',
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                          color: Theme.of(context).colorScheme.onSurface,
-                        ),
+                      color: Theme.of(context).colorScheme.onSurface,
+                    ),
                   ),
                 ],
               ),
@@ -304,7 +271,9 @@ class ResponsiveDrawer extends StatelessWidget {
                   return Container(
                     padding: const EdgeInsets.symmetric(vertical: 2.0),
                     child: Divider(
-                      color: Theme.of(context).colorScheme.outline.withOpacity(0.3),
+                      color: Theme.of(
+                        context,
+                      ).colorScheme.outline.withOpacity(0.3),
                     ),
                   );
                 },
@@ -352,7 +321,7 @@ class ResponsiveDrawer extends StatelessWidget {
     );
   }
 
-  Widget _buildDrawerItem(BuildContext context, DrawerItem item) {
+    Widget _buildDrawerItem(BuildContext context, DrawerItem item) {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 2.0),
       decoration: BoxDecoration(
@@ -362,7 +331,7 @@ class ResponsiveDrawer extends StatelessWidget {
         leading: Icon(
           item.icon,
           color: currentIndex == item.index
-              ? Theme.of(context).colorScheme.primary
+              ? AppTheme.primary // Your primary color from theme file
               : Theme.of(context).colorScheme.onSurfaceVariant,
         ),
         title: Text(
@@ -372,20 +341,17 @@ class ResponsiveDrawer extends StatelessWidget {
                 ? FontWeight.w600
                 : FontWeight.normal,
             color: currentIndex == item.index
-                ? Theme.of(context).colorScheme.primary
+                ? AppTheme.primary // Your primary color from theme file
                 : Theme.of(context).colorScheme.onSurfaceVariant,
           ),
         ),
         selected: currentIndex == item.index,
-        selectedTileColor: Theme.of(context)
-            .colorScheme
-            .primary
-            .withOpacity(0.15),
+        selectedTileColor: AppTheme.primary.withOpacity(0.15), // Your primary color
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),
           side: BorderSide(
             color: currentIndex == item.index
-                ? Theme.of(context).colorScheme.primary.withOpacity(0.5)
+                ? AppTheme.primary.withOpacity(0.5) // Your primary color
                 : Colors.transparent,
             width: 0.5,
           ),
@@ -412,10 +378,7 @@ class DrawerItem {
 class ResponsiveDashboard extends StatelessWidget {
   final int selectedIndex;
 
-  const ResponsiveDashboard({
-    super.key,
-    required this.selectedIndex,
-  });
+  const ResponsiveDashboard({super.key, required this.selectedIndex});
 
   @override
   Widget build(BuildContext context) {
@@ -511,19 +474,24 @@ class ResponsiveDashboard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
-                          'Revenue Overview',
-                          style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                                fontWeight: FontWeight.w600,
-                              ),
+                        Expanded(
+                          child: Text(
+                            'Revenue Overview',
+                            style: Theme.of(context).textTheme.titleLarge
+                                ?.copyWith(fontWeight: FontWeight.w600),
+                            overflow: TextOverflow.ellipsis,
+                          ),
                         ),
                         Text(
                           'Last 30 days',
-                          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                color: Theme.of(context).colorScheme.onSurfaceVariant,
+                          style: Theme.of(context).textTheme.bodyMedium
+                              ?.copyWith(
+                                color: Theme.of(
+                                  context,
+                                ).colorScheme.onSurfaceVariant,
                               ),
+                          overflow: TextOverflow.ellipsis,
                         ),
                       ],
                     ),
@@ -532,7 +500,9 @@ class ResponsiveDashboard extends StatelessWidget {
                       child: Container(
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(8),
-                          color: Theme.of(context).colorScheme.surfaceVariant.withOpacity(0.2),
+                          color: Theme.of(
+                            context,
+                          ).colorScheme.surfaceVariant.withOpacity(0.2),
                         ),
                         child: const Center(
                           child: Text(
@@ -555,7 +525,7 @@ class ResponsiveDashboard extends StatelessWidget {
   Widget _buildPageContent(BuildContext context) {
     // For other pages, use a grid layout
     final cardCount = selectedIndex == 1 ? 8 : 6; // Analytics has more cards
-    
+
     return GridView.count(
       crossAxisCount: _getCrossAxisCount(context),
       crossAxisSpacing: 16,
@@ -655,7 +625,7 @@ class ResponsiveDashboard extends StatelessWidget {
         'Subscription Info',
       ],
     ];
-    
+
     final pageTitles = titles[selectedIndex % titles.length];
     return pageTitles[index % pageTitles.length];
   }
@@ -728,7 +698,7 @@ class ResponsiveDashboard extends StatelessWidget {
         'Subscription Details',
       ],
     ];
-    
+
     final pageSubtitles = subtitles[selectedIndex % subtitles.length];
     return pageSubtitles[index % pageSubtitles.length];
   }
@@ -801,7 +771,7 @@ class ResponsiveDashboard extends StatelessWidget {
         Icons.card_membership,
       ],
     ];
-    
+
     final pageIcons = icons[selectedIndex % icons.length];
     return pageIcons[index % pageIcons.length];
   }
@@ -832,20 +802,8 @@ class DashboardCard extends StatelessWidget {
 
     int cardIndex = getIndex();
 
-    // Define different colors for different cards based on their index
-    final cardColors = [
-      Colors.blue.shade300,
-      Colors.green.shade300,
-      Colors.orange.shade300,
-      Colors.purple.shade300,
-      Colors.red.shade300,
-      Colors.teal.shade300,
-      Colors.indigo.shade300,
-      Colors.pink.shade300,
-    ];
-    
-    final colorIndex = cardIndex % cardColors.length;
-    final cardColor = cardColors[colorIndex];
+    // Use your primary color from theme file
+    final primaryColor = AppTheme.primary;
 
     return Card(
       elevation: 2,
@@ -880,12 +838,12 @@ class DashboardCard extends StatelessWidget {
                   Container(
                     padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
-                      color: cardColor.withOpacity(0.2),
+                      color: primaryColor.withOpacity(0.2),
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: Icon(
                       icon,
-                      color: cardColor,
+                      color: primaryColor,
                       size: 24,
                     ),
                   ),
@@ -916,8 +874,9 @@ class DashboardCard extends StatelessWidget {
                   '${(cardIndex * 100 + 50).toStringAsFixed(0)}',
                   style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                         fontWeight: FontWeight.w700,
-                        color: cardColor,
+                        color: primaryColor,
                       ),
+                  overflow: TextOverflow.ellipsis,
                 ),
               ),
             ],
