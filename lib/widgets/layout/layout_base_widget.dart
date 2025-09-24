@@ -1,5 +1,5 @@
-import 'package:dashboard_ui/widgets/layout/drawer_item.dart';
 import 'package:flutter/material.dart';
+import 'drawer_item.dart';
 import 'responsive_drawer.dart';
 
 class LayoutBaseWidget extends StatefulWidget {
@@ -24,9 +24,9 @@ class LayoutBaseWidget extends StatefulWidget {
 
 class _LayoutBaseWidgetState extends State<LayoutBaseWidget> {
   List<String> get _titles => [
-        ...widget.itensPrincipais.map((item) => item.title),
-        ...widget.itensInferiores.map((item) => item.title),
-      ];
+    ...widget.itensPrincipais.map((item) => item.title),
+    ...widget.itensInferiores.map((item) => item.title),
+  ];
 
   @override
   Widget build(BuildContext context) {

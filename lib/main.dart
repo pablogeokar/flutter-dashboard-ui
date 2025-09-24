@@ -1,8 +1,8 @@
-import 'package:dashboard_ui/screens/em_construcao_screen.dart';
-import 'package:dashboard_ui/screens/teste_screen.dart';
-import 'package:dashboard_ui/widgets/layout/drawer_item.dart';
 import 'package:flutter/material.dart';
 import 'theme.dart';
+import 'screens/em_construcao_screen.dart';
+import 'screens/teste_screen.dart';
+import 'widgets/layout/drawer_item.dart';
 import 'widgets/layout/layout_widget.dart';
 
 void main() {
@@ -16,31 +16,22 @@ class MainApp extends StatelessWidget {
     DrawerItem(
       title: 'Painel Principal',
       icon: Icons.dashboard,
-      index: 0,
       screen: EmConstrucaoPlaceholder(),
     ),
     DrawerItem(
       title: 'Análises',
       icon: Icons.analytics,
-      index: 1,
       screen: EmConstrucaoPlaceholder(),
     ),
     DrawerItem(
       title: 'Relatórios',
       icon: Icons.insert_drive_file,
-      index: 2,
       screen: EmConstrucaoPlaceholder(),
     ),
-    DrawerItem(
-      title: 'Projetos',
-      icon: Icons.folder,
-      index: 3,
-      screen: TesteScreen(),
-    ),
+    DrawerItem(title: 'Projetos', icon: Icons.folder, screen: TesteScreen()),
     DrawerItem(
       title: 'Calendário',
       icon: Icons.calendar_today,
-      index: 4,
       screen: EmConstrucaoPlaceholder(),
     ),
   ];
@@ -49,13 +40,11 @@ class MainApp extends StatelessWidget {
     DrawerItem(
       title: 'Configurações',
       icon: Icons.settings,
-      index: 5,
       screen: EmConstrucaoPlaceholder(),
     ),
     DrawerItem(
       title: 'Perfil',
       icon: Icons.person,
-      index: 6,
       screen: EmConstrucaoPlaceholder(),
     ),
   ];

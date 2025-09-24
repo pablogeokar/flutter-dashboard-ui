@@ -1,5 +1,5 @@
-import 'package:dashboard_ui/widgets/layout/drawer_item.dart';
 import 'package:flutter/material.dart';
+import 'drawer_item.dart';
 import '../../theme.dart';
 
 class ResponsiveDrawer extends StatelessWidget {
@@ -93,15 +93,21 @@ class ResponsiveDrawer extends StatelessWidget {
                 itemBuilder: (context, index) {
                   if (index < itensPrincipais.length) {
                     final item = itensPrincipais[index];
-                    return _buildDrawerItem(context, item);
+                    return _buildDrawerItem(context, item, index);
                   } else {
                     // Render the bottom items
                     return Padding(
                       padding: const EdgeInsets.only(top: 8.0),
                       child: Column(
-                        children: itensInferiores
-                            .map((item) => _buildDrawerItem(context, item))
-                            .toList(),
+                        children: itensInferiores.asMap().entries.map((entry) {
+                          final index = entry.key;
+                          final item = entry.value;
+                          return _buildDrawerItem(
+                            context,
+                            item,
+                            itensPrincipais.length + index,
+                          );
+                        }).toList(),
                       ),
                     );
                   }
@@ -134,14 +140,18 @@ class ResponsiveDrawer extends StatelessWidget {
     );
   }
 
-  Widget _buildDrawerItem(BuildContext context, DrawerItem item) {
+  Widget _buildDrawerItem(
+    BuildContext context,
+    DrawerItem item,
+    int itemIndex,
+  ) {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 2.0),
       decoration: BoxDecoration(borderRadius: BorderRadius.circular(10)),
       child: ListTile(
         leading: Icon(
           item.icon,
-          color: currentIndex == item.index
+          color: currentIndex == itemIndex
               ? AppTheme
                     .primary // Your primary color from theme file
               : Theme.of(context).colorScheme.onSurface,
@@ -149,30 +159,30 @@ class ResponsiveDrawer extends StatelessWidget {
         title: Text(
           item.title,
           style: TextStyle(
-            fontWeight: currentIndex == item.index
+            fontWeight: currentIndex == itemIndex
                 ? FontWeight.w600
                 : FontWeight.normal,
-            color: currentIndex == item.index
+            color: currentIndex == itemIndex
                 ? AppTheme
                       .primary // Your primary color from theme file
                 : Theme.of(context).colorScheme.onSurface,
           ),
         ),
-        selected: currentIndex == item.index,
+        selected: currentIndex == itemIndex,
         selectedTileColor: AppTheme.primary.withValues(
           alpha: 0.15,
         ), // Your primary color
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),
           side: BorderSide(
-            color: currentIndex == item.index
+            color: currentIndex == itemIndex
                 ? AppTheme.primary.withValues(alpha: 0.5) // Your primary color
                 : Colors.transparent,
             width: 0.5,
           ),
         ),
         contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-        onTap: () => onTap(item.index),
+        onTap: () => onTap(itemIndex),
       ),
     );
   }
