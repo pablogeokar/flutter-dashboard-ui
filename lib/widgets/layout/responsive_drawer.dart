@@ -18,124 +18,116 @@ class ResponsiveDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Drawer(
-      child: Container(
-        color: Theme.of(
-          context,
-        ).colorScheme.surface, // Dark background for drawer
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            // Enhanced header with logo
-            Container(
-              padding: const EdgeInsets.all(20.0),
-              decoration: BoxDecoration(
-                color: Theme.of(
-                  context,
-                ).colorScheme.surface, // Match sidebar background
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Logo area - using image instead of CircleAvatar for rectangular logo
-                  Container(
-                    height: 60,
-                    width: 150,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Image.asset(
-                      'assets/eikos.png',
-                      fit: BoxFit.contain,
-                      // Remove color property to show logo in original colors
-                    ),
-                  ),
-                  const SizedBox(height: 12),
-                  Container(
-                    width: double.infinity,
-                    height: 1,
-                    color: Theme.of(context).colorScheme.outline,
-                  ),
-                  const SizedBox(height: 12),
-                  Text(
-                    'Painel Administrativo',
-                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      color: Theme.of(context).colorScheme.onSurface,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 24),
-            Expanded(
-              child: ListView.separated(
-                padding: const EdgeInsets.only(left: 16, right: 16),
-                itemCount: itensPrincipais.length + 1, // +1 for the separator
-                separatorBuilder: (context, index) {
-                  if (index == itensPrincipais.length) {
-                    // Add a separator before the bottom items
-                    return Container(
-                      padding: const EdgeInsets.symmetric(vertical: 8.0),
-                      child: Divider(
-                        color: Theme.of(context).colorScheme.outline,
-                      ),
-                    );
-                  }
-                  return Container(
-                    padding: const EdgeInsets.symmetric(vertical: 2.0),
-                    child: Divider(
-                      color: Theme.of(
-                        context,
-                      ).colorScheme.outline.withValues(alpha: 0.3),
-                    ),
-                  );
-                },
-                itemBuilder: (context, index) {
-                  if (index < itensPrincipais.length) {
-                    final item = itensPrincipais[index];
-                    return _buildDrawerItem(context, item, index);
-                  } else {
-                    // Render the bottom items
-                    return Padding(
-                      padding: const EdgeInsets.only(top: 8.0),
-                      child: Column(
-                        children: itensInferiores.asMap().entries.map((entry) {
-                          final index = entry.key;
-                          final item = entry.value;
-                          return _buildDrawerItem(
-                            context,
-                            item,
-                            itensPrincipais.length + index,
-                          );
-                        }).toList(),
-                      ),
-                    );
-                  }
-                },
-              ),
-            ),
-            Container(
-              padding: const EdgeInsets.all(16.0),
-              child: Row(
-                children: [
-                  Icon(
-                    Icons.info_outline,
-                    size: 16,
-                    color: Theme.of(context).colorScheme.onSurface,
-                  ),
-                  const SizedBox(width: 8),
-                  Text(
-                    'v1.0.0',
-                    style: TextStyle(
-                      color: Theme.of(context).colorScheme.onSurface,
-                      fontSize: 12,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
+    return Card(
+      elevation: 2.0,
+      margin: const EdgeInsets.all(0),
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topRight: Radius.circular(20),
+          bottomRight: Radius.circular(20),
         ),
+      ),
+      child: Drawer(
+        elevation: 0,
+        child: Container(
+          color: Theme.of(context).colorScheme.surfaceContainerLow,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              _buildHeader(context),
+              const SizedBox(height: 20),
+              Expanded(
+                child: _buildNavigation(context),
+              ),
+              _buildFooter(context),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildHeader(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.fromLTRB(20, 40, 20, 20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Image.asset(
+                'assets/eikos.png',
+                height: 40,
+                fit: BoxFit.contain,
+              ),
+              const SizedBox(width: 12),
+              Text(
+                'Painel',
+                style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                      fontWeight: FontWeight.bold,
+                      color: Theme.of(context).colorScheme.onSurface,
+                    ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 20),
+          Divider(
+            color: Theme.of(context).colorScheme.outline.withOpacity(0.2),
+            height: 1,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildNavigation(BuildContext context) {
+    return ListView.separated(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      itemCount: itensPrincipais.length + itensInferiores.length,
+      separatorBuilder: (context, index) {
+        if (index == itensPrincipais.length - 1) {
+          return Padding(
+            padding: const EdgeInsets.symmetric(vertical: 12.0),
+            child: Divider(
+              color: Theme.of(context).colorScheme.outline.withOpacity(0.1),
+              indent: 16,
+              endIndent: 16,
+            ),
+          );
+        }
+        return const SizedBox(height: 4);
+      },
+      itemBuilder: (context, index) {
+        final item = (index < itensPrincipais.length)
+            ? itensPrincipais[index]
+            : itensInferiores[index - itensPrincipais.length];
+        final itemIndex = index;
+
+        return _buildDrawerItem(context, item, itemIndex);
+      },
+    );
+  }
+
+  Widget _buildFooter(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(16.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(
+            Icons.info_outline,
+            size: 14,
+            color: Theme.of(context).colorScheme.onSurface.withOpacity(0.5),
+          ),
+          const SizedBox(width: 8),
+          Text(
+            'v1.0.0',
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  color:
+                      Theme.of(context).colorScheme.onSurface.withOpacity(0.5),
+                ),
+          ),
+        ],
       ),
     );
   }
@@ -145,43 +137,34 @@ class ResponsiveDrawer extends StatelessWidget {
     DrawerItem item,
     int itemIndex,
   ) {
+    final bool isSelected = currentIndex == itemIndex;
+
     return Container(
-      margin: const EdgeInsets.symmetric(vertical: 2.0),
-      decoration: BoxDecoration(borderRadius: BorderRadius.circular(10)),
+      margin: const EdgeInsets.symmetric(vertical: 4.0),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(12),
+        color: isSelected ? AppTheme.primary.withOpacity(0.15) : null,
+      ),
       child: ListTile(
         leading: Icon(
           item.icon,
-          color: currentIndex == itemIndex
-              ? AppTheme
-                    .primary // Your primary color from theme file
-              : Theme.of(context).colorScheme.onSurface,
+          size: 22,
+          color: isSelected
+              ? AppTheme.primary
+              : Theme.of(context).colorScheme.onSurface.withOpacity(0.8),
         ),
         title: Text(
           item.title,
-          style: TextStyle(
-            fontWeight: currentIndex == itemIndex
-                ? FontWeight.w600
-                : FontWeight.normal,
-            color: currentIndex == itemIndex
-                ? AppTheme
-                      .primary // Your primary color from theme file
-                : Theme.of(context).colorScheme.onSurface,
-          ),
+          style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                color: isSelected
+                    ? AppTheme.primary
+                    : Theme.of(context).colorScheme.onSurface,
+              ),
         ),
-        selected: currentIndex == itemIndex,
-        selectedTileColor: AppTheme.primary.withValues(
-          alpha: 0.15,
-        ), // Your primary color
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
-          side: BorderSide(
-            color: currentIndex == itemIndex
-                ? AppTheme.primary.withValues(alpha: 0.5) // Your primary color
-                : Colors.transparent,
-            width: 0.5,
-          ),
+          borderRadius: BorderRadius.circular(12),
         ),
-        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         onTap: () => onTap(itemIndex),
       ),
     );
