@@ -1,3 +1,4 @@
+import 'package:dashboard_ui/widgets/layout/drawer_item.dart';
 import 'package:flutter/material.dart';
 import 'responsive_drawer.dart';
 
@@ -5,12 +6,16 @@ class LayoutBaseWidget extends StatefulWidget {
   final Widget Function(int) screenBuilder;
   final int currentIndex;
   final Function(int) onNavigation;
+  final List<DrawerItem> itensPrincipais;
+  final List<DrawerItem> itensInferiores;
 
   const LayoutBaseWidget({
     super.key,
     required this.screenBuilder,
     required this.currentIndex,
     required this.onNavigation,
+    required this.itensPrincipais,
+    required this.itensInferiores,
   });
 
   @override
@@ -18,15 +23,10 @@ class LayoutBaseWidget extends StatefulWidget {
 }
 
 class _LayoutBaseWidgetState extends State<LayoutBaseWidget> {
-  static const List<String> _titles = [
-    'Painel Principal',
-    'Análises',
-    'Relatórios',
-    'Projetos',
-    'Calendário',
-    'Configurações',
-    'Perfil',
-  ];
+  List<String> get _titles => [
+        ...widget.itensPrincipais.map((item) => item.title),
+        ...widget.itensInferiores.map((item) => item.title),
+      ];
 
   @override
   Widget build(BuildContext context) {
@@ -47,6 +47,8 @@ class _LayoutBaseWidgetState extends State<LayoutBaseWidget> {
                   child: ResponsiveDrawer(
                     currentIndex: widget.currentIndex,
                     onTap: widget.onNavigation,
+                    itensPrincipais: widget.itensPrincipais,
+                    itensInferiores: widget.itensInferiores,
                   ),
                 ),
                 // Main content area
@@ -94,6 +96,8 @@ class _LayoutBaseWidgetState extends State<LayoutBaseWidget> {
                   Navigator.pop(context);
                 }
               },
+              itensPrincipais: widget.itensPrincipais,
+              itensInferiores: widget.itensInferiores,
             ),
             body: widget.screenBuilder(widget.currentIndex),
           );

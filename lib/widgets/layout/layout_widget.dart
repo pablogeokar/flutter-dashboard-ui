@@ -1,10 +1,17 @@
 import 'package:dashboard_ui/screens/em_construcao_screen.dart';
+import 'package:dashboard_ui/widgets/layout/drawer_item.dart';
 import 'package:dashboard_ui/widgets/layout/layout_base_widget.dart';
-import 'package:dashboard_ui/widgets/layout/responsive_drawer.dart';
 import 'package:flutter/material.dart';
 
 class LayoutWidget extends StatefulWidget {
-  const LayoutWidget({super.key});
+  final List<DrawerItem> itensPrincipais;
+  final List<DrawerItem> itensInferiores;
+
+  const LayoutWidget({
+    super.key,
+    required this.itensPrincipais,
+    required this.itensInferiores,
+  });
 
   @override
   State<LayoutWidget> createState() => _LayoutWidgetState();
@@ -15,13 +22,15 @@ class _LayoutWidgetState extends State<LayoutWidget> {
 
   // Obter a lista de telas baseada nos DrawerItems
   List<Widget> get _telas => [
-    ...ResponsiveDrawer.itensPrincipais.map((item) => item.screen),
-    ...ResponsiveDrawer.itensInferiores.map((item) => item.screen),
-  ];
+        ...widget.itensPrincipais.map((item) => item.screen),
+        ...widget.itensInferiores.map((item) => item.screen),
+      ];
 
   @override
   Widget build(BuildContext context) {
     return LayoutBaseWidget(
+      itensPrincipais: widget.itensPrincipais,
+      itensInferiores: widget.itensInferiores,
       screenBuilder: (int index) {
         // Garantindo que o índice esteja dentro dos limites
         if (index < 0 || index >= _telas.length) {

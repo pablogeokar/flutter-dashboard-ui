@@ -1,75 +1,23 @@
+import 'package:dashboard_ui/widgets/layout/drawer_item.dart';
 import 'package:flutter/material.dart';
 import '../../theme.dart';
-import '../../screens/em_construcao_screen.dart';
-import '../../screens/teste_screen.dart';
 
 class ResponsiveDrawer extends StatelessWidget {
   final int currentIndex;
   final Function(int) onTap;
+  final List<DrawerItem> itensPrincipais;
+  final List<DrawerItem> itensInferiores;
 
   const ResponsiveDrawer({
     super.key,
     required this.currentIndex,
     required this.onTap,
+    required this.itensPrincipais,
+    required this.itensInferiores,
   });
-
-  static const List<DrawerItem> itensPrincipais = [
-    DrawerItem(
-      title: 'Painel Principal',
-      icon: Icons.dashboard,
-      index: 0,
-      screenBuilder: _buildEmConstrucaoPlaceholder,
-    ),
-    DrawerItem(
-      title: 'Análises',
-      icon: Icons.analytics,
-      index: 1,
-      screenBuilder: _buildEmConstrucaoPlaceholder,
-    ),
-    DrawerItem(
-      title: 'Relatórios',
-      icon: Icons.insert_drive_file,
-      index: 2,
-      screenBuilder: _buildEmConstrucaoPlaceholder,
-    ),
-    DrawerItem(
-      title: 'Projetos',
-      icon: Icons.folder,
-      index: 3,
-      screenBuilder: _buildTesteScreen,
-    ),
-    DrawerItem(
-      title: 'Calendário',
-      icon: Icons.calendar_today,
-      index: 4,
-      screenBuilder: _buildEmConstrucaoPlaceholder,
-    ),
-  ];
-
-  static const List<DrawerItem> itensInferiores = [
-    DrawerItem(
-      title: 'Configurações',
-      icon: Icons.settings,
-      index: 5,
-      screenBuilder: _buildEmConstrucaoPlaceholder,
-    ),
-    DrawerItem(
-      title: 'Perfil',
-      icon: Icons.person,
-      index: 6,
-      screenBuilder: _buildEmConstrucaoPlaceholder,
-    ),
-  ];
-
-  static Widget _buildEmConstrucaoPlaceholder() =>
-      const EmConstrucaoPlaceholder();
-  static Widget _buildTesteScreen() => const TesteScreen();
 
   @override
   Widget build(BuildContext context) {
-    final List<DrawerItem> items = itensPrincipais;
-    final List<DrawerItem> bottomItems = itensInferiores;
-
     return Drawer(
       child: Container(
         color: Theme.of(
@@ -122,9 +70,9 @@ class ResponsiveDrawer extends StatelessWidget {
             Expanded(
               child: ListView.separated(
                 padding: const EdgeInsets.only(left: 16, right: 16),
-                itemCount: items.length + 1, // +1 for the separator
+                itemCount: itensPrincipais.length + 1, // +1 for the separator
                 separatorBuilder: (context, index) {
-                  if (index == items.length) {
+                  if (index == itensPrincipais.length) {
                     // Add a separator before the bottom items
                     return Container(
                       padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -143,15 +91,15 @@ class ResponsiveDrawer extends StatelessWidget {
                   );
                 },
                 itemBuilder: (context, index) {
-                  if (index < items.length) {
-                    final item = items[index];
+                  if (index < itensPrincipais.length) {
+                    final item = itensPrincipais[index];
                     return _buildDrawerItem(context, item);
                   } else {
                     // Render the bottom items
                     return Padding(
                       padding: const EdgeInsets.only(top: 8.0),
                       child: Column(
-                        children: bottomItems
+                        children: itensInferiores
                             .map((item) => _buildDrawerItem(context, item))
                             .toList(),
                       ),
@@ -167,13 +115,13 @@ class ResponsiveDrawer extends StatelessWidget {
                   Icon(
                     Icons.info_outline,
                     size: 16,
-                    color: Theme.of(context).colorScheme.onSurfaceVariant,
+                    color: Theme.of(context).colorScheme.onSurface,
                   ),
                   const SizedBox(width: 8),
                   Text(
                     'v1.0.0',
                     style: TextStyle(
-                      color: Theme.of(context).colorScheme.onSurfaceVariant,
+                      color: Theme.of(context).colorScheme.onSurface,
                       fontSize: 12,
                     ),
                   ),
@@ -196,7 +144,7 @@ class ResponsiveDrawer extends StatelessWidget {
           color: currentIndex == item.index
               ? AppTheme
                     .primary // Your primary color from theme file
-              : Theme.of(context).colorScheme.onSurfaceVariant,
+              : Theme.of(context).colorScheme.onSurface,
         ),
         title: Text(
           item.title,
@@ -207,7 +155,7 @@ class ResponsiveDrawer extends StatelessWidget {
             color: currentIndex == item.index
                 ? AppTheme
                       .primary // Your primary color from theme file
-                : Theme.of(context).colorScheme.onSurfaceVariant,
+                : Theme.of(context).colorScheme.onSurface,
           ),
         ),
         selected: currentIndex == item.index,
@@ -228,20 +176,4 @@ class ResponsiveDrawer extends StatelessWidget {
       ),
     );
   }
-}
-
-class DrawerItem {
-  final String title;
-  final IconData icon;
-  final int index;
-  final Widget Function() screenBuilder;
-
-  const DrawerItem({
-    required this.title,
-    required this.icon,
-    required this.index,
-    required this.screenBuilder,
-  });
-
-  Widget get screen => screenBuilder();
 }
