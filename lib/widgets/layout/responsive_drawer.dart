@@ -36,9 +36,35 @@ class ResponsiveDrawer extends StatelessWidget {
             children: [
               _buildHeader(context),
               const SizedBox(height: 20),
-              Expanded(
-                child: _buildNavigation(context),
+              ListView.separated(
+                shrinkWrap: true,
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                itemCount: itensPrincipais.length,
+                separatorBuilder: (context, index) => const SizedBox(height: 4),
+                itemBuilder: (context, index) {
+                  return _buildDrawerItem(
+                    context,
+                    itensPrincipais[index],
+                    index,
+                  );
+                },
               ),
+              const Spacer(),
+              ListView.separated(
+                shrinkWrap: true,
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                itemCount: itensInferiores.length,
+                separatorBuilder: (context, index) => const SizedBox(height: 4),
+                itemBuilder: (context, index) {
+                  final itemIndex = itensPrincipais.length + index;
+                  return _buildDrawerItem(
+                    context,
+                    itensInferiores[index],
+                    itemIndex,
+                  );
+                },
+              ),
+              const SizedBox(height: 20),
               _buildFooter(context),
             ],
           ),
@@ -77,34 +103,6 @@ class ResponsiveDrawer extends StatelessWidget {
           ),
         ],
       ),
-    );
-  }
-
-  Widget _buildNavigation(BuildContext context) {
-    return ListView.separated(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
-      itemCount: itensPrincipais.length + itensInferiores.length,
-      separatorBuilder: (context, index) {
-        if (index == itensPrincipais.length - 1) {
-          return Padding(
-            padding: const EdgeInsets.symmetric(vertical: 12.0),
-            child: Divider(
-              color: Theme.of(context).colorScheme.outline.withOpacity(0.1),
-              indent: 16,
-              endIndent: 16,
-            ),
-          );
-        }
-        return const SizedBox(height: 4);
-      },
-      itemBuilder: (context, index) {
-        final item = (index < itensPrincipais.length)
-            ? itensPrincipais[index]
-            : itensInferiores[index - itensPrincipais.length];
-        final itemIndex = index;
-
-        return _buildDrawerItem(context, item, itemIndex);
-      },
     );
   }
 
