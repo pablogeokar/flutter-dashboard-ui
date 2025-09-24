@@ -25,3 +25,10 @@ Garantir consistência linguística em todo o projeto, proporcionando uma experi
 - Nomes de funções: `calcularTotal()` em vez de `calculateTotal()`
 - Textos na interface: "Painel de Controle" em vez de "Dashboard"
 - Comentários: "Função responsável por calcular o total" em vez de "Function responsible for calculating the total"
+
+## Diretrizes de Codificação
+
+- **Método de opacidade:** O método `.withOpacity()` está depreciado e deve ser substituído por `.withValues()` para evitar perda de precisão
+- **Cores do tema:** O atributo `surfaceVariant` está depreciado e deve ser substituído por `surfaceContainerLowest`, `surfaceContainerLow`, `surfaceContainer`, `surfaceContainerHigh` ou `surfaceContainerHighest` dependendo do contexto
+- **Nomenclatura de variáveis:** Sempre usar nomes descritivos em português do Brasil
+- **Boas práticas:** Seguir as melhores práticas de desenvolvimento Flutter

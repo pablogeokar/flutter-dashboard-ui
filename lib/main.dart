@@ -158,7 +158,9 @@ class _DashboardPageState extends State<DashboardPage> {
             end: Alignment.bottomCenter,
             colors: [
               Theme.of(context).colorScheme.surface,
-              Theme.of(context).colorScheme.surfaceVariant.withOpacity(0.3),
+              Theme.of(
+                context,
+              ).colorScheme.surfaceContainerLowest.withValues(alpha: 0.3),
             ],
           ),
         ),
@@ -281,7 +283,7 @@ class ResponsiveDrawer extends StatelessWidget {
                     child: Divider(
                       color: Theme.of(
                         context,
-                      ).colorScheme.outline.withOpacity(0.3),
+                      ).colorScheme.outline.withValues(alpha: 0.3),
                     ),
                   );
                 },
@@ -354,14 +356,12 @@ class ResponsiveDrawer extends StatelessWidget {
           ),
         ),
         selected: currentIndex == item.index,
-        selectedTileColor: AppTheme.primary.withOpacity(
-          0.15,
-        ), // Your primary color
+        selectedTileColor: AppTheme.primary.withValues(alpha: 0.15),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),
           side: BorderSide(
             color: currentIndex == item.index
-                ? AppTheme.primary.withOpacity(0.5) // Your primary color
+                ? AppTheme.primary.withValues(alpha: 0.5) // Your primary color
                 : Colors.transparent,
             width: 0.5,
           ),
@@ -432,8 +432,6 @@ class ResponsiveDashboard extends StatelessWidget {
     return const EmConstrucaoPlaceholder();
   }
 }
-
-
 
 class EmConstrucaoPlaceholder extends StatelessWidget {
   const EmConstrucaoPlaceholder({super.key});
