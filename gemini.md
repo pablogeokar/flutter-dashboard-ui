@@ -32,3 +32,8 @@ Garantir consistência linguística em todo o projeto, proporcionando uma experi
 - **Cores do tema:** O atributo `surfaceVariant` está depreciado e deve ser substituído por `surfaceContainerLowest`, `surfaceContainerLow`, `surfaceContainer`, `surfaceContainerHigh` ou `surfaceContainerHighest` dependendo do contexto
 - **Nomenclatura de variáveis:** Sempre usar nomes descritivos em português do Brasil
 - **Boas práticas:** Seguir as melhores práticas de desenvolvimento Flutter
+- **Uso do theme.dart:** Sempre que possível, os widgets devem utilizar as constantes definidas no arquivo theme.dart para manter consistência visual e facilitar a manutenção e personalização do layout. Isso inclui:
+  - Utilizar constantes de espaçamento (AppTheme.spacingS, AppTheme.spacingM, etc.)
+  - Utilizar constantes de bordas arredondadas (AppTheme.borderRadiusS, AppTheme.borderRadiusM, etc.)
+  - Utilizar constantes de dimensões específicas (AppTheme.drawerWidth, AppTheme.appBarHeight, etc.)
+  - Sempre que um novo valor de estilo for necessário em um widget, deve-se verificar se já existe uma constante adequada no theme.dart ou adicionar uma nova constante ao arquivo antes de usar um valor fixo no widget
