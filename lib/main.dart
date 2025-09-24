@@ -43,13 +43,13 @@ class _DashboardPageState extends State<DashboardPage> {
   int _selectedIndex = 0;
 
   static const List<String> _titles = [
-    'Dashboard',
-    'Analytics',
-    'Reports',
-    'Projects',
-    'Calendar',
-    'Settings',
-    'Profile',
+    'Painel Principal',
+    'Análises',
+    'Relatórios',
+    'Projetos',
+    'Calendário',
+    'Configurações',
+    'Perfil',
   ];
 
   @override
@@ -189,20 +189,20 @@ class ResponsiveDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final List<DrawerItem> items = [
-      const DrawerItem(title: 'Dashboard', icon: Icons.dashboard, index: 0),
-      const DrawerItem(title: 'Analytics', icon: Icons.analytics, index: 1),
+      const DrawerItem(title: 'Painel Principal', icon: Icons.dashboard, index: 0),
+      const DrawerItem(title: 'Análises', icon: Icons.analytics, index: 1),
       const DrawerItem(
-        title: 'Reports',
+        title: 'Relatórios',
         icon: Icons.insert_drive_file,
         index: 2,
       ),
-      const DrawerItem(title: 'Projects', icon: Icons.folder, index: 3),
-      const DrawerItem(title: 'Calendar', icon: Icons.calendar_today, index: 4),
+      const DrawerItem(title: 'Projetos', icon: Icons.folder, index: 3),
+      const DrawerItem(title: 'Calendário', icon: Icons.calendar_today, index: 4),
     ];
 
     final List<DrawerItem> bottomItems = [
-      const DrawerItem(title: 'Settings', icon: Icons.settings, index: 5),
-      const DrawerItem(title: 'Profile', icon: Icons.person, index: 6),
+      const DrawerItem(title: 'Configurações', icon: Icons.settings, index: 5),
+      const DrawerItem(title: 'Perfil', icon: Icons.person, index: 6),
     ];
 
     return Drawer(
@@ -245,7 +245,7 @@ class ResponsiveDrawer extends StatelessWidget {
                   ),
                   const SizedBox(height: 12),
                   Text(
-                    'Admin Panel',
+                    'Painel Administrativo',
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(
                       color: Theme.of(context).colorScheme.onSurface,
                     ),
@@ -401,137 +401,25 @@ class ResponsiveDashboard extends StatelessWidget {
 
   String _getPageTitle(int index) {
     const titles = [
-      'Dashboard Overview',
-      'Analytics Report',
-      'Performance Metrics',
-      'Project Management',
-      'Calendar View',
-      'System Settings',
-      'User Profile',
+      'Visão Geral do Painel',
+      'Relatório de Análises',
+      'Métricas de Desempenho',
+      'Gestão de Projetos',
+      'Visualização de Calendário',
+      'Configurações do Sistema',
+      'Perfil do Usuário',
     ];
     return titles[index];
   }
 
   Widget _buildDashboardOverview(BuildContext context) {
-    // Create a specific layout for the dashboard overview page
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          // Top metrics row
-          Row(
-            children: [
-              Expanded(
-                child: DashboardCard(
-                  title: 'Total Revenue',
-                  subtitle: 'This Month',
-                  icon: Icons.monetization_on,
-                ),
-              ),
-              const SizedBox(width: 16),
-              Expanded(
-                child: DashboardCard(
-                  title: 'Active Users',
-                  subtitle: 'Online Now',
-                  icon: Icons.people,
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 16),
-          Row(
-            children: [
-              Expanded(
-                child: DashboardCard(
-                  title: 'Conversion Rate',
-                  subtitle: 'Last 30 Days',
-                  icon: Icons.trending_up,
-                ),
-              ),
-              const SizedBox(width: 16),
-              Expanded(
-                child: DashboardCard(
-                  title: 'Performance',
-                  subtitle: 'System Health',
-                  icon: Icons.speed,
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 16),
-          // Charts section
-          Card(
-            child: Container(
-              height: 300, // Fixed height for the chart section
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(
-                  color: Theme.of(context).colorScheme.outline.withOpacity(0.3),
-                ),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Text(
-                            'Revenue Overview',
-                            style: Theme.of(context).textTheme.titleLarge
-                                ?.copyWith(fontWeight: FontWeight.w600),
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ),
-                        Text(
-                          'Last 30 days',
-                          style: Theme.of(context).textTheme.bodyMedium
-                              ?.copyWith(
-                                color: Theme.of(
-                                  context,
-                                ).colorScheme.onSurfaceVariant,
-                              ),
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 12),
-                    Expanded(
-                      child: Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(8),
-                          color: Theme.of(
-                            context,
-                          ).colorScheme.surfaceVariant.withOpacity(0.2),
-                        ),
-                        child: const Center(
-                          child: Text(
-                            '📊 Chart would go here',
-                            style: TextStyle(fontSize: 16),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
+    // Return a placeholder for the dashboard page while under construction
+    return const EmConstrucaoPlaceholder();
   }
 
   Widget _buildPageContent(BuildContext context) {
-    // For other pages, use a grid layout
-    final cardCount = selectedIndex == 1 ? 8 : 6; // Analytics has more cards
-
-    return GridView.count(
-      crossAxisCount: _getCrossAxisCount(context),
-      crossAxisSpacing: 16,
-      mainAxisSpacing: 16,
-      children: _generateDashboardCards(context, cardCount),
-    );
+    // Return a placeholder for all pages under construction
+    return const EmConstrucaoPlaceholder();
   }
 
   int _getCrossAxisCount(BuildContext context) {
@@ -559,70 +447,70 @@ class ResponsiveDashboard extends StatelessWidget {
 
   String _getCardTitle(int selectedIndex, int index) {
     const List<List<String>> titles = [
-      // Dashboard page
+      // Página do Painel Principal
       [
-        'Total Revenue',
-        'Active Users',
-        'Conversion Rate',
-        'Performance Metrics',
-        'System Status',
-        'Recent Activity',
+        'Receita Total',
+        'Usuários Ativos',
+        'Taxa de Conversão',
+        'Métricas de Desempenho',
+        'Status do Sistema',
+        'Atividade Recente',
       ],
-      // Analytics page
+      // Página de Análises
       [
-        'Total Revenue',
-        'Active Users',
-        'Conversion Rate',
-        'Performance Metrics',
-        'System Status',
-        'Recent Activity',
-        'Growth Analytics',
-        'Engagement Rate',
+        'Receita Total',
+        'Usuários Ativos',
+        'Taxa de Conversão',
+        'Métricas de Desempenho',
+        'Status do Sistema',
+        'Atividade Recente',
+        'Análises de Crescimento',
+        'Taxa de Engajamento',
       ],
-      // Reports page
+      // Página de Relatórios
       [
-        'Sales Reports',
-        'Traffic Analysis',
-        'User Demographics',
-        'Revenue Growth',
-        'Performance Metrics',
-        'System Reports',
+        'Relatórios de Vendas',
+        'Análise de Tráfego',
+        'Demografia dos Usuários',
+        'Crescimento de Receita',
+        'Métricas de Desempenho',
+        'Relatórios do Sistema',
       ],
-      // Projects page
+      // Página de Projetos
       [
-        'Active Projects',
-        'Completed Tasks',
-        'Team Productivity',
-        'Project Timeline',
-        'Resource Allocation',
-        'Budget Utilization',
+        'Projetos Ativos',
+        'Tarefas Concluídas',
+        'Produtividade da Equipe',
+        'Linha do Tempo do Projeto',
+        'Alocação de Recursos',
+        'Utilização de Orçamento',
       ],
-      // Calendar page
+      // Página de Calendário
       [
-        'Upcoming Events',
-        'Team Calendar',
-        'Project Deadlines',
-        'Meeting Schedule',
-        'Task Reminders',
-        'Time Tracking',
+        'Eventos Futuros',
+        'Calendário da Equipe',
+        'Milestones de Projetos',
+        'Agenda de Reuniões',
+        'Lembretes de Tarefas',
+        'Acompanhamento de Tempo',
       ],
-      // Settings page
+      // Página de Configurações
       [
-        'System Settings',
-        'User Preferences',
-        'Security Options',
-        'Notification Settings',
-        'Privacy Controls',
-        'Backup & Sync',
+        'Configurações do Sistema',
+        'Preferências do Usuário',
+        'Opções de Segurança',
+        'Configurações de Notificação',
+        'Controles de Privacidade',
+        'Backup & Sincronização',
       ],
-      // Profile page
+      // Página de Perfil
       [
-        'User Profile',
-        'Account Settings',
-        'Privacy Settings',
-        'Connected Apps',
-        'Activity Log',
-        'Subscription Info',
+        'Perfil do Usuário',
+        'Configurações da Conta',
+        'Configurações de Privacidade',
+        'Aplicativos Conectados',
+        'Registro de Atividade',
+        'Informações de Assinatura',
       ],
     ];
 
@@ -632,70 +520,70 @@ class ResponsiveDashboard extends StatelessWidget {
 
   String _getCardSubtitle(int selectedIndex, int index) {
     const List<List<String>> subtitles = [
-      // Dashboard page
+      // Página do Painel Principal
       [
-        'This Month',
-        'Online Now',
-        'Last 30 Days',
-        'System Health',
-        'All Systems Go',
-        'Latest Updates',
+        'Este Mês',
+        'Online Agora',
+        'Últimos 30 Dias',
+        'Saúde do Sistema',
+        'Todos os Sistemas Ativos',
+        'Atualizações Recentes',
       ],
-      // Analytics page
+      // Página de Análises
       [
-        'This Month',
-        'Online Now',
-        'Last 30 Days',
-        'System Health',
-        'All Systems Go',
-        'Latest Updates',
-        'Q3 Growth',
-        'User Engagement',
+        'Este Mês',
+        'Online Agora',
+        'Últimos 30 Dias',
+        'Saúde do Sistema',
+        'Todos os Sistemas Ativos',
+        'Atualizações Recentes',
+        'Crescimento no 3º Trimestre',
+        'Engajamento do Usuário',
       ],
-      // Reports page
+      // Página de Relatórios
       [
-        'Monthly Report',
-        'Traffic Sources',
-        'Age Groups',
-        'Revenue Analysis',
-        'Performance Metrics',
-        'System Reports',
+        'Relatório Mensal',
+        'Fontes de Tráfego',
+        'Grupos de Idade',
+        'Análise de Receita',
+        'Métricas de Desempenho',
+        'Relatórios do Sistema',
       ],
-      // Projects page
+      // Página de Projetos
       [
-        'Active Projects',
-        'Tasks Completed',
-        'Team Efficiency',
-        'Timeline Overview',
-        'Resource Allocation',
-        'Budget Spent',
+        'Projetos Ativos',
+        'Tarefas Concluídas',
+        'Eficiência da Equipe',
+        'Visão Geral da Linha do Tempo',
+        'Alocação de Recursos',
+        'Orçamento Utilizado',
       ],
-      // Calendar page
+      // Página de Calendário
       [
-        'Next 7 Days',
-        'Team Schedule',
-        'Project Milestones',
-        'Upcoming Meetings',
-        'Task Deadlines',
-        'Time Tracking',
+        'Próximos 7 Dias',
+        'Agenda da Equipe',
+        'Marcos de Projeto',
+        'Próximas Reuniões',
+        'Prazos de Tarefas',
+        'Acompanhamento de Tempo',
       ],
-      // Settings page
+      // Página de Configurações
       [
-        'System Configuration',
-        'User Preferences',
-        'Security Settings',
-        'Notification Preferences',
-        'Privacy Controls',
-        'Backup Settings',
+        'Configuração do Sistema',
+        'Preferências do Usuário',
+        'Configurações de Segurança',
+        'Preferências de Notificação',
+        'Controles de Privacidade',
+        'Configurações de Backup',
       ],
-      // Profile page
+      // Página de Perfil
       [
-        'Personal Information',
-        'Account Details',
-        'Privacy Settings',
-        'Connected Applications',
-        'Recent Activity',
-        'Subscription Details',
+        'Informações Pessoais',
+        'Detalhes da Conta',
+        'Configurações de Privacidade',
+        'Aplicações Conectadas',
+        'Atividade Recente',
+        'Detalhes da Assinatura',
       ],
     ];
 
@@ -881,6 +769,70 @@ class DashboardCard extends StatelessWidget {
               ),
             ],
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class EmConstrucaoPlaceholder extends StatelessWidget {
+  const EmConstrucaoPlaceholder({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Container(
+        padding: const EdgeInsets.all(32.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              Icons.construction,
+              size: 80,
+              color: Theme.of(context).colorScheme.primary,
+            ),
+            const SizedBox(height: 24),
+            Text(
+              'Página em Construção',
+              style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 16),
+            Text(
+              'Esta página está sendo desenvolvida e estará disponível em breve.',
+              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  ),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 32),
+            Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.primaryContainer,
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(
+                    Icons.info_outline,
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
+                  const SizedBox(width: 8),
+                  Text(
+                    'Volte mais tarde para ver a experiência completa',
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.primary,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
         ),
       ),
     );
