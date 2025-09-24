@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'theme.dart';
-import 'widgets/layout_base_widget.dart';
+import 'widgets/layout/layout_base_widget.dart';
 import 'screens/em_construcao_screen.dart';
 import 'screens/teste_screen.dart';
 
