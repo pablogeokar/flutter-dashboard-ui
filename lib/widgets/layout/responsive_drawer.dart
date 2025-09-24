@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../theme.dart';
+import '../../screens/em_construcao_screen.dart';
+import '../../screens/teste_screen.dart';
 
 class ResponsiveDrawer extends StatelessWidget {
   final int currentIndex;
@@ -11,32 +13,61 @@ class ResponsiveDrawer extends StatelessWidget {
     required this.onTap,
   });
 
+  static const List<DrawerItem> itensPrincipais = [
+    DrawerItem(
+      title: 'Painel Principal',
+      icon: Icons.dashboard,
+      index: 0,
+      screenBuilder: _buildEmConstrucaoPlaceholder,
+    ),
+    DrawerItem(
+      title: 'Análises',
+      icon: Icons.analytics,
+      index: 1,
+      screenBuilder: _buildEmConstrucaoPlaceholder,
+    ),
+    DrawerItem(
+      title: 'Relatórios',
+      icon: Icons.insert_drive_file,
+      index: 2,
+      screenBuilder: _buildEmConstrucaoPlaceholder,
+    ),
+    DrawerItem(
+      title: 'Projetos',
+      icon: Icons.folder,
+      index: 3,
+      screenBuilder: _buildTesteScreen,
+    ),
+    DrawerItem(
+      title: 'Calendário',
+      icon: Icons.calendar_today,
+      index: 4,
+      screenBuilder: _buildEmConstrucaoPlaceholder,
+    ),
+  ];
+
+  static const List<DrawerItem> itensInferiores = [
+    DrawerItem(
+      title: 'Configurações',
+      icon: Icons.settings,
+      index: 5,
+      screenBuilder: _buildEmConstrucaoPlaceholder,
+    ),
+    DrawerItem(
+      title: 'Perfil',
+      icon: Icons.person,
+      index: 6,
+      screenBuilder: _buildEmConstrucaoPlaceholder,
+    ),
+  ];
+
+  static Widget _buildEmConstrucaoPlaceholder() => const EmConstrucaoPlaceholder();
+  static Widget _buildTesteScreen() => const TesteScreen();
+
   @override
   Widget build(BuildContext context) {
-    final List<DrawerItem> items = [
-      const DrawerItem(
-        title: 'Painel Principal',
-        icon: Icons.dashboard,
-        index: 0,
-      ),
-      const DrawerItem(title: 'Análises', icon: Icons.analytics, index: 1),
-      const DrawerItem(
-        title: 'Relatórios',
-        icon: Icons.insert_drive_file,
-        index: 2,
-      ),
-      const DrawerItem(title: 'Projetos', icon: Icons.folder, index: 3),
-      const DrawerItem(
-        title: 'Calendário',
-        icon: Icons.calendar_today,
-        index: 4,
-      ),
-    ];
-
-    final List<DrawerItem> bottomItems = [
-      const DrawerItem(title: 'Configurações', icon: Icons.settings, index: 5),
-      const DrawerItem(title: 'Perfil', icon: Icons.person, index: 6),
-    ];
+    final List<DrawerItem> items = itensPrincipais;
+    final List<DrawerItem> bottomItems = itensInferiores;
 
     return Drawer(
       child: Container(
@@ -200,10 +231,14 @@ class DrawerItem {
   final String title;
   final IconData icon;
   final int index;
+  final Widget Function() screenBuilder;
 
   const DrawerItem({
     required this.title,
     required this.icon,
     required this.index,
+    required this.screenBuilder,
   });
+
+  Widget get screen => screenBuilder();
 }

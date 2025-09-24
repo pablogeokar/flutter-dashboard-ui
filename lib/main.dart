@@ -1,6 +1,6 @@
-import 'package:dashboard_ui/widgets/layout/layout_widget.dart';
 import 'package:flutter/material.dart';
 import 'theme.dart';
+import 'widgets/layout/layout_widget.dart';
 
 void main() {
   runApp(const MainApp());

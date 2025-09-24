@@ -18,7 +18,7 @@ class EmConstrucaoPlaceholder extends StatelessWidget {
             ),
             const SizedBox(height: 24),
             Text(
-              'Página em Construção',
+              'Em Construção',
               style: Theme.of(
                 context,
               ).textTheme.headlineMedium?.copyWith(fontWeight: FontWeight.bold),
@@ -26,7 +26,7 @@ class EmConstrucaoPlaceholder extends StatelessWidget {
             ),
             const SizedBox(height: 16),
             Text(
-              'Esta página está sendo desenvolvida e estará disponível em breve.',
+              'Esta funcionalidade está sendo desenvolvida e estará disponível em breve.',
               style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                 color: Theme.of(context).colorScheme.onSurfaceVariant,
               ),
