@@ -189,7 +189,11 @@ class ResponsiveDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final List<DrawerItem> items = [
-      const DrawerItem(title: 'Painel Principal', icon: Icons.dashboard, index: 0),
+      const DrawerItem(
+        title: 'Painel Principal',
+        icon: Icons.dashboard,
+        index: 0,
+      ),
       const DrawerItem(title: 'Análises', icon: Icons.analytics, index: 1),
       const DrawerItem(
         title: 'Relatórios',
@@ -197,7 +201,11 @@ class ResponsiveDrawer extends StatelessWidget {
         index: 2,
       ),
       const DrawerItem(title: 'Projetos', icon: Icons.folder, index: 3),
-      const DrawerItem(title: 'Calendário', icon: Icons.calendar_today, index: 4),
+      const DrawerItem(
+        title: 'Calendário',
+        icon: Icons.calendar_today,
+        index: 4,
+      ),
     ];
 
     final List<DrawerItem> bottomItems = [
@@ -321,17 +329,16 @@ class ResponsiveDrawer extends StatelessWidget {
     );
   }
 
-    Widget _buildDrawerItem(BuildContext context, DrawerItem item) {
+  Widget _buildDrawerItem(BuildContext context, DrawerItem item) {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 2.0),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10),
-      ),
+      decoration: BoxDecoration(borderRadius: BorderRadius.circular(10)),
       child: ListTile(
         leading: Icon(
           item.icon,
           color: currentIndex == item.index
-              ? AppTheme.primary // Your primary color from theme file
+              ? AppTheme
+                    .primary // Your primary color from theme file
               : Theme.of(context).colorScheme.onSurfaceVariant,
         ),
         title: Text(
@@ -341,12 +348,15 @@ class ResponsiveDrawer extends StatelessWidget {
                 ? FontWeight.w600
                 : FontWeight.normal,
             color: currentIndex == item.index
-                ? AppTheme.primary // Your primary color from theme file
+                ? AppTheme
+                      .primary // Your primary color from theme file
                 : Theme.of(context).colorScheme.onSurfaceVariant,
           ),
         ),
         selected: currentIndex == item.index,
-        selectedTileColor: AppTheme.primary.withOpacity(0.15), // Your primary color
+        selectedTileColor: AppTheme.primary.withOpacity(
+          0.15,
+        ), // Your primary color
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),
           side: BorderSide(
@@ -421,359 +431,9 @@ class ResponsiveDashboard extends StatelessWidget {
     // Return a placeholder for all pages under construction
     return const EmConstrucaoPlaceholder();
   }
-
-  int _getCrossAxisCount(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
-    if (screenWidth >= 1200) {
-      return 4; // 4 columns on large screens
-    } else if (screenWidth >= 768) {
-      return 2; // 2 columns on medium screens
-    } else {
-      return 1; // 1 column on small screens
-    }
-  }
-
-  List<Widget> _generateDashboardCards(BuildContext context, int cardCount) {
-    // Create a list of dashboard cards based on the selected page
-    return List.generate(
-      cardCount,
-      (index) => DashboardCard(
-        title: _getCardTitle(selectedIndex, index),
-        subtitle: _getCardSubtitle(selectedIndex, index),
-        icon: _getCardIcon(selectedIndex, index),
-      ),
-    );
-  }
-
-  String _getCardTitle(int selectedIndex, int index) {
-    const List<List<String>> titles = [
-      // Página do Painel Principal
-      [
-        'Receita Total',
-        'Usuários Ativos',
-        'Taxa de Conversão',
-        'Métricas de Desempenho',
-        'Status do Sistema',
-        'Atividade Recente',
-      ],
-      // Página de Análises
-      [
-        'Receita Total',
-        'Usuários Ativos',
-        'Taxa de Conversão',
-        'Métricas de Desempenho',
-        'Status do Sistema',
-        'Atividade Recente',
-        'Análises de Crescimento',
-        'Taxa de Engajamento',
-      ],
-      // Página de Relatórios
-      [
-        'Relatórios de Vendas',
-        'Análise de Tráfego',
-        'Demografia dos Usuários',
-        'Crescimento de Receita',
-        'Métricas de Desempenho',
-        'Relatórios do Sistema',
-      ],
-      // Página de Projetos
-      [
-        'Projetos Ativos',
-        'Tarefas Concluídas',
-        'Produtividade da Equipe',
-        'Linha do Tempo do Projeto',
-        'Alocação de Recursos',
-        'Utilização de Orçamento',
-      ],
-      // Página de Calendário
-      [
-        'Eventos Futuros',
-        'Calendário da Equipe',
-        'Milestones de Projetos',
-        'Agenda de Reuniões',
-        'Lembretes de Tarefas',
-        'Acompanhamento de Tempo',
-      ],
-      // Página de Configurações
-      [
-        'Configurações do Sistema',
-        'Preferências do Usuário',
-        'Opções de Segurança',
-        'Configurações de Notificação',
-        'Controles de Privacidade',
-        'Backup & Sincronização',
-      ],
-      // Página de Perfil
-      [
-        'Perfil do Usuário',
-        'Configurações da Conta',
-        'Configurações de Privacidade',
-        'Aplicativos Conectados',
-        'Registro de Atividade',
-        'Informações de Assinatura',
-      ],
-    ];
-
-    final pageTitles = titles[selectedIndex % titles.length];
-    return pageTitles[index % pageTitles.length];
-  }
-
-  String _getCardSubtitle(int selectedIndex, int index) {
-    const List<List<String>> subtitles = [
-      // Página do Painel Principal
-      [
-        'Este Mês',
-        'Online Agora',
-        'Últimos 30 Dias',
-        'Saúde do Sistema',
-        'Todos os Sistemas Ativos',
-        'Atualizações Recentes',
-      ],
-      // Página de Análises
-      [
-        'Este Mês',
-        'Online Agora',
-        'Últimos 30 Dias',
-        'Saúde do Sistema',
-        'Todos os Sistemas Ativos',
-        'Atualizações Recentes',
-        'Crescimento no 3º Trimestre',
-        'Engajamento do Usuário',
-      ],
-      // Página de Relatórios
-      [
-        'Relatório Mensal',
-        'Fontes de Tráfego',
-        'Grupos de Idade',
-        'Análise de Receita',
-        'Métricas de Desempenho',
-        'Relatórios do Sistema',
-      ],
-      // Página de Projetos
-      [
-        'Projetos Ativos',
-        'Tarefas Concluídas',
-        'Eficiência da Equipe',
-        'Visão Geral da Linha do Tempo',
-        'Alocação de Recursos',
-        'Orçamento Utilizado',
-      ],
-      // Página de Calendário
-      [
-        'Próximos 7 Dias',
-        'Agenda da Equipe',
-        'Marcos de Projeto',
-        'Próximas Reuniões',
-        'Prazos de Tarefas',
-        'Acompanhamento de Tempo',
-      ],
-      // Página de Configurações
-      [
-        'Configuração do Sistema',
-        'Preferências do Usuário',
-        'Configurações de Segurança',
-        'Preferências de Notificação',
-        'Controles de Privacidade',
-        'Configurações de Backup',
-      ],
-      // Página de Perfil
-      [
-        'Informações Pessoais',
-        'Detalhes da Conta',
-        'Configurações de Privacidade',
-        'Aplicações Conectadas',
-        'Atividade Recente',
-        'Detalhes da Assinatura',
-      ],
-    ];
-
-    final pageSubtitles = subtitles[selectedIndex % subtitles.length];
-    return pageSubtitles[index % pageSubtitles.length];
-  }
-
-  IconData _getCardIcon(int selectedIndex, int index) {
-    const List<List<IconData>> icons = [
-      // Dashboard page
-      [
-        Icons.monetization_on,
-        Icons.people,
-        Icons.trending_up,
-        Icons.speed,
-        Icons.check_circle,
-        Icons.notifications,
-      ],
-      // Analytics page
-      [
-        Icons.monetization_on,
-        Icons.people,
-        Icons.trending_up,
-        Icons.speed,
-        Icons.check_circle,
-        Icons.notifications,
-        Icons.show_chart,
-        Icons.thumb_up,
-      ],
-      // Reports page
-      [
-        Icons.bar_chart,
-        Icons.traffic,
-        Icons.group,
-        Icons.attach_money,
-        Icons.speed,
-        Icons.insert_drive_file,
-      ],
-      // Projects page
-      [
-        Icons.folder,
-        Icons.check_circle,
-        Icons.group_work,
-        Icons.timeline,
-        Icons.assignment,
-        Icons.account_balance_wallet,
-      ],
-      // Calendar page
-      [
-        Icons.event,
-        Icons.today,
-        Icons.flag,
-        Icons.calendar_today,
-        Icons.alarm,
-        Icons.timer,
-      ],
-      // Settings page
-      [
-        Icons.settings,
-        Icons.person,
-        Icons.security,
-        Icons.notifications,
-        Icons.lock,
-        Icons.backup,
-      ],
-      // Profile page
-      [
-        Icons.person,
-        Icons.settings,
-        Icons.lock,
-        Icons.apps,
-        Icons.history,
-        Icons.card_membership,
-      ],
-    ];
-
-    final pageIcons = icons[selectedIndex % icons.length];
-    return pageIcons[index % pageIcons.length];
-  }
 }
 
-class DashboardCard extends StatelessWidget {
-  final String title;
-  final String subtitle;
-  final IconData icon;
 
-  const DashboardCard({
-    super.key,
-    required this.title,
-    required this.subtitle,
-    required this.icon,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    // Extract index from title string (Card 1, Card 2, etc.)
-    int getIndex() {
-      try {
-        return int.parse(title.split(' ')[1]);
-      } catch (e) {
-        return 1; // default to 1 if parsing fails
-      }
-    }
-
-    int cardIndex = getIndex();
-
-    // Use your primary color from theme file
-    final primaryColor = AppTheme.primary;
-
-    return Card(
-      elevation: 2,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
-        side: BorderSide(
-          color: Theme.of(context).colorScheme.outline.withOpacity(0.2),
-          width: 0.5,
-        ),
-      ),
-      child: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(12),
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [
-              Theme.of(context).colorScheme.surface,
-              Theme.of(context).colorScheme.surfaceVariant,
-            ],
-          ),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Row(
-                children: [
-                  Container(
-                    padding: const EdgeInsets.all(8),
-                    decoration: BoxDecoration(
-                      color: primaryColor.withOpacity(0.2),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Icon(
-                      icon,
-                      color: primaryColor,
-                      size: 24,
-                    ),
-                  ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: Text(
-                      title,
-                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                            fontWeight: FontWeight.w600,
-                          ),
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 8),
-              Text(
-                subtitle,
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: Theme.of(context).colorScheme.onSurfaceVariant,
-                    ),
-                overflow: TextOverflow.ellipsis,
-              ),
-              const SizedBox(height: 12),
-              Container(
-                alignment: Alignment.centerRight,
-                child: Text(
-                  '${(cardIndex * 100 + 50).toStringAsFixed(0)}',
-                  style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                        fontWeight: FontWeight.w700,
-                        color: primaryColor,
-                      ),
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
 
 class EmConstrucaoPlaceholder extends StatelessWidget {
   const EmConstrucaoPlaceholder({super.key});
@@ -794,17 +454,17 @@ class EmConstrucaoPlaceholder extends StatelessWidget {
             const SizedBox(height: 24),
             Text(
               'Página em Construção',
-              style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
+              style: Theme.of(
+                context,
+              ).textTheme.headlineMedium?.copyWith(fontWeight: FontWeight.bold),
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 16),
             Text(
               'Esta página está sendo desenvolvida e estará disponível em breve.',
               style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                    color: Theme.of(context).colorScheme.onSurfaceVariant,
-                  ),
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
+              ),
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 32),
