@@ -18,36 +18,46 @@ class ResponsiveDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      elevation: 2.0,
-      margin: const EdgeInsets.all(0),
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.only(
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 300),
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.surfaceContainerLow,
+        borderRadius: const BorderRadius.only(
           topRight: Radius.circular(20),
           bottomRight: Radius.circular(20),
         ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.1),
+            blurRadius: 10,
+            offset: const Offset(5, 0),
+          ),
+        ],
       ),
       child: Drawer(
         elevation: 0,
+        backgroundColor: Theme.of(context).colorScheme.surface, // Definindo a cor de fundo do drawer
         child: Container(
-          color: Theme.of(context).colorScheme.surfaceContainerLow,
+          color: Theme.of(context).colorScheme.surface, // Cor de fundo explícita para o container
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               _buildHeader(context),
               const SizedBox(height: 20),
-              ListView.separated(
-                shrinkWrap: true,
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                itemCount: itensPrincipais.length,
-                separatorBuilder: (context, index) => const SizedBox(height: 4),
-                itemBuilder: (context, index) {
-                  return _buildDrawerItem(
-                    context,
-                    itensPrincipais[index],
-                    index,
-                  );
-                },
+              Expanded(
+                child: ListView.separated(
+                  shrinkWrap: true,
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  itemCount: itensPrincipais.length,
+                  separatorBuilder: (context, index) => const SizedBox(height: 4),
+                  itemBuilder: (context, index) {
+                    return _buildDrawerItem(
+                      context,
+                      itensPrincipais[index],
+                      index,
+                    );
+                  },
+                ),
               ),
               const Spacer(),
               ListView.separated(
@@ -76,32 +86,13 @@ class ResponsiveDrawer extends StatelessWidget {
   Widget _buildHeader(BuildContext context) {
     return Container(
       padding: const EdgeInsets.fromLTRB(20, 40, 20, 20),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Image.asset(
-                'assets/eikos.png',
-                height: 40,
-                fit: BoxFit.contain,
-              ),
-              const SizedBox(width: 12),
-              Text(
-                'Painel',
-                style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                      fontWeight: FontWeight.bold,
-                      color: Theme.of(context).colorScheme.onSurface,
-                    ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 20),
-          Divider(
-            color: Theme.of(context).colorScheme.outline.withOpacity(0.2),
-            height: 1,
-          ),
-        ],
+      child: Align(
+        alignment: Alignment.centerLeft,
+        child: Image.asset(
+          'assets/eikos.png',
+          height: 60,
+          fit: BoxFit.contain,
+        ),
       ),
     );
   }
@@ -112,17 +103,24 @@ class ResponsiveDrawer extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(
-            Icons.info_outline,
-            size: 14,
-            color: Theme.of(context).colorScheme.onSurface.withOpacity(0.5),
+          Container(
+            padding: const EdgeInsets.all(6),
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.surfaceContainerHighest,
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Icon(
+              Icons.info_outline,
+              size: 14,
+              color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
+            ),
           ),
           const SizedBox(width: 8),
           Text(
             'v1.0.0',
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
                   color:
-                      Theme.of(context).colorScheme.onSurface.withOpacity(0.5),
+                      Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
                 ),
           ),
         ],
@@ -137,33 +135,54 @@ class ResponsiveDrawer extends StatelessWidget {
   ) {
     final bool isSelected = currentIndex == itemIndex;
 
-    return Container(
-      margin: const EdgeInsets.symmetric(vertical: 4.0),
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 200),
+      margin: const EdgeInsets.symmetric(vertical: 2.0),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
-        color: isSelected ? AppTheme.primary.withOpacity(0.15) : null,
+        color: isSelected ? AppTheme.primary.withValues(alpha: 0.15) : Colors.transparent,
       ),
-      child: ListTile(
-        leading: Icon(
-          item.icon,
-          size: 22,
-          color: isSelected
-              ? AppTheme.primary
-              : Theme.of(context).colorScheme.onSurface.withOpacity(0.8),
-        ),
-        title: Text(
-          item.title,
-          style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-                color: isSelected
-                    ? AppTheme.primary
-                    : Theme.of(context).colorScheme.onSurface,
-              ),
-        ),
-        shape: RoundedRectangleBorder(
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
           borderRadius: BorderRadius.circular(12),
+          onTap: () => onTap(itemIndex),
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            child: Row(
+              children: [
+                AnimatedContainer(
+                  duration: const Duration(milliseconds: 200),
+                  width: 24,
+                  height: 24,
+                  decoration: BoxDecoration(
+                    color: isSelected ? AppTheme.primary : Colors.transparent,
+                    borderRadius: BorderRadius.circular(6),
+                  ),
+                  child: Icon(
+                    item.icon,
+                    size: 18,
+                    color: isSelected
+                        ? Theme.of(context).colorScheme.onPrimary
+                        : Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.8),
+                  ),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Text(
+                    item.title,
+                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                          fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                          color: isSelected
+                              ? AppTheme.primary
+                              : Theme.of(context).colorScheme.onSurface,
+                        ),
+                  ),
+                ),
+              ],
+            ),
+          ),
         ),
-        onTap: () => onTap(itemIndex),
       ),
     );
   }
