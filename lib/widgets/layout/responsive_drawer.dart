@@ -61,7 +61,8 @@ class ResponsiveDrawer extends StatelessWidget {
     ),
   ];
 
-  static Widget _buildEmConstrucaoPlaceholder() => const EmConstrucaoPlaceholder();
+  static Widget _buildEmConstrucaoPlaceholder() =>
+      const EmConstrucaoPlaceholder();
   static Widget _buildTesteScreen() => const TesteScreen();
 
   @override
@@ -194,7 +195,7 @@ class ResponsiveDrawer extends StatelessWidget {
           item.icon,
           color: currentIndex == item.index
               ? AppTheme
-              .primary // Your primary color from theme file
+                    .primary // Your primary color from theme file
               : Theme.of(context).colorScheme.onSurfaceVariant,
         ),
         title: Text(
@@ -205,12 +206,14 @@ class ResponsiveDrawer extends StatelessWidget {
                 : FontWeight.normal,
             color: currentIndex == item.index
                 ? AppTheme
-                .primary // Your primary color from theme file
+                      .primary // Your primary color from theme file
                 : Theme.of(context).colorScheme.onSurfaceVariant,
           ),
         ),
         selected: currentIndex == item.index,
-        selectedTileColor: AppTheme.primary.withValues(alpha: 0.15), // Your primary color
+        selectedTileColor: AppTheme.primary.withValues(
+          alpha: 0.15,
+        ), // Your primary color
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),
           side: BorderSide(
