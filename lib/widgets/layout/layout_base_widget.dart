@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'drawer_item.dart';
 import 'responsive_drawer.dart';
+import '../../theme.dart';
 
 class LayoutBaseWidget extends StatefulWidget {
   final Widget Function(int) screenBuilder;
@@ -46,11 +47,15 @@ class _LayoutBaseWidgetState extends State<LayoutBaseWidget> {
       children: [
         AnimatedContainer(
           duration: const Duration(milliseconds: 300),
-          width: 280,
-          margin: const EdgeInsets.only(left: 8, top: 8, bottom: 8),
+          width: AppTheme.drawerWidth,
+          margin: const EdgeInsets.only(
+            left: AppTheme.spacingS,
+            top: AppTheme.spacingS,
+            bottom: AppTheme.spacingS,
+          ),
           decoration: BoxDecoration(
             color: Theme.of(context).colorScheme.surfaceContainerLow,
-            borderRadius: BorderRadius.circular(20),
+            borderRadius: BorderRadius.circular(AppTheme.borderRadiusXL),
             boxShadow: [
               BoxShadow(
                 color: Colors.black.withValues(alpha: 0.1),
@@ -60,7 +65,7 @@ class _LayoutBaseWidgetState extends State<LayoutBaseWidget> {
             ],
           ),
           child: ClipRRect(
-            borderRadius: BorderRadius.circular(20),
+            borderRadius: BorderRadius.circular(AppTheme.borderRadiusXL),
             child: ResponsiveDrawer(
               currentIndex: widget.currentIndex,
               onTap: widget.onNavigation,
@@ -71,7 +76,11 @@ class _LayoutBaseWidgetState extends State<LayoutBaseWidget> {
         ),
         Expanded(
           child: Padding(
-            padding: const EdgeInsets.only(right: 8, top: 8, bottom: 8),
+            padding: const EdgeInsets.only(
+              right: AppTheme.spacingS,
+              top: AppTheme.spacingS,
+              bottom: AppTheme.spacingS,
+            ),
             child: _buildMainContent(isLargeScreen: true),
           ),
         ),
@@ -94,7 +103,7 @@ class _LayoutBaseWidgetState extends State<LayoutBaseWidget> {
         itensInferiores: widget.itensInferiores,
       ),
       body: Container(
-        padding: const EdgeInsets.only(top: 8),
+        padding: const EdgeInsets.only(top: AppTheme.spacingS),
         child: _buildMainContent(isLargeScreen: false),
       ),
     );
@@ -105,7 +114,12 @@ class _LayoutBaseWidgetState extends State<LayoutBaseWidget> {
       preferredSize: const Size.fromHeight(80.0),
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 300),
-        margin: const EdgeInsets.fromLTRB(16, 16, 16, 0),
+        margin: EdgeInsets.fromLTRB(
+          AppTheme.spacingM,
+          AppTheme.spacingM,
+          AppTheme.spacingM,
+          0,
+        ),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20.0),
           boxShadow: [
@@ -130,24 +144,26 @@ class _LayoutBaseWidgetState extends State<LayoutBaseWidget> {
                   : Builder(
                       builder: (context) {
                         return Container(
-                          margin: const EdgeInsets.all(8.0),
+                          margin: EdgeInsets.all(AppTheme.spacingS),
                           decoration: BoxDecoration(
                             color: Theme.of(
                               context,
                             ).colorScheme.surfaceContainerHighest,
-                            borderRadius: BorderRadius.circular(12),
+                            borderRadius: BorderRadius.circular(
+                              AppTheme.borderRadiusM,
+                            ),
                           ),
                           child: IconButton(
                             icon: const Icon(Icons.menu),
                             onPressed: () => Scaffold.of(context).openDrawer(),
                             style: ButtonStyle(
-                              backgroundColor: MaterialStateProperty.all<Color>(
+                              backgroundColor: WidgetStateProperty.all<Color>(
                                 Colors.transparent,
                               ),
-                              foregroundColor: MaterialStateProperty.all<Color>(
+                              foregroundColor: WidgetStateProperty.all<Color>(
                                 Theme.of(context).colorScheme.onSurface,
                               ),
-                              iconSize: MaterialStateProperty.all<double>(24.0),
+                              iconSize: WidgetStateProperty.all<double>(24.0),
                             ),
                           ),
                         );
@@ -161,31 +177,33 @@ class _LayoutBaseWidgetState extends State<LayoutBaseWidget> {
               ),
               actions: [
                 Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 8.0),
+                  margin: EdgeInsets.symmetric(horizontal: AppTheme.spacingS),
                   decoration: BoxDecoration(
                     color: Theme.of(
                       context,
                     ).colorScheme.surfaceContainerHighest,
-                    borderRadius: BorderRadius.circular(99),
+                    borderRadius: BorderRadius.circular(
+                      99,
+                    ), // Valor especial para formato circular, não substituído por constante
                   ),
                   child: IconButton(
                     icon: const Icon(Icons.notifications_outlined),
                     onPressed: () {},
                     style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all<Color>(
+                      backgroundColor: WidgetStateProperty.all<Color>(
                         Colors.transparent,
                       ),
-                      foregroundColor: MaterialStateProperty.all<Color>(
+                      foregroundColor: WidgetStateProperty.all<Color>(
                         Theme.of(context).colorScheme.onSurface,
                       ),
-                      iconSize: MaterialStateProperty.all<double>(24.0),
+                      iconSize: WidgetStateProperty.all<double>(24.0),
                     ),
                   ),
                 ),
                 Container(
-                  margin: const EdgeInsets.only(right: 16),
+                  margin: EdgeInsets.only(right: AppTheme.spacingM),
                   child: CircleAvatar(
-                    radius: 22,
+                    radius: AppTheme.avatarSizeSmall,
                     backgroundColor: Theme.of(context).colorScheme.primary,
                     child: Icon(
                       Icons.person_outline,
@@ -210,11 +228,15 @@ class _LayoutBaseWidgetState extends State<LayoutBaseWidget> {
           .surface, // Garantindo a cor de fundo consistente com o tema dark
       body: AnimatedContainer(
         duration: const Duration(milliseconds: 300),
-        margin: EdgeInsets.all(isLargeScreen ? 16.0 : 8.0),
-        padding: EdgeInsets.all(isLargeScreen ? 16.0 : 8.0),
+        margin: EdgeInsets.all(
+          isLargeScreen ? AppTheme.spacingM : AppTheme.spacingS,
+        ),
+        padding: EdgeInsets.all(
+          isLargeScreen ? AppTheme.spacingM : AppTheme.spacingS,
+        ),
         decoration: BoxDecoration(
           color: Theme.of(context).colorScheme.surfaceContainerLow,
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(AppTheme.borderRadiusXL),
           boxShadow: [
             BoxShadow(
               color: Colors.black.withValues(alpha: 0.08),
@@ -224,7 +246,7 @@ class _LayoutBaseWidgetState extends State<LayoutBaseWidget> {
           ],
         ),
         child: ClipRRect(
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(AppTheme.borderRadiusXL),
           child: AnimatedSwitcher(
             duration: const Duration(milliseconds: 300),
             transitionBuilder: (child, animation) {
