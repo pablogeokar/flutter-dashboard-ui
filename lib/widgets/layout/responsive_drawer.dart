@@ -51,7 +51,6 @@ class ResponsiveDrawer extends StatelessWidget {
               const SizedBox(height: AppTheme.spacingL),
               Expanded(
                 child: ListView.separated(
-                  shrinkWrap: true,
                   padding: const EdgeInsets.symmetric(horizontal: AppTheme.spacingM),
                   itemCount: itensPrincipais.length,
                   separatorBuilder: (context, index) =>
@@ -66,7 +65,6 @@ class ResponsiveDrawer extends StatelessWidget {
                   },
                 ),
               ),
-              const Spacer(),
               ListView.separated(
                 shrinkWrap: true,
                 padding: const EdgeInsets.symmetric(horizontal: AppTheme.spacingM),
