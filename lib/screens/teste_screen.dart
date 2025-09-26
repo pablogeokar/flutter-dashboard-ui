@@ -6,20 +6,27 @@ class TesteScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
+    final theme = Theme.of(context);
+    return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(Icons.widgets, size: 80, color: Colors.blue),
-          SizedBox(height: AppTheme.spacingL), // 24 é 1.5 vezes spacingM (16)
+          Icon(
+            Icons.widgets,
+            size: AppTheme.iconSizeXL,
+            color: theme.colorScheme.primary,
+          ),
+          const SizedBox(height: AppTheme.spacingL),
           Text(
             'Tela de Teste',
-            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            style: theme.textTheme.headlineSmall,
           ),
-          SizedBox(height: AppTheme.spacingM),
+          const SizedBox(height: AppTheme.spacingM),
           Text(
             'Esta é uma tela de exemplo para testes',
-            style: TextStyle(fontSize: 16, color: Colors.grey),
+            style: theme.textTheme.bodyLarge?.copyWith(
+              color: theme.colorScheme.onSurface.withOpacity(0.6),
+            ),
             textAlign: TextAlign.center,
           ),
         ],

@@ -23,4 +23,7 @@ class AppTheme {
   static const double avatarSizeSmall = 22.0;
   static const double avatarSizeMedium = 40.0;
   static const double avatarSizeLarge = 60.0;
+
+  // Tamanhos de ícones
+  static const double iconSizeXL = 80.0;
 }

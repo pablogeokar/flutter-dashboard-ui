@@ -28,7 +28,7 @@ class ResponsiveDrawer extends StatelessWidget {
         ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.1),
+            color: Colors.black.withOpacity(0.1),
             blurRadius: 10,
             offset: const Offset(5, 0),
           ),
@@ -54,7 +54,7 @@ class ResponsiveDrawer extends StatelessWidget {
                   padding: EdgeInsets.symmetric(horizontal: AppTheme.spacingM),
                   itemCount: itensPrincipais.length,
                   separatorBuilder: (context, index) =>
-                      const SizedBox(height: 4),
+                      const SizedBox(height: AppTheme.spacingXS),
                   itemBuilder: (context, index) {
                     return _buildDrawerItem(
                       context,
@@ -69,7 +69,7 @@ class ResponsiveDrawer extends StatelessWidget {
                 shrinkWrap: true,
                 padding: EdgeInsets.symmetric(horizontal: AppTheme.spacingM),
                 itemCount: itensInferiores.length,
-                separatorBuilder: (context, index) => const SizedBox(height: 4),
+                separatorBuilder: (context, index) => const SizedBox(height: AppTheme.spacingXS),
                 itemBuilder: (context, index) {
                   final itemIndex = itensPrincipais.length + index;
                   return _buildDrawerItem(
@@ -110,9 +110,7 @@ class ResponsiveDrawer extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Container(
-            padding: EdgeInsets.all(
-              AppTheme.spacingS / 2,
-            ), // 6 é metade de spacingS (8)
+            padding: const EdgeInsets.all(AppTheme.spacingXS),
             decoration: BoxDecoration(
               color: Theme.of(context).colorScheme.surfaceContainerHighest,
               borderRadius: BorderRadius.circular(AppTheme.borderRadiusS),
@@ -122,7 +120,7 @@ class ResponsiveDrawer extends StatelessWidget {
               size: 14,
               color: Theme.of(
                 context,
-              ).colorScheme.onSurface.withValues(alpha: 0.6),
+              ).colorScheme.onSurface.withOpacity(0.6),
             ),
           ),
           SizedBox(width: AppTheme.spacingS),
@@ -131,7 +129,7 @@ class ResponsiveDrawer extends StatelessWidget {
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
               color: Theme.of(
                 context,
-              ).colorScheme.onSurface.withValues(alpha: 0.6),
+              ).colorScheme.onSurface.withOpacity(0.6),
             ),
           ),
         ],
@@ -154,7 +152,7 @@ class ResponsiveDrawer extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(AppTheme.borderRadiusM),
         color: isSelected
-            ? AppTheme.primary.withValues(alpha: 0.15)
+            ? AppTheme.primary.withOpacity(0.15)
             : Colors.transparent,
       ),
       child: Material(
@@ -177,7 +175,7 @@ class ResponsiveDrawer extends StatelessWidget {
                     color: isSelected ? AppTheme.primary : Colors.transparent,
                     borderRadius: BorderRadius.circular(
                       AppTheme.borderRadiusS / 2,
-                    ), // 6 é metade de borderRadiusS (12)
+                    ),
                   ),
                   child: Icon(
                     item.icon,
@@ -186,12 +184,10 @@ class ResponsiveDrawer extends StatelessWidget {
                         ? Theme.of(context).colorScheme.onPrimary
                         : Theme.of(
                             context,
-                          ).colorScheme.onSurface.withValues(alpha: 0.8),
+                          ).colorScheme.onSurface.withOpacity(0.8),
                   ),
                 ),
-                SizedBox(
-                  width: AppTheme.spacingM,
-                ), // 12 está entre spacingS (8) e spacingM (16)
+                const SizedBox(width: AppTheme.spacingM),
                 Expanded(
                   child: Text(
                     item.title,
