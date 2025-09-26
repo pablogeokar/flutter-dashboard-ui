@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'drawer_item.dart';
+import 'drawer_list_item.dart'; // Import the new widget
 import '../../theme.dart';
 
 class ResponsiveDrawer extends StatelessWidget {
@@ -47,19 +48,20 @@ class ResponsiveDrawer extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               _buildHeader(context),
-              SizedBox(height: AppTheme.spacingL),
+              const SizedBox(height: AppTheme.spacingL),
               Expanded(
                 child: ListView.separated(
                   shrinkWrap: true,
-                  padding: EdgeInsets.symmetric(horizontal: AppTheme.spacingM),
+                  padding: const EdgeInsets.symmetric(horizontal: AppTheme.spacingM),
                   itemCount: itensPrincipais.length,
                   separatorBuilder: (context, index) =>
                       const SizedBox(height: AppTheme.spacingXS),
                   itemBuilder: (context, index) {
-                    return _buildDrawerItem(
-                      context,
-                      itensPrincipais[index],
-                      index,
+                    // Use the new widget
+                    return DrawerListItem(
+                      item: itensPrincipais[index],
+                      isSelected: currentIndex == index,
+                      onTap: () => onTap(index),
                     );
                   },
                 ),
@@ -67,19 +69,21 @@ class ResponsiveDrawer extends StatelessWidget {
               const Spacer(),
               ListView.separated(
                 shrinkWrap: true,
-                padding: EdgeInsets.symmetric(horizontal: AppTheme.spacingM),
+                padding: const EdgeInsets.symmetric(horizontal: AppTheme.spacingM),
                 itemCount: itensInferiores.length,
-                separatorBuilder: (context, index) => const SizedBox(height: AppTheme.spacingXS),
+                separatorBuilder: (context, index) =>
+                    const SizedBox(height: AppTheme.spacingXS),
                 itemBuilder: (context, index) {
                   final itemIndex = itensPrincipais.length + index;
-                  return _buildDrawerItem(
-                    context,
-                    itensInferiores[index],
-                    itemIndex,
+                  // Use the new widget
+                  return DrawerListItem(
+                    item: itensInferiores[index],
+                    isSelected: currentIndex == itemIndex,
+                    onTap: () => onTap(itemIndex),
                   );
                 },
               ),
-              SizedBox(height: AppTheme.spacingL),
+              const SizedBox(height: AppTheme.spacingL),
               _buildFooter(context),
             ],
           ),
@@ -90,7 +94,7 @@ class ResponsiveDrawer extends StatelessWidget {
 
   Widget _buildHeader(BuildContext context) {
     return Container(
-      padding: EdgeInsets.fromLTRB(
+      padding: const EdgeInsets.fromLTRB(
         AppTheme.spacingM,
         AppTheme.spacingL * 2.5,
         AppTheme.spacingM,
@@ -105,7 +109,7 @@ class ResponsiveDrawer extends StatelessWidget {
 
   Widget _buildFooter(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(AppTheme.spacingM),
+      padding: const EdgeInsets.all(AppTheme.spacingM),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -123,89 +127,18 @@ class ResponsiveDrawer extends StatelessWidget {
               ).colorScheme.onSurface.withOpacity(0.6),
             ),
           ),
-          SizedBox(width: AppTheme.spacingS),
+          const SizedBox(width: AppTheme.spacingS),
           Text(
             'v1.0.0',
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
-              color: Theme.of(
-                context,
-              ).colorScheme.onSurface.withOpacity(0.6),
-            ),
+                  color: Theme.of(
+                    context,
+                  ).colorScheme.onSurface.withOpacity(0.6),
+                ),
           ),
         ],
       ),
     );
   }
-
-  Widget _buildDrawerItem(
-    BuildContext context,
-    DrawerItem item,
-    int itemIndex,
-  ) {
-    final bool isSelected = currentIndex == itemIndex;
-
-    return AnimatedContainer(
-      duration: const Duration(milliseconds: 200),
-      margin: EdgeInsets.symmetric(
-        vertical: AppTheme.spacingXS / 2,
-      ), // 2 é metade de spacingXS (4)
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(AppTheme.borderRadiusM),
-        color: isSelected
-            ? AppTheme.primary.withOpacity(0.15)
-            : Colors.transparent,
-      ),
-      child: Material(
-        color: Colors.transparent,
-        child: InkWell(
-          borderRadius: BorderRadius.circular(AppTheme.borderRadiusM),
-          onTap: () => onTap(itemIndex),
-          child: Container(
-            padding: EdgeInsets.symmetric(
-              horizontal: AppTheme.spacingM,
-              vertical: AppTheme.spacingS,
-            ),
-            child: Row(
-              children: [
-                AnimatedContainer(
-                  duration: const Duration(milliseconds: 200),
-                  width: 24,
-                  height: 24,
-                  decoration: BoxDecoration(
-                    color: isSelected ? AppTheme.primary : Colors.transparent,
-                    borderRadius: BorderRadius.circular(
-                      AppTheme.borderRadiusS / 2,
-                    ),
-                  ),
-                  child: Icon(
-                    item.icon,
-                    size: 18,
-                    color: isSelected
-                        ? Theme.of(context).colorScheme.onPrimary
-                        : Theme.of(
-                            context,
-                          ).colorScheme.onSurface.withOpacity(0.8),
-                  ),
-                ),
-                const SizedBox(width: AppTheme.spacingM),
-                Expanded(
-                  child: Text(
-                    item.title,
-                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                      fontWeight: isSelected
-                          ? FontWeight.bold
-                          : FontWeight.normal,
-                      color: isSelected
-                          ? AppTheme.primary
-                          : Theme.of(context).colorScheme.onSurface,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
+  // _buildDrawerItem method is removed
 }
