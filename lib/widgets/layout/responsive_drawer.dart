@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'drawer_item.dart';
-import 'drawer_list_item.dart'; // Import the new widget
+import 'drawer_list_item.dart';
 import '../../theme.dart';
 
-class ResponsiveDrawer extends StatelessWidget {
+class ResponsiveDrawer extends StatefulWidget {
   final int currentIndex;
   final Function(int) onTap;
   final List<DrawerItem> itensPrincipais;
@@ -18,9 +18,38 @@ class ResponsiveDrawer extends StatelessWidget {
   });
 
   @override
+  State<ResponsiveDrawer> createState() => _ResponsiveDrawerState();
+}
+
+class _ResponsiveDrawerState extends State<ResponsiveDrawer> {
+  late final List<DrawerItem> _flatNavigableItems;
+
+  @override
+  void initState() {
+    super.initState();
+    _flatNavigableItems = _flattenItems();
+  }
+
+  List<DrawerItem> _flattenItems() {
+    final List<DrawerItem> flatList = [];
+    void processItems(List<DrawerItem> items) {
+      for (final item in items) {
+        if (item.subItems?.isNotEmpty ?? false) {
+          processItems(item.subItems!);
+        } else if (item.screen != null) {
+          flatList.add(item);
+        }
+      }
+    }
+    processItems([...widget.itensPrincipais, ...widget.itensInferiores]);
+    return flatList;
+  }
+
+  @override
   Widget build(BuildContext context) {
     return AnimatedContainer(
       duration: const Duration(milliseconds: 300),
+      width: AppTheme.drawerWidth,
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.surfaceContainerLow,
         borderRadius: const BorderRadius.only(
@@ -37,55 +66,75 @@ class ResponsiveDrawer extends StatelessWidget {
       ),
       child: Drawer(
         elevation: 0,
-        backgroundColor: Theme.of(
-          context,
-        ).colorScheme.surface, // Definindo a cor de fundo do drawer
-        child: Container(
-          color: Theme.of(
-            context,
-          ).colorScheme.surface, // Cor de fundo explícita para o container
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              const SizedBox(height: AppTheme.appBarHeight), // Add space to align with AppBar
-              const SizedBox(height: AppTheme.spacingL),
-              Expanded(
-                child: ListView.separated(
-                  padding: const EdgeInsets.symmetric(horizontal: AppTheme.spacingM),
-                  itemCount: itensPrincipais.length,
-                  separatorBuilder: (context, index) =>
-                      const SizedBox(height: AppTheme.spacingXS),
-                  itemBuilder: (context, index) {
-                    // Use the new widget
-                    return DrawerListItem(
-                      item: itensPrincipais[index],
-                      isSelected: currentIndex == index,
-                      onTap: () => onTap(index),
-                    );
-                  },
-                ),
-              ),
-              ListView.separated(
-                shrinkWrap: true,
+        backgroundColor: Colors.transparent,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            const SizedBox(height: AppTheme.appBarHeight),
+            const SizedBox(height: AppTheme.spacingL),
+            Expanded(
+              child: ListView(
                 padding: const EdgeInsets.symmetric(horizontal: AppTheme.spacingM),
-                itemCount: itensInferiores.length,
-                separatorBuilder: (context, index) =>
-                    const SizedBox(height: AppTheme.spacingXS),
-                itemBuilder: (context, index) {
-                  final itemIndex = itensPrincipais.length + index;
-                  // Use the new widget
-                  return DrawerListItem(
-                    item: itensInferiores[index],
-                    isSelected: currentIndex == itemIndex,
-                    onTap: () => onTap(itemIndex),
-                  );
-                },
+                children: _buildItemList(widget.itensPrincipais),
               ),
-              const SizedBox(height: AppTheme.spacingL),
-              _buildFooter(context),
-            ],
-          ),
+            ),
+            ..._buildItemList(widget.itensInferiores),
+            const SizedBox(height: AppTheme.spacingL),
+            _buildFooter(context),
+          ],
         ),
+      ),
+    );
+  }
+
+  List<Widget> _buildItemList(List<DrawerItem> items) {
+    return items.map((item) {
+      // Group item
+      if (item.subItems?.isNotEmpty ?? false) {
+        return _buildExpansionItem(item);
+      }
+      // Normal item
+      else {
+        return _buildSingleItem(item);
+      }
+    }).toList();
+  }
+
+  Widget _buildSingleItem(DrawerItem item, {bool isSubItem = false}) {
+    final flatIndex = _flatNavigableItems.indexWhere((e) => e.title == item.title);
+    return DrawerListItem(
+      item: item,
+      isSubItem: isSubItem,
+      isSelected: widget.currentIndex == flatIndex,
+      onTap: () {
+        if (flatIndex != -1) {
+          widget.onTap(flatIndex);
+        }
+      },
+    );
+  }
+
+  Widget _buildExpansionItem(DrawerItem item) {
+    // Check if any sub-item is currently selected
+    final bool isGroupSelected = item.subItems!.any((subItem) {
+      final flatIndex = _flatNavigableItems.indexWhere((e) => e.title == subItem.title);
+      return widget.currentIndex == flatIndex;
+    });
+
+    return Theme(
+      data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
+      child: ExpansionTile(
+        key: PageStorageKey(item.title), // Persists expanded state
+        initiallyExpanded: isGroupSelected,
+        tilePadding: EdgeInsets.zero,
+        title: DrawerListItem(
+          item: item,
+          isSelected: isGroupSelected,
+          onTap: () {}, // The tile itself handles expansion
+        ),
+        children: item.subItems!
+            .map((subItem) => _buildSingleItem(subItem, isSubItem: true))
+            .toList(),
       ),
     );
   }
@@ -105,23 +154,18 @@ class ResponsiveDrawer extends StatelessWidget {
             child: Icon(
               Icons.info_outline,
               size: 14,
-              color: Theme.of(
-                context,
-              ).colorScheme.onSurface.withOpacity(0.6),
+              color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
             ),
           ),
           const SizedBox(width: AppTheme.spacingS),
           Text(
             'v1.0.0',
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: Theme.of(
-                    context,
-                  ).colorScheme.onSurface.withOpacity(0.6),
-                ),
+              color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+            ),
           ),
         ],
       ),
     );
   }
-  // _buildDrawerItem method is removed
 }

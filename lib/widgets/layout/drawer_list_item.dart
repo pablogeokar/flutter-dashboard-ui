@@ -6,17 +6,19 @@ class DrawerListItem extends StatelessWidget {
   final DrawerItem item;
   final bool isSelected;
   final VoidCallback onTap;
+  final bool isSubItem;
 
   const DrawerListItem({
     super.key,
     required this.item,
     required this.isSelected,
     required this.onTap,
+    this.isSubItem = false,
   });
 
   @override
   Widget build(BuildContext context) {
-    return ClipRRect(
+    Widget content = ClipRRect(
       borderRadius: BorderRadius.circular(AppTheme.borderRadiusM),
       child: Material(
         color: Colors.transparent,
@@ -94,5 +96,14 @@ class DrawerListItem extends StatelessWidget {
         ),
       ),
     );
+
+    if (isSubItem) {
+      return Padding(
+        padding: const EdgeInsets.only(left: AppTheme.spacingM),
+        child: content,
+      );
+    }
+
+    return content;
   }
 }

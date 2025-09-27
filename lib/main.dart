@@ -19,6 +19,27 @@ class MainApp extends StatelessWidget {
       screen: EmConstrucaoPlaceholder(),
     ),
     DrawerItem(
+      title: 'Cadastros',
+      icon: Icons.edit_document,
+      subItems: [
+        DrawerItem(
+          title: 'Clientes',
+          icon: Icons.people,
+          screen: EmConstrucaoPlaceholder(),
+        ),
+        DrawerItem(
+          title: 'Fornecedores',
+          icon: Icons.business,
+          screen: EmConstrucaoPlaceholder(),
+        ),
+        DrawerItem(
+          title: 'Produtos',
+          icon: Icons.inventory,
+          screen: EmConstrucaoPlaceholder(),
+        ),
+      ],
+    ),
+    DrawerItem(
       title: 'Análises',
       icon: Icons.analytics,
       screen: EmConstrucaoPlaceholder(),
