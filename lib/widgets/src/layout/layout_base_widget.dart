@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'drawer_item.dart';
 import 'responsive_drawer.dart';
@@ -86,84 +88,115 @@ class _LayoutBaseWidgetState extends State<LayoutBaseWidget> {
           AppTheme.spacingM,
           0,
         ),
-        // Decoration is removed to make it transparent
-        child: SafeArea(
-          child: AppBar(
-            backgroundColor: Colors.transparent,
-            elevation: 0, // Ensure no default shadow
-            automaticallyImplyLeading: !isLargeScreen,
-            leading: isLargeScreen
-                ? null
-                : Builder(
-                    builder: (context) {
-                      return Container(
-                        margin: const EdgeInsets.all(AppTheme.spacingS),
-                        decoration: BoxDecoration(
-                          color: Theme.of(
-                            context,
-                          ).colorScheme.surfaceContainerHighest,
-                          borderRadius: BorderRadius.circular(
-                            AppTheme.borderRadiusM,
-                          ),
-                        ),
-                        child: IconButton(
-                          icon: const Icon(Icons.menu),
-                          onPressed: () => Scaffold.of(context).openDrawer(),
-                          style: ButtonStyle(
-                            backgroundColor: WidgetStateProperty.all<Color>(
-                              Colors.transparent,
+        decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.surfaceContainerLow.withValues(alpha: AppTheme.appBarOpacity),
+          borderRadius: BorderRadius.circular(AppTheme.borderRadiusM),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.08),
+              blurRadius: 10,
+              offset: const Offset(0, 3),
+            ),
+          ],
+        ),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(AppTheme.borderRadiusM),
+          child: BackdropFilter(
+            filter: ImageFilter.blur(
+              sigmaX: AppTheme.appBarBlur,
+              sigmaY: AppTheme.appBarBlur,
+            ),
+            child: SafeArea(
+              child: AppBar(
+                backgroundColor: Colors.transparent,
+                elevation: 0, // Ensure no default shadow
+                automaticallyImplyLeading: !isLargeScreen,
+                leading: isLargeScreen
+                    ? null
+                    : Builder(
+                        builder: (context) {
+                          return Container(
+                            margin: const EdgeInsets.all(AppTheme.spacingS),
+                            decoration: BoxDecoration(
+                              color: Theme.of(
+                                context,
+                              ).colorScheme.surfaceContainerHighest,
+                              borderRadius: BorderRadius.circular(
+                                AppTheme.borderRadiusM,
+                              ),
                             ),
-                            foregroundColor: WidgetStateProperty.all<Color>(
-                              Theme.of(context).colorScheme.onSurface,
+                            child: IconButton(
+                              icon: const Icon(Icons.menu),
+                              onPressed: () =>
+                                  Scaffold.of(context).openDrawer(),
+                              style: ButtonStyle(
+                                backgroundColor: WidgetStateProperty.all<Color>(
+                                  Colors.transparent,
+                                ),
+                                foregroundColor: WidgetStateProperty.all<Color>(
+                                  Theme.of(context).colorScheme.onSurface,
+                                ),
+                                iconSize: WidgetStateProperty.all<double>(24.0),
+                              ),
                             ),
-                            iconSize: WidgetStateProperty.all<double>(24.0),
-                          ),
+                          );
+                        },
+                      ),
+                // The title is now the logo
+            title: Container(
+              padding: const EdgeInsets.all(AppTheme.spacingS),
+              child: ColorFiltered(
+                colorFilter: ColorFilter.mode(
+                  Theme.of(context).colorScheme.primary,
+                  BlendMode.srcIn,
+                ),
+                child: Image.asset('assets/eikos.png', height: 55),
+              ),
+            ),
+                actions: [
+                  // Search bar and spacer are removed
+                  Container(
+                    margin: const EdgeInsets.symmetric(
+                      horizontal: AppTheme.spacingS,
+                    ),
+                    decoration: BoxDecoration(
+                      color: Theme.of(
+                        context,
+                      ).colorScheme.surfaceContainerHighest,
+                      borderRadius: BorderRadius.circular(
+                        99, // Valor especial para formato circular, não substituído por constante
+                      ), // Valor especial para formato circular, não substituído por constante
+                    ),
+                    child: IconButton(
+                      icon: const Icon(Icons.notifications_outlined),
+                      onPressed: () {},
+                      style: ButtonStyle(
+                        backgroundColor: WidgetStateProperty.all<Color>(
+                          Colors.transparent,
                         ),
-                      );
-                    },
-                  ),
-            // The title is now the logo
-            title: Image.asset('assets/eikos.png', height: 55),
-            actions: [
-              // Search bar and spacer are removed
-              Container(
-                margin: const EdgeInsets.symmetric(
-                  horizontal: AppTheme.spacingS,
-                ),
-                decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.surfaceContainerHighest,
-                  borderRadius: BorderRadius.circular(
-                    99,
-                  ), // Valor especial para formato circular, não substituído por constante
-                ),
-                child: IconButton(
-                  icon: const Icon(Icons.notifications_outlined),
-                  onPressed: () {},
-                  style: ButtonStyle(
-                    backgroundColor: WidgetStateProperty.all<Color>(
-                      Colors.transparent,
+                        foregroundColor: WidgetStateProperty.all<Color>(
+                          Theme.of(context).colorScheme.onSurface,
+                        ),
+                        iconSize: WidgetStateProperty.all<double>(24.0),
+                      ),
                     ),
-                    foregroundColor: WidgetStateProperty.all<Color>(
-                      Theme.of(context).colorScheme.onSurface,
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(right: AppTheme.spacingM),
+                    child: CircleAvatar(
+                      radius: AppTheme.avatarSizeSmall,
+                      backgroundColor: Theme.of(context).colorScheme.primary,
+                      child: const Icon(
+                        Icons.person_outline,
+                        size: 26,
+                        color: Colors
+                            .white, // Explicitly white for better contrast on new primary
+                      ),
                     ),
-                    iconSize: WidgetStateProperty.all<double>(24.0),
                   ),
-                ),
+                ],
               ),
-              Container(
-                margin: EdgeInsets.only(right: AppTheme.spacingM),
-                child: CircleAvatar(
-                  radius: AppTheme.avatarSizeSmall,
-                  backgroundColor: Theme.of(context).colorScheme.primary,
-                  child: const Icon(
-                    Icons.person_outline,
-                    size: 26,
-                    color: Colors
-                        .white, // Explicitly white for better contrast on new primary
-                  ),
-                ),
-              ),
-            ],
+            ),
           ),
         ),
       ),

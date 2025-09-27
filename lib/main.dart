@@ -77,7 +77,7 @@ class MainApp extends StatelessWidget {
         useMaterial3: true,
         colorScheme: ColorScheme.fromSeed(
           seedColor: AppTheme.primary, // Your primary color from theme file
-          brightness: Brightness.dark, // Material 3 dark theme
+          brightness: Brightness.light, // Changed to light theme for better contrast
         ),
         // Additional Material 3 styling
         navigationRailTheme: NavigationRailThemeData(
@@ -86,6 +86,10 @@ class MainApp extends StatelessWidget {
         ),
         drawerTheme: DrawerThemeData(
           backgroundColor: Theme.of(context).colorScheme.surface,
+        ),
+        appBarTheme: AppBarTheme(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
         ),
       ),
       home: const LayoutWidget(

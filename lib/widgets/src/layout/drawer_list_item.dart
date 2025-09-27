@@ -24,7 +24,10 @@ class DrawerListItem extends StatelessWidget {
         color: Colors.transparent,
         child: InkWell(
           onTap: onTap,
-          hoverColor: AppTheme.primary.withValues(alpha: 0.08),
+          hoverColor: Theme.of(context).colorScheme.primary.withValues(alpha: 0.08),
+          focusColor: Theme.of(context).colorScheme.primary.withValues(alpha: 0.12),
+          highlightColor: Theme.of(context).colorScheme.primary.withValues(alpha: 0.16),
+          splashColor: Theme.of(context).colorScheme.primary.withValues(alpha: 0.1),
           borderRadius: BorderRadius.circular(AppTheme.borderRadiusM),
           child: Container(
             margin: const EdgeInsets.symmetric(
@@ -36,9 +39,15 @@ class DrawerListItem extends StatelessWidget {
             ),
             decoration: BoxDecoration(
               color: isSelected
-                  ? AppTheme.primary.withValues(alpha: 0.15)
+                  ? Theme.of(context).colorScheme.primaryContainer.withValues(alpha: 0.3)
                   : Colors.transparent,
               borderRadius: BorderRadius.circular(AppTheme.borderRadiusM),
+              border: Border.all(
+                color: isSelected
+                    ? Theme.of(context).colorScheme.primary.withValues(alpha: 0.5)
+                    : Colors.transparent,
+                width: 1,
+              ),
             ),
             child: Row(
               children: [
@@ -52,7 +61,9 @@ class DrawerListItem extends StatelessWidget {
                         width: 24,
                         height: 24,
                         decoration: BoxDecoration(
-                          color: Colors.transparent,
+                          color: isSelected
+                              ? Theme.of(context).colorScheme.primaryContainer
+                              : Colors.transparent,
                           borderRadius: BorderRadius.circular(
                             AppTheme.borderRadiusS / 2,
                           ),
@@ -61,10 +72,10 @@ class DrawerListItem extends StatelessWidget {
                           item.icon,
                           size: 18,
                           color: isSelected
-                              ? AppTheme.primary
+                              ? Theme.of(context).colorScheme.primary
                               : Theme.of(
                                   context,
-                                ).colorScheme.onSurface.withValues(alpha: 0.8),
+                                ).colorScheme.onSurface,
                         ),
                       ),
                       const SizedBox(width: AppTheme.spacingM),
@@ -80,7 +91,7 @@ class DrawerListItem extends StatelessWidget {
                                     ? FontWeight.bold
                                     : FontWeight.normal,
                                 color: isSelected
-                                    ? AppTheme.primary
+                                    ? Theme.of(context).colorScheme.primary
                                     : Theme.of(context).colorScheme.onSurface,
                               ),
                         ),

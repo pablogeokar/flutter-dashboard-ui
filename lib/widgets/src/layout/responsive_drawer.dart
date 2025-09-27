@@ -52,7 +52,14 @@ class _ResponsiveDrawerState extends State<ResponsiveDrawer> {
       duration: const Duration(milliseconds: 300),
       width: AppTheme.drawerWidth,
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surfaceContainerLow,
+        gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [
+            Theme.of(context).colorScheme.surfaceContainerLowest,
+            Theme.of(context).colorScheme.surfaceContainerLow,
+          ],
+        ),
         borderRadius: const BorderRadius.only(
           topRight: Radius.circular(AppTheme.borderRadiusXL),
           bottomRight: Radius.circular(AppTheme.borderRadiusXL),
