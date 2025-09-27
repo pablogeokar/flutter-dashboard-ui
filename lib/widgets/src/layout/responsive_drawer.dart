@@ -52,7 +52,7 @@ class _ResponsiveDrawerState extends State<ResponsiveDrawer> {
       duration: const Duration(milliseconds: 300),
       width: AppTheme.drawerWidth,
       decoration: BoxDecoration(
-        color: AppTheme.surfaceDark, // Cor mais escura para o sidebar
+        color: Theme.of(context).colorScheme.surface, // Cor mais escura para o sidebar
         borderRadius: const BorderRadius.only(
           topRight: Radius.circular(AppTheme.borderRadiusXL),
           bottomRight: Radius.circular(AppTheme.borderRadiusXL),
@@ -95,7 +95,7 @@ class _ResponsiveDrawerState extends State<ResponsiveDrawer> {
             ),
             Container(
               decoration: BoxDecoration(
-                color: AppTheme.surfaceFooter,
+                color: Theme.of(context).colorScheme.surface,
                 borderRadius: const BorderRadius.only(
                   bottomRight: Radius.circular(AppTheme.borderRadiusXL),
                 ),
