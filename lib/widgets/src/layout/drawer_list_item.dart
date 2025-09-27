@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../theme.dart';
+import '../../../theme/theme.dart';
 import 'drawer_item.dart';
 
 class DrawerListItem extends StatelessWidget {
@@ -26,10 +26,18 @@ class DrawerListItem extends StatelessWidget {
         color: Colors.transparent,
         child: InkWell(
           onTap: onTap,
-          hoverColor: Theme.of(context).colorScheme.primary.withValues(alpha: isFooterItem ? 0.05 : 0.08),
-          focusColor: Theme.of(context).colorScheme.primary.withValues(alpha: isFooterItem ? 0.08 : 0.12),
-          highlightColor: Theme.of(context).colorScheme.primary.withValues(alpha: isFooterItem ? 0.1 : 0.16),
-          splashColor: Theme.of(context).colorScheme.primary.withValues(alpha: isFooterItem ? 0.07 : 0.1),
+          hoverColor: Theme.of(
+            context,
+          ).colorScheme.primary.withValues(alpha: isFooterItem ? 0.05 : 0.08),
+          focusColor: Theme.of(
+            context,
+          ).colorScheme.primary.withValues(alpha: isFooterItem ? 0.08 : 0.12),
+          highlightColor: Theme.of(
+            context,
+          ).colorScheme.primary.withValues(alpha: isFooterItem ? 0.1 : 0.16),
+          splashColor: Theme.of(
+            context,
+          ).colorScheme.primary.withValues(alpha: isFooterItem ? 0.07 : 0.1),
           borderRadius: BorderRadius.circular(AppTheme.borderRadiusM),
           child: Container(
             margin: const EdgeInsets.symmetric(
@@ -41,12 +49,16 @@ class DrawerListItem extends StatelessWidget {
             ),
             decoration: BoxDecoration(
               color: isSelected
-                  ? Theme.of(context).colorScheme.primaryContainer.withValues(alpha: isFooterItem ? 0.15 : 0.2)
+                  ? Theme.of(context).colorScheme.primaryContainer.withValues(
+                      alpha: isFooterItem ? 0.15 : 0.2,
+                    )
                   : Colors.transparent,
               borderRadius: BorderRadius.circular(AppTheme.borderRadiusM),
               border: Border.all(
                 color: isSelected
-                    ? Theme.of(context).colorScheme.primary.withValues(alpha: isFooterItem ? 0.5 : 0.7)
+                    ? Theme.of(context).colorScheme.primary.withValues(
+                        alpha: isFooterItem ? 0.5 : 0.7,
+                      )
                     : Colors.transparent,
                 width: 1,
               ),
@@ -96,7 +108,9 @@ class DrawerListItem extends StatelessWidget {
                                     : FontWeight.normal,
                                 color: isSelected
                                     ? Theme.of(context).colorScheme.primary
-                                    : Theme.of(context).colorScheme.onSurface.withValues(
+                                    : Theme.of(
+                                        context,
+                                      ).colorScheme.onSurface.withValues(
                                         alpha: isFooterItem ? 0.8 : 1.0,
                                       ),
                               ),

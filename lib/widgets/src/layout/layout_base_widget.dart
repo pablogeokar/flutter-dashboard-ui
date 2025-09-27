@@ -1,9 +1,10 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'dart:ui';
+import '/theme/theme_manager.dart';
 import 'drawer_item.dart';
 import 'responsive_drawer.dart';
-import '../../../theme.dart';
+import '../../../theme/theme.dart';
 
 class LayoutBaseWidget extends StatefulWidget {
   final Widget Function(int) screenBuilder;
@@ -93,8 +94,12 @@ class _LayoutBaseWidgetState extends State<LayoutBaseWidget> {
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             colors: [
-              Theme.of(context).colorScheme.surfaceContainerLow.withValues(alpha: AppTheme.appBarOpacity),
-              Theme.of(context).colorScheme.surfaceContainer.withValues(alpha: AppTheme.appBarOpacity - 0.1),
+              Theme.of(context).colorScheme.surfaceContainerLow.withValues(
+                alpha: AppTheme.appBarOpacity,
+              ),
+              Theme.of(context).colorScheme.surfaceContainer.withValues(
+                alpha: AppTheme.appBarOpacity - 0.1,
+              ),
             ],
           ),
           borderRadius: BorderRadius.circular(AppTheme.borderRadiusM),
@@ -150,16 +155,16 @@ class _LayoutBaseWidgetState extends State<LayoutBaseWidget> {
                         },
                       ),
                 // The title is now the logo
-            title: Container(
-              padding: const EdgeInsets.all(AppTheme.spacingS),
-              child: ColorFiltered(
-                colorFilter: ColorFilter.mode(
-                  Theme.of(context).colorScheme.primary,
-                  BlendMode.srcIn,
+                title: Container(
+                  padding: const EdgeInsets.all(AppTheme.spacingS),
+                  child: ColorFiltered(
+                    colorFilter: ColorFilter.mode(
+                      Theme.of(context).colorScheme.primary,
+                      BlendMode.srcIn,
+                    ),
+                    child: Image.asset('assets/eikos.png', height: 55),
+                  ),
                 ),
-                child: Image.asset('assets/eikos.png', height: 55),
-              ),
-            ),
                 actions: [
                   // Search bar and spacer are removed
                   Container(
@@ -177,6 +182,39 @@ class _LayoutBaseWidgetState extends State<LayoutBaseWidget> {
                     child: IconButton(
                       icon: const Icon(Icons.notifications_outlined),
                       onPressed: () {},
+                      style: ButtonStyle(
+                        backgroundColor: WidgetStateProperty.all<Color>(
+                          Colors.transparent,
+                        ),
+                        foregroundColor: WidgetStateProperty.all<Color>(
+                          Theme.of(context).colorScheme.onSurface,
+                        ),
+                        iconSize: WidgetStateProperty.all<double>(24.0),
+                      ),
+                    ),
+                  ),
+                  Container(
+                    margin: const EdgeInsets.symmetric(
+                      horizontal: AppTheme.spacingS,
+                    ),
+                    decoration: BoxDecoration(
+                      color: Theme.of(
+                        context,
+                      ).colorScheme.surfaceContainerHighest,
+                      borderRadius: BorderRadius.circular(
+                        99, // Valor especial para formato circular, não substituído por constante
+                      ), // Valor especial para formato circular, não substituído por constante
+                    ),
+                    child: IconButton(
+                      icon: Icon(
+                        Provider.of<ThemeManager>(context).currentTheme ==
+                                ThemeModeType.dark
+                            ? Icons.light_mode
+                            : Icons.dark_mode,
+                      ),
+                      onPressed: () {
+                        Provider.of<ThemeManager>(context).toggleTheme();
+                      },
                       style: ButtonStyle(
                         backgroundColor: WidgetStateProperty.all<Color>(
                           Colors.transparent,

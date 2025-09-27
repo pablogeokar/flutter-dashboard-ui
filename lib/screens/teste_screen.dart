@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../theme.dart';
+import '../theme/theme.dart';
 
 class TesteScreen extends StatelessWidget {
   const TesteScreen({super.key});

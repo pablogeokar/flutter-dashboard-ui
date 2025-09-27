@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'drawer_item.dart';
 import 'drawer_list_item.dart';
-import '../../../theme.dart';
+import '../../../theme/theme.dart';
 
 class ResponsiveDrawer extends StatefulWidget {
   final int currentIndex;
@@ -66,7 +66,9 @@ class _ResponsiveDrawerState extends State<ResponsiveDrawer> {
         ],
         border: Border(
           right: BorderSide(
-            color: Theme.of(context).colorScheme.outlineVariant.withValues(alpha: 0.2),
+            color: Theme.of(
+              context,
+            ).colorScheme.outlineVariant.withValues(alpha: 0.2),
             width: 1,
           ),
         ),
@@ -111,7 +113,10 @@ class _ResponsiveDrawerState extends State<ResponsiveDrawer> {
     );
   }
 
-  List<Widget> _buildItemList(List<DrawerItem> items, {bool isFooterList = false}) {
+  List<Widget> _buildItemList(
+    List<DrawerItem> items, {
+    bool isFooterList = false,
+  }) {
     return items.map((item) {
       // Group item
       if (item.subItems?.isNotEmpty ?? false) {
@@ -124,7 +129,11 @@ class _ResponsiveDrawerState extends State<ResponsiveDrawer> {
     }).toList();
   }
 
-  Widget _buildSingleItem(DrawerItem item, {bool isSubItem = false, bool isFooterItem = false}) {
+  Widget _buildSingleItem(
+    DrawerItem item, {
+    bool isSubItem = false,
+    bool isFooterItem = false,
+  }) {
     final flatIndex = _flatNavigableItems.indexWhere(
       (e) => e.title == item.title,
     );
@@ -165,7 +174,13 @@ class _ResponsiveDrawerState extends State<ResponsiveDrawer> {
           ),
         ),
         children: item.subItems!
-            .map((subItem) => _buildSingleItem(subItem, isSubItem: true, isFooterItem: isFooterList))
+            .map(
+              (subItem) => _buildSingleItem(
+                subItem,
+                isSubItem: true,
+                isFooterItem: isFooterList,
+              ),
+            )
             .toList(),
       ),
     );
@@ -177,7 +192,9 @@ class _ResponsiveDrawerState extends State<ResponsiveDrawer> {
       decoration: BoxDecoration(
         border: Border(
           top: BorderSide(
-            color: Theme.of(context).colorScheme.outlineVariant.withValues(alpha: 0.3),
+            color: Theme.of(
+              context,
+            ).colorScheme.outlineVariant.withValues(alpha: 0.3),
           ),
         ),
       ),

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../theme.dart';
+import '../theme/theme.dart';
 
 class EmConstrucaoPlaceholder extends StatelessWidget {
   const EmConstrucaoPlaceholder({super.key});
@@ -22,9 +22,9 @@ class EmConstrucaoPlaceholder extends StatelessWidget {
             SizedBox(height: AppTheme.spacingL), // 24 é 1.5 vezes spacingM (16)
             Text(
               'Em Construção',
-              style: Theme.of(
-                context,
-              ).textTheme.headlineLarge?.copyWith(fontWeight: FontWeight.bold), // Aumentando o tamanho da fonte
+              style: Theme.of(context).textTheme.headlineLarge?.copyWith(
+                fontWeight: FontWeight.bold,
+              ), // Aumentando o tamanho da fonte
               textAlign: TextAlign.center,
             ),
             SizedBox(height: AppTheme.spacingM),
