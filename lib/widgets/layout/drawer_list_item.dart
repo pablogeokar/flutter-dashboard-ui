@@ -24,7 +24,7 @@ class DrawerListItem extends StatelessWidget {
         color: Colors.transparent,
         child: InkWell(
           onTap: onTap,
-          hoverColor: AppTheme.primary.withOpacity(0.08),
+          hoverColor: AppTheme.primary.withValues(alpha: 0.08),
           borderRadius: BorderRadius.circular(AppTheme.borderRadiusM),
           child: Container(
             margin: const EdgeInsets.symmetric(
@@ -35,7 +35,9 @@ class DrawerListItem extends StatelessWidget {
               vertical: AppTheme.spacingS,
             ),
             decoration: BoxDecoration(
-              color: isSelected ? AppTheme.primary.withOpacity(0.15) : Colors.transparent,
+              color: isSelected
+                  ? AppTheme.primary.withValues(alpha: 0.15)
+                  : Colors.transparent,
               borderRadius: BorderRadius.circular(AppTheme.borderRadiusM),
             ),
             child: Row(
@@ -60,7 +62,9 @@ class DrawerListItem extends StatelessWidget {
                           size: 18,
                           color: isSelected
                               ? AppTheme.primary
-                              : Theme.of(context).colorScheme.onSurface.withOpacity(0.8),
+                              : Theme.of(
+                                  context,
+                                ).colorScheme.onSurface.withValues(alpha: 0.8),
                         ),
                       ),
                       const SizedBox(width: AppTheme.spacingM),
@@ -70,7 +74,8 @@ class DrawerListItem extends StatelessWidget {
                           item.title,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
-                          style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                          style: Theme.of(context).textTheme.bodyLarge
+                              ?.copyWith(
                                 fontWeight: isSelected
                                     ? FontWeight.bold
                                     : FontWeight.normal,

@@ -24,11 +24,6 @@ class LayoutBaseWidget extends StatefulWidget {
 }
 
 class _LayoutBaseWidgetState extends State<LayoutBaseWidget> {
-  List<String> get _titles => [
-    ...widget.itensPrincipais.map((item) => item.title),
-    ...widget.itensInferiores.map((item) => item.title),
-  ];
-
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
@@ -53,9 +48,7 @@ class _LayoutBaseWidgetState extends State<LayoutBaseWidget> {
             itensPrincipais: widget.itensPrincipais,
             itensInferiores: widget.itensInferiores,
           ),
-          Expanded(
-            child: _buildMainContent(isLargeScreen: true),
-          ),
+          Expanded(child: _buildMainContent(isLargeScreen: true)),
         ],
       ),
     );
@@ -94,85 +87,83 @@ class _LayoutBaseWidgetState extends State<LayoutBaseWidget> {
           0,
         ),
         // Decoration is removed to make it transparent
-        child: Container(
-          // Color is removed to make it transparent
-          child: SafeArea(
-            child: AppBar(
-              backgroundColor: Colors.transparent,
-              elevation: 0, // Ensure no default shadow
-              automaticallyImplyLeading: !isLargeScreen,
-              leading: isLargeScreen
-                  ? null
-                  : Builder(
-                      builder: (context) {
-                        return Container(
-                          margin: const EdgeInsets.all(AppTheme.spacingS),
-                          decoration: BoxDecoration(
-                            color: Theme.of(
-                              context,
-                            ).colorScheme.surfaceContainerHighest,
-                            borderRadius: BorderRadius.circular(
-                              AppTheme.borderRadiusM,
-                            ),
+        child: SafeArea(
+          child: AppBar(
+            backgroundColor: Colors.transparent,
+            elevation: 0, // Ensure no default shadow
+            automaticallyImplyLeading: !isLargeScreen,
+            leading: isLargeScreen
+                ? null
+                : Builder(
+                    builder: (context) {
+                      return Container(
+                        margin: const EdgeInsets.all(AppTheme.spacingS),
+                        decoration: BoxDecoration(
+                          color: Theme.of(
+                            context,
+                          ).colorScheme.surfaceContainerHighest,
+                          borderRadius: BorderRadius.circular(
+                            AppTheme.borderRadiusM,
                           ),
-                          child: IconButton(
-                            icon: const Icon(Icons.menu),
-                            onPressed: () => Scaffold.of(context).openDrawer(),
-                            style: ButtonStyle(
-                              backgroundColor: WidgetStateProperty.all<Color>(
-                                Colors.transparent,
-                              ),
-                              foregroundColor: WidgetStateProperty.all<Color>(
-                                Theme.of(context).colorScheme.onSurface,
-                              ),
-                              iconSize: WidgetStateProperty.all<double>(24.0),
+                        ),
+                        child: IconButton(
+                          icon: const Icon(Icons.menu),
+                          onPressed: () => Scaffold.of(context).openDrawer(),
+                          style: ButtonStyle(
+                            backgroundColor: WidgetStateProperty.all<Color>(
+                              Colors.transparent,
                             ),
+                            foregroundColor: WidgetStateProperty.all<Color>(
+                              Theme.of(context).colorScheme.onSurface,
+                            ),
+                            iconSize: WidgetStateProperty.all<double>(24.0),
                           ),
-                        );
-                      },
-                    ),
-              // The title is now the logo
-              title: Image.asset('assets/eikos.png', height: 55),
-              actions: [
-                // Search bar and spacer are removed
-                Container(
-                  margin: const EdgeInsets.symmetric(horizontal: AppTheme.spacingS),
-                  decoration: BoxDecoration(
-                    color: Theme.of(
-                      context,
-                    ).colorScheme.surfaceContainerHighest,
-                    borderRadius: BorderRadius.circular(
-                      99,
-                    ), // Valor especial para formato circular, não substituído por constante
+                        ),
+                      );
+                    },
                   ),
-                  child: IconButton(
-                    icon: const Icon(Icons.notifications_outlined),
-                    onPressed: () {},
-                    style: ButtonStyle(
-                      backgroundColor: WidgetStateProperty.all<Color>(
-                        Colors.transparent,
-                      ),
-                      foregroundColor: WidgetStateProperty.all<Color>(
-                        Theme.of(context).colorScheme.onSurface,
-                      ),
-                      iconSize: WidgetStateProperty.all<double>(24.0),
+            // The title is now the logo
+            title: Image.asset('assets/eikos.png', height: 55),
+            actions: [
+              // Search bar and spacer are removed
+              Container(
+                margin: const EdgeInsets.symmetric(
+                  horizontal: AppTheme.spacingS,
+                ),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.surfaceContainerHighest,
+                  borderRadius: BorderRadius.circular(
+                    99,
+                  ), // Valor especial para formato circular, não substituído por constante
+                ),
+                child: IconButton(
+                  icon: const Icon(Icons.notifications_outlined),
+                  onPressed: () {},
+                  style: ButtonStyle(
+                    backgroundColor: WidgetStateProperty.all<Color>(
+                      Colors.transparent,
                     ),
+                    foregroundColor: WidgetStateProperty.all<Color>(
+                      Theme.of(context).colorScheme.onSurface,
+                    ),
+                    iconSize: WidgetStateProperty.all<double>(24.0),
                   ),
                 ),
-                Container(
-                  margin: EdgeInsets.only(right: AppTheme.spacingM),
-                  child: CircleAvatar(
-                    radius: AppTheme.avatarSizeSmall,
-                    backgroundColor: Theme.of(context).colorScheme.primary,
-                    child: const Icon(
-                      Icons.person_outline,
-                      size: 26,
-                      color: Colors.white, // Explicitly white for better contrast on new primary
-                    ),
+              ),
+              Container(
+                margin: EdgeInsets.only(right: AppTheme.spacingM),
+                child: CircleAvatar(
+                  radius: AppTheme.avatarSizeSmall,
+                  backgroundColor: Theme.of(context).colorScheme.primary,
+                  child: const Icon(
+                    Icons.person_outline,
+                    size: 26,
+                    color: Colors
+                        .white, // Explicitly white for better contrast on new primary
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),
@@ -193,7 +184,7 @@ class _LayoutBaseWidgetState extends State<LayoutBaseWidget> {
         borderRadius: BorderRadius.circular(AppTheme.borderRadiusXL),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.08),
+            color: Colors.black.withValues(alpha: 0.08),
             blurRadius: 16,
             offset: const Offset(0, 8),
           ),

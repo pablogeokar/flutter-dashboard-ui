@@ -28,7 +28,7 @@ Garantir consistência linguística em todo o projeto, proporcionando uma experi
 
 ## Diretrizes de Codificação
 
-- **Método de opacidade:** O método `.withOpacity()` está depreciado e deve ser substituído por `.withValues()` para evitar perda de precisão
+- **Método de opacidade:** O método `.withOpacity()` está depreciado e deve ser substituído por `.withValues(alpha)` para evitar perda de precisão
 - **Cores do tema:** O atributo `surfaceVariant` está depreciado e deve ser substituído por `surfaceContainerLowest`, `surfaceContainerLow`, `surfaceContainer`, `surfaceContainerHigh` ou `surfaceContainerHighest` dependendo do contexto
 - **Nomenclatura de variáveis:** Sempre usar nomes descritivos em português do Brasil
 - **Boas práticas:** Seguir as melhores práticas de desenvolvimento Flutter

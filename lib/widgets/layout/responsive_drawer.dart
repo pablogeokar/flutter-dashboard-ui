@@ -41,6 +41,7 @@ class _ResponsiveDrawerState extends State<ResponsiveDrawer> {
         }
       }
     }
+
     processItems([...widget.itensPrincipais, ...widget.itensInferiores]);
     return flatList;
   }
@@ -58,7 +59,7 @@ class _ResponsiveDrawerState extends State<ResponsiveDrawer> {
         ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.1),
+            color: Colors.black.withValues(alpha: 0.1),
             blurRadius: 10,
             offset: const Offset(5, 0),
           ),
@@ -74,7 +75,9 @@ class _ResponsiveDrawerState extends State<ResponsiveDrawer> {
             const SizedBox(height: AppTheme.spacingL),
             Expanded(
               child: ListView(
-                padding: const EdgeInsets.symmetric(horizontal: AppTheme.spacingM),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: AppTheme.spacingM,
+                ),
                 children: _buildItemList(widget.itensPrincipais),
               ),
             ),
@@ -83,7 +86,6 @@ class _ResponsiveDrawerState extends State<ResponsiveDrawer> {
               child: Divider(height: 1),
             ),
             ..._buildItemList(widget.itensInferiores),
-            const SizedBox(height: AppTheme.spacingL),
             _buildFooter(context),
           ],
         ),
@@ -105,7 +107,9 @@ class _ResponsiveDrawerState extends State<ResponsiveDrawer> {
   }
 
   Widget _buildSingleItem(DrawerItem item, {bool isSubItem = false}) {
-    final flatIndex = _flatNavigableItems.indexWhere((e) => e.title == item.title);
+    final flatIndex = _flatNavigableItems.indexWhere(
+      (e) => e.title == item.title,
+    );
     return DrawerListItem(
       item: item,
       isSubItem: isSubItem,
@@ -121,7 +125,9 @@ class _ResponsiveDrawerState extends State<ResponsiveDrawer> {
   Widget _buildExpansionItem(DrawerItem item) {
     // Check if any sub-item is currently selected
     final bool isGroupSelected = item.subItems!.any((subItem) {
-      final flatIndex = _flatNavigableItems.indexWhere((e) => e.title == subItem.title);
+      final flatIndex = _flatNavigableItems.indexWhere(
+        (e) => e.title == subItem.title,
+      );
       return widget.currentIndex == flatIndex;
     });
 
@@ -158,14 +164,18 @@ class _ResponsiveDrawerState extends State<ResponsiveDrawer> {
             child: Icon(
               Icons.info_outline,
               size: 14,
-              color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+              color: Theme.of(
+                context,
+              ).colorScheme.onSurface.withValues(alpha: 0.6),
             ),
           ),
           const SizedBox(width: AppTheme.spacingS),
           Text(
             'v1.0.0',
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
-              color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+              color: Theme.of(
+                context,
+              ).colorScheme.onSurface.withValues(alpha: 0.6),
             ),
           ),
         ],

@@ -17,15 +17,12 @@ class TesteScreen extends StatelessWidget {
             color: theme.colorScheme.primary,
           ),
           const SizedBox(height: AppTheme.spacingL),
-          Text(
-            'Tela de Teste',
-            style: theme.textTheme.headlineSmall,
-          ),
+          Text('Tela de Teste', style: theme.textTheme.headlineSmall),
           const SizedBox(height: AppTheme.spacingM),
           Text(
             'Esta é uma tela de exemplo para testes',
             style: theme.textTheme.bodyLarge?.copyWith(
-              color: theme.colorScheme.onSurface.withOpacity(0.6),
+              color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
             ),
             textAlign: TextAlign.center,
           ),
