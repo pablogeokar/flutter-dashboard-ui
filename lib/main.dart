@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'theme.dart';
 import 'screens/em_construcao_screen.dart';
 import 'screens/teste_screen.dart';
-import 'widgets/layout/drawer_item.dart';
-import 'widgets/layout/layout_widget.dart';
+import 'widgets/app_layout.dart';
 
 void main() {
   runApp(const MainApp());
