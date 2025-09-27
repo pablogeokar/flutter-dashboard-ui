@@ -47,7 +47,7 @@ class ResponsiveDrawer extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              _buildHeader(context),
+              const SizedBox(height: AppTheme.appBarHeight), // Add space to align with AppBar
               const SizedBox(height: AppTheme.spacingL),
               Expanded(
                 child: ListView.separated(
@@ -86,21 +86,6 @@ class ResponsiveDrawer extends StatelessWidget {
             ],
           ),
         ),
-      ),
-    );
-  }
-
-  Widget _buildHeader(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.fromLTRB(
-        AppTheme.spacingM,
-        AppTheme.spacingL * 2.5,
-        AppTheme.spacingM,
-        AppTheme.spacingM,
-      ),
-      child: Align(
-        alignment: Alignment.centerLeft,
-        child: Image.asset('assets/eikos.png', height: 60, fit: BoxFit.contain),
       ),
     );
   }

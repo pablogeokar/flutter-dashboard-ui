@@ -43,48 +43,21 @@ class _LayoutBaseWidgetState extends State<LayoutBaseWidget> {
   }
 
   Widget _buildLargeScreenLayout() {
-    return Row(
-      children: [
-        AnimatedContainer(
-          duration: const Duration(milliseconds: 300),
-          width: AppTheme.drawerWidth,
-          margin: const EdgeInsets.only(
-            left: AppTheme.spacingS,
-            top: AppTheme.spacingS,
-            bottom: AppTheme.spacingS,
+    return Scaffold(
+      appBar: _buildModernAppBar(isLargeScreen: true),
+      body: Row(
+        children: [
+          ResponsiveDrawer(
+            currentIndex: widget.currentIndex,
+            onTap: widget.onNavigation,
+            itensPrincipais: widget.itensPrincipais,
+            itensInferiores: widget.itensInferiores,
           ),
-          decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.surfaceContainerLow,
-            borderRadius: BorderRadius.circular(AppTheme.borderRadiusXL),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withValues(alpha: 0.1),
-                blurRadius: 16,
-                offset: const Offset(4, 0),
-              ),
-            ],
-          ),
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(AppTheme.borderRadiusXL),
-            child: ResponsiveDrawer(
-              currentIndex: widget.currentIndex,
-              onTap: widget.onNavigation,
-              itensPrincipais: widget.itensPrincipais,
-              itensInferiores: widget.itensInferiores,
-            ),
-          ),
-        ),
-        Expanded(
-          child: Padding(
-            padding: const EdgeInsets.only(
-              right: AppTheme.spacingS,
-              top: AppTheme.spacingS,
-              bottom: AppTheme.spacingS,
-            ),
+          Expanded(
             child: _buildMainContent(isLargeScreen: true),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
@@ -120,31 +93,20 @@ class _LayoutBaseWidgetState extends State<LayoutBaseWidget> {
           AppTheme.spacingM,
           0,
         ),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20.0),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withValues(alpha: 0.1),
-              blurRadius: 16,
-              offset: const Offset(0, 6),
-            ),
-          ],
-        ),
+        // Decoration is removed to make it transparent
         child: Container(
-          decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.surfaceContainerLow,
-            borderRadius: BorderRadius.circular(20.0),
-          ),
+          // Color is removed to make it transparent
           child: SafeArea(
             child: AppBar(
               backgroundColor: Colors.transparent,
+              elevation: 0, // Ensure no default shadow
               automaticallyImplyLeading: !isLargeScreen,
               leading: isLargeScreen
                   ? null
                   : Builder(
                       builder: (context) {
                         return Container(
-                          margin: EdgeInsets.all(AppTheme.spacingS),
+                          margin: const EdgeInsets.all(AppTheme.spacingS),
                           decoration: BoxDecoration(
                             color: Theme.of(
                               context,
@@ -169,15 +131,12 @@ class _LayoutBaseWidgetState extends State<LayoutBaseWidget> {
                         );
                       },
                     ),
-              title: Text(
-                _titles[widget.currentIndex],
-                style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
+              // The title is now the logo
+              title: Image.asset('assets/eikos.png', height: 40),
               actions: [
+                // Search bar and spacer are removed
                 Container(
-                  margin: EdgeInsets.symmetric(horizontal: AppTheme.spacingS),
+                  margin: const EdgeInsets.symmetric(horizontal: AppTheme.spacingS),
                   decoration: BoxDecoration(
                     color: Theme.of(
                       context,
@@ -205,10 +164,10 @@ class _LayoutBaseWidgetState extends State<LayoutBaseWidget> {
                   child: CircleAvatar(
                     radius: AppTheme.avatarSizeSmall,
                     backgroundColor: Theme.of(context).colorScheme.primary,
-                    child: Icon(
+                    child: const Icon(
                       Icons.person_outline,
                       size: 26,
-                      color: Theme.of(context).colorScheme.onPrimary,
+                      color: Colors.white, // Explicitly white for better contrast on new primary
                     ),
                   ),
                 ),
@@ -221,50 +180,44 @@ class _LayoutBaseWidgetState extends State<LayoutBaseWidget> {
   }
 
   Widget _buildMainContent({required bool isLargeScreen}) {
-    return Scaffold(
-      appBar: isLargeScreen ? _buildModernAppBar(isLargeScreen: true) : null,
-      backgroundColor: Theme.of(context)
-          .colorScheme
-          .surface, // Garantindo a cor de fundo consistente com o tema dark
-      body: AnimatedContainer(
-        duration: const Duration(milliseconds: 300),
-        margin: EdgeInsets.all(
-          isLargeScreen ? AppTheme.spacingM : AppTheme.spacingS,
-        ),
-        padding: EdgeInsets.all(
-          isLargeScreen ? AppTheme.spacingM : AppTheme.spacingS,
-        ),
-        decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.surfaceContainerLow,
-          borderRadius: BorderRadius.circular(AppTheme.borderRadiusXL),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withValues(alpha: 0.08),
-              blurRadius: 16,
-              offset: const Offset(0, 8),
-            ),
-          ],
-        ),
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(AppTheme.borderRadiusXL),
-          child: AnimatedSwitcher(
-            duration: const Duration(milliseconds: 300),
-            transitionBuilder: (child, animation) {
-              return FadeTransition(
-                opacity: animation,
-                child: SlideTransition(
-                  position: Tween<Offset>(
-                    begin: const Offset(0.05, 0),
-                    end: Offset.zero,
-                  ).animate(animation),
-                  child: child,
-                ),
-              );
-            },
-            child: KeyedSubtree(
-              key: ValueKey<int>(widget.currentIndex),
-              child: widget.screenBuilder(widget.currentIndex),
-            ),
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 300),
+      margin: EdgeInsets.all(
+        isLargeScreen ? AppTheme.spacingM : AppTheme.spacingS,
+      ),
+      padding: EdgeInsets.all(
+        isLargeScreen ? AppTheme.spacingM : AppTheme.spacingS,
+      ),
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.surfaceContainerLow,
+        borderRadius: BorderRadius.circular(AppTheme.borderRadiusXL),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.08),
+            blurRadius: 16,
+            offset: const Offset(0, 8),
+          ),
+        ],
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(AppTheme.borderRadiusXL),
+        child: AnimatedSwitcher(
+          duration: const Duration(milliseconds: 300),
+          transitionBuilder: (child, animation) {
+            return FadeTransition(
+              opacity: animation,
+              child: SlideTransition(
+                position: Tween<Offset>(
+                  begin: const Offset(0.05, 0),
+                  end: Offset.zero,
+                ).animate(animation),
+                child: child,
+              ),
+            );
+          },
+          child: KeyedSubtree(
+            key: ValueKey<int>(widget.currentIndex),
+            child: widget.screenBuilder(widget.currentIndex),
           ),
         ),
       ),
