@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'dart:ui';
-import '/theme/theme_manager.dart';
 import 'drawer_item.dart';
 import 'responsive_drawer.dart';
-import '../../../theme/theme.dart';
+import '/theme/theme.dart';
+import '/theme/theme_manager.dart';
 
 class LayoutBaseWidget extends StatefulWidget {
   final Widget Function(int) screenBuilder;
@@ -207,13 +207,19 @@ class _LayoutBaseWidgetState extends State<LayoutBaseWidget> {
                     ),
                     child: IconButton(
                       icon: Icon(
-                        Provider.of<ThemeManager>(context, listen: false).currentTheme ==
+                        Provider.of<ThemeManager>(
+                                  context,
+                                  listen: false,
+                                ).currentTheme ==
                                 ThemeModeType.dark
                             ? Icons.light_mode
                             : Icons.dark_mode,
                       ),
                       onPressed: () {
-                        Provider.of<ThemeManager>(context, listen: false).toggleTheme();
+                        Provider.of<ThemeManager>(
+                          context,
+                          listen: false,
+                        ).toggleTheme();
                       },
                       style: ButtonStyle(
                         backgroundColor: WidgetStateProperty.all<Color>(

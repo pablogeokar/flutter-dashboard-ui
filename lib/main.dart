@@ -75,53 +75,53 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<ThemeManager>(
       create: (context) => ThemeManager(),
-      child: MaterialApp(
-        title: 'Dashboard UI',
-        theme: ThemeData(
-          useMaterial3: true,
-          colorScheme: ColorScheme.fromSeed(
-            seedColor: AppTheme.primary, // Your primary color from theme file
-            brightness: Brightness.light, // Light theme
-          ),
-          // Additional Material 3 styling
-          navigationRailTheme: NavigationRailThemeData(
-            backgroundColor: Theme.of(context).colorScheme.surface,
-            indicatorColor: Theme.of(context).colorScheme.primaryContainer,
-          ),
-          drawerTheme: DrawerThemeData(
-            backgroundColor:
-                AppTheme.surfaceDark, // Força a cor de fundo do drawer
-          ),
-          appBarTheme: AppBarTheme(
-            backgroundColor: Colors.transparent,
-            elevation: 0,
-          ),
-        ),
-        darkTheme: ThemeData(
-          useMaterial3: true,
-          colorScheme: ColorScheme.fromSeed(
-            seedColor: AppTheme.primary, // Your primary color from theme file
-            brightness: Brightness.dark, // Dark theme
-          ),
-          // Additional Material 3 styling for dark theme
-          navigationRailTheme: NavigationRailThemeData(
-            backgroundColor: Theme.of(context).colorScheme.surface,
-            indicatorColor: Theme.of(context).colorScheme.primaryContainer,
-          ),
-          drawerTheme: DrawerThemeData(
-            backgroundColor:
-                AppTheme.surfaceDark, // Força a cor de fundo do drawer
-          ),
-          appBarTheme: AppBarTheme(
-            backgroundColor: Colors.transparent,
-            elevation: 0,
-          ),
-        ),
-        themeMode: ThemeMode.system, // Deixar como sistema por padrão
-        home: const LayoutWidget(
-          itensPrincipais: itensPrincipais,
-          itensInferiores: itensInferiores,
-        ),
+      child: Consumer<ThemeManager>(
+        builder: (context, themeManager, child) {
+          return MaterialApp(
+            title: 'Dashboard UI',
+            theme: ThemeData(
+              useMaterial3: true,
+              colorScheme: ColorScheme.fromSeed(
+                seedColor: AppTheme.primary,
+                brightness: Brightness.light,
+              ),
+              navigationRailTheme: const NavigationRailThemeData(
+                indicatorColor: AppTheme.primary,
+              ),
+              drawerTheme: const DrawerThemeData(
+                backgroundColor: AppTheme.surfaceDark,
+              ),
+              appBarTheme: const AppBarTheme(
+                backgroundColor: Colors.transparent,
+                elevation: 0,
+              ),
+            ),
+            darkTheme: ThemeData(
+              useMaterial3: true,
+              colorScheme: ColorScheme.fromSeed(
+                seedColor: AppTheme.primary,
+                brightness: Brightness.dark,
+              ),
+              navigationRailTheme: const NavigationRailThemeData(
+                indicatorColor: AppTheme.primary,
+              ),
+              drawerTheme: const DrawerThemeData(
+                backgroundColor: AppTheme.surfaceDark,
+              ),
+              appBarTheme: const AppBarTheme(
+                backgroundColor: Colors.transparent,
+                elevation: 0,
+              ),
+            ),
+            themeMode: themeManager.currentTheme == ThemeModeType.dark
+                ? ThemeMode.dark
+                : ThemeMode.light,
+            home: const LayoutWidget(
+              itensPrincipais: itensPrincipais,
+              itensInferiores: itensInferiores,
+            ),
+          );
+        },
       ),
     );
   }

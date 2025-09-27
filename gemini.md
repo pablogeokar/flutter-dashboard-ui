@@ -83,6 +83,25 @@ Para garantir um código modular e de fácil manutenção, os widgets devem ser 
 - Itens podem ter subitens para organizar melhor as opções
 - A classe `DrawerItem` define as propriedades de cada item do menu (título, ícone, tela, subitens)
 
+## Desenvolvimento e Qualidade
+
+### Comandos Úteis
+
+- **Executar a aplicação:** `flutter run`
+- **Executar os testes:** `flutter test`
+- **Analisar o código estaticamente:** `flutter analyze`
+
+### Estratégia de Testes
+
+- Os testes unitários e de widget devem ser criados dentro do diretório `test/` na raiz do projeto.
+- A estrutura de pastas dentro de `test/` deve espelhar a de `lib/` para facilitar a localização dos testes correspondentes a cada componente.
+
+### Gestão de Assets
+
+- Todos os assets (imagens, fontes, etc.) devem ser adicionados ao diretório `assets/`.
+- Para subpastas, utilize nomes que descrevam o conteúdo (ex: `assets/icons`, `assets/images`).
+- Declare todos os assets no arquivo `pubspec.yaml` para que fiquem disponíveis na aplicação.
+
 ## Dependências Importantes
 
 - `flutter`: SDK principal
