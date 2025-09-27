@@ -89,13 +89,20 @@ class _LayoutBaseWidgetState extends State<LayoutBaseWidget> {
           0,
         ),
         decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.surfaceContainerLow.withValues(alpha: AppTheme.appBarOpacity),
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              Theme.of(context).colorScheme.surfaceContainerLow.withValues(alpha: AppTheme.appBarOpacity),
+              Theme.of(context).colorScheme.surfaceContainer.withValues(alpha: AppTheme.appBarOpacity - 0.1),
+            ],
+          ),
           borderRadius: BorderRadius.circular(AppTheme.borderRadiusM),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withValues(alpha: 0.08),
-              blurRadius: 10,
-              offset: const Offset(0, 3),
+              color: Colors.black.withValues(alpha: 0.1),
+              blurRadius: 12,
+              offset: const Offset(0, 4),
             ),
           ],
         ),

@@ -24,7 +24,7 @@ class EmConstrucaoPlaceholder extends StatelessWidget {
               'Em Construção',
               style: Theme.of(
                 context,
-              ).textTheme.headlineMedium?.copyWith(fontWeight: FontWeight.bold),
+              ).textTheme.headlineLarge?.copyWith(fontWeight: FontWeight.bold), // Aumentando o tamanho da fonte
               textAlign: TextAlign.center,
             ),
             SizedBox(height: AppTheme.spacingM),
@@ -43,13 +43,18 @@ class EmConstrucaoPlaceholder extends StatelessWidget {
               decoration: BoxDecoration(
                 color: Theme.of(context).colorScheme.primaryContainer,
                 borderRadius: BorderRadius.circular(AppTheme.borderRadiusM),
+                border: Border.all(
+                  color: Theme.of(context).colorScheme.outlineVariant,
+                  width: 1,
+                ),
               ),
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Icon(
-                    Icons.info_outline,
+                    Icons.help_outline,
                     color: Theme.of(context).colorScheme.primary,
+                    size: 20,
                   ),
                   SizedBox(width: AppTheme.spacingS),
                   Text(
@@ -57,6 +62,7 @@ class EmConstrucaoPlaceholder extends StatelessWidget {
                     style: TextStyle(
                       color: Theme.of(context).colorScheme.primary,
                       fontWeight: FontWeight.w500,
+                      fontSize: 14,
                     ),
                   ),
                 ],

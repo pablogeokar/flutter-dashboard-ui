@@ -59,11 +59,17 @@ class _ResponsiveDrawerState extends State<ResponsiveDrawer> {
         ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.1),
-            blurRadius: 10,
+            color: Colors.black.withValues(alpha: 0.15),
+            blurRadius: 12,
             offset: const Offset(5, 0),
           ),
         ],
+        border: Border(
+          right: BorderSide(
+            color: Theme.of(context).colorScheme.outlineVariant.withValues(alpha: 0.2),
+            width: 1,
+          ),
+        ),
       ),
       child: Drawer(
         elevation: 0,
