@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'config/sidebar_config.dart';
-import 'theme/theme.dart';
+import 'theme/dark.dart';
+import 'theme/light.dart';
 import 'theme/theme_manager.dart';
 import 'widgets/app_layout.dart';
 
@@ -14,30 +15,6 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final lightTheme = ThemeData(
-      useMaterial3: true,
-      colorScheme: ColorScheme.fromSeed(
-        seedColor: AppTheme.primary,
-        brightness: Brightness.light,
-      ),
-      appBarTheme: const AppBarTheme(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-      ),
-    );
-
-    final darkTheme = ThemeData(
-      useMaterial3: true,
-      colorScheme: ColorScheme.fromSeed(
-        seedColor: AppTheme.primary,
-        brightness: Brightness.dark,
-      ),
-      appBarTheme: const AppBarTheme(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-      ),
-    );
-
     return ChangeNotifierProvider<ThemeManager>(
       create: (context) => ThemeManager(),
       child: Consumer<ThemeManager>(

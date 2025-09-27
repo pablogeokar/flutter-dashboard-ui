@@ -32,8 +32,14 @@ Garantir consistência linguística em todo o projeto, proporcionando uma experi
 
 ```
 lib/
+├── config/
+│   └── sidebar_config.dart
 ├── screens/
 ├── theme/
+│   ├── dark.dart
+│   ├── light.dart
+│   ├── theme.dart
+│   └── theme_manager.dart
 ├── widgets/
 │   └── src/
 │       └── layout/
@@ -42,11 +48,14 @@ lib/
 
 ### Componentes Principais
 
-- **main.dart**: Ponto de entrada da aplicação, contém a definição dos itens do menu principal
-- **theme/theme.dart**: Define as constantes de estilo (cores, espaçamentos, dimensões)
-- **theme/theme_manager.dart**: Gerencia o modo claro/escuro e persiste a preferência do usuário
-- **widgets/app_layout.dart**: Arquivo barril que exporta os widgets públicos
-- **widgets/src/layout/**: Contém os componentes de layout internos (estrutura modular)
+- **main.dart**: Ponto de entrada da aplicação, responsável por configurar os temas, o provedor de estado e a navegação principal.
+- **config/sidebar_config.dart**: Define as listas de itens que compõem o menu de navegação lateral (`itensPrincipais` e `itensInferiores`).
+- **theme/light.dart**: Define o `ThemeData` completo para o modo claro da aplicação.
+- **theme/dark.dart**: Define o `ThemeData` completo para o modo escuro da aplicação.
+- **theme/theme.dart**: Define a cor primária (semente) para a geração dos temas e as constantes de layout (espaçamentos, bordas, dimensões).
+- **theme/theme_manager.dart**: Gerencia a lógica de alternância e persistência da preferência de tema do usuário (claro/escuro).
+- **widgets/app_layout.dart**: Arquivo barril que exporta os widgets públicos de layout.
+- **widgets/src/layout/**: Contém os componentes de layout internos (estrutura modular).
 
 ## Diretrizes de Codificação
 
