@@ -137,10 +137,12 @@ class _ResponsiveDrawerState extends State<ResponsiveDrawer> {
         key: PageStorageKey(item.title), // Persists expanded state
         initiallyExpanded: isGroupSelected,
         tilePadding: EdgeInsets.zero,
-        title: DrawerListItem(
-          item: item,
-          isSelected: isGroupSelected,
-          onTap: () {}, // The tile itself handles expansion
+        title: AbsorbPointer(
+          child: DrawerListItem(
+            item: item,
+            isSelected: isGroupSelected,
+            onTap: () {}, // The tile itself handles expansion
+          ),
         ),
         children: item.subItems!
             .map((subItem) => _buildSingleItem(subItem, isSubItem: true))
