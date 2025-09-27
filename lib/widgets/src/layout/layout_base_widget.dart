@@ -207,13 +207,13 @@ class _LayoutBaseWidgetState extends State<LayoutBaseWidget> {
                     ),
                     child: IconButton(
                       icon: Icon(
-                        Provider.of<ThemeManager>(context).currentTheme ==
+                        Provider.of<ThemeManager>(context, listen: false).currentTheme ==
                                 ThemeModeType.dark
                             ? Icons.light_mode
                             : Icons.dark_mode,
                       ),
                       onPressed: () {
-                        Provider.of<ThemeManager>(context).toggleTheme();
+                        Provider.of<ThemeManager>(context, listen: false).toggleTheme();
                       },
                       style: ButtonStyle(
                         backgroundColor: WidgetStateProperty.all<Color>(
