@@ -34,23 +34,16 @@ class DrawerListItem extends StatelessWidget {
               horizontal: AppTheme.spacingM,
               vertical: AppTheme.spacingS,
             ),
+            decoration: BoxDecoration(
+              color: isSelected ? AppTheme.primary.withOpacity(0.15) : Colors.transparent,
+              borderRadius: BorderRadius.circular(AppTheme.borderRadiusM),
+            ),
             child: Row(
               children: [
-                // The "pill" indicator
-                AnimatedContainer(
-                  duration: const Duration(milliseconds: 300),
-                  width: 4,
-                  height: 28,
-                  decoration: BoxDecoration(
-                    color: isSelected ? AppTheme.primary : Colors.transparent,
-                    borderRadius: BorderRadius.circular(AppTheme.borderRadiusS),
-                  ),
-                ),
                 // Flexible content area
                 Expanded(
                   child: Row(
                     children: [
-                      const SizedBox(width: AppTheme.spacingM),
                       // Icon
                       AnimatedContainer(
                         duration: const Duration(milliseconds: 200),

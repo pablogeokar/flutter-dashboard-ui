@@ -78,6 +78,10 @@ class _ResponsiveDrawerState extends State<ResponsiveDrawer> {
                 children: _buildItemList(widget.itensPrincipais),
               ),
             ),
+            const Padding(
+              padding: EdgeInsets.symmetric(vertical: AppTheme.spacingS),
+              child: Divider(height: 1),
+            ),
             ..._buildItemList(widget.itensInferiores),
             const SizedBox(height: AppTheme.spacingL),
             _buildFooter(context),

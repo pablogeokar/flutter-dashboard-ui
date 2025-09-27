@@ -132,7 +132,7 @@ class _LayoutBaseWidgetState extends State<LayoutBaseWidget> {
                       },
                     ),
               // The title is now the logo
-              title: Image.asset('assets/eikos.png', height: 40),
+              title: Image.asset('assets/eikos.png', height: 55),
               actions: [
                 // Search bar and spacer are removed
                 Container(
