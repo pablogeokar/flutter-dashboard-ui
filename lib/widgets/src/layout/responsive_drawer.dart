@@ -52,14 +52,7 @@ class _ResponsiveDrawerState extends State<ResponsiveDrawer> {
       duration: const Duration(milliseconds: 300),
       width: AppTheme.drawerWidth,
       decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          colors: [
-            Theme.of(context).colorScheme.surfaceContainerLowest,
-            Theme.of(context).colorScheme.surfaceContainerLow,
-          ],
-        ),
+        color: AppTheme.surfaceDark, // Cor mais escura para o sidebar
         borderRadius: const BorderRadius.only(
           topRight: Radius.circular(AppTheme.borderRadiusXL),
           bottomRight: Radius.circular(AppTheme.borderRadiusXL),
@@ -92,28 +85,40 @@ class _ResponsiveDrawerState extends State<ResponsiveDrawer> {
               padding: EdgeInsets.symmetric(vertical: AppTheme.spacingS),
               child: Divider(height: 1),
             ),
-            ..._buildItemList(widget.itensInferiores),
-            _buildFooter(context),
+            Container(
+              decoration: BoxDecoration(
+                color: AppTheme.surfaceFooter,
+                borderRadius: const BorderRadius.only(
+                  bottomRight: Radius.circular(AppTheme.borderRadiusXL),
+                ),
+              ),
+              child: Column(
+                children: [
+                  ..._buildItemList(widget.itensInferiores, isFooterList: true),
+                  _buildFooter(context),
+                ],
+              ),
+            ),
           ],
         ),
       ),
     );
   }
 
-  List<Widget> _buildItemList(List<DrawerItem> items) {
+  List<Widget> _buildItemList(List<DrawerItem> items, {bool isFooterList = false}) {
     return items.map((item) {
       // Group item
       if (item.subItems?.isNotEmpty ?? false) {
-        return _buildExpansionItem(item);
+        return _buildExpansionItem(item, isFooterList: isFooterList);
       }
       // Normal item
       else {
-        return _buildSingleItem(item);
+        return _buildSingleItem(item, isFooterItem: isFooterList);
       }
     }).toList();
   }
 
-  Widget _buildSingleItem(DrawerItem item, {bool isSubItem = false}) {
+  Widget _buildSingleItem(DrawerItem item, {bool isSubItem = false, bool isFooterItem = false}) {
     final flatIndex = _flatNavigableItems.indexWhere(
       (e) => e.title == item.title,
     );
@@ -121,6 +126,7 @@ class _ResponsiveDrawerState extends State<ResponsiveDrawer> {
       item: item,
       isSubItem: isSubItem,
       isSelected: widget.currentIndex == flatIndex,
+      isFooterItem: isFooterItem,
       onTap: () {
         if (flatIndex != -1) {
           widget.onTap(flatIndex);
@@ -129,7 +135,7 @@ class _ResponsiveDrawerState extends State<ResponsiveDrawer> {
     );
   }
 
-  Widget _buildExpansionItem(DrawerItem item) {
+  Widget _buildExpansionItem(DrawerItem item, {bool isFooterList = false}) {
     // Check if any sub-item is currently selected
     final bool isGroupSelected = item.subItems!.any((subItem) {
       final flatIndex = _flatNavigableItems.indexWhere(
@@ -148,11 +154,12 @@ class _ResponsiveDrawerState extends State<ResponsiveDrawer> {
           child: DrawerListItem(
             item: item,
             isSelected: isGroupSelected,
+            isFooterItem: isFooterList,
             onTap: () {}, // The tile itself handles expansion
           ),
         ),
         children: item.subItems!
-            .map((subItem) => _buildSingleItem(subItem, isSubItem: true))
+            .map((subItem) => _buildSingleItem(subItem, isSubItem: true, isFooterItem: isFooterList))
             .toList(),
       ),
     );
@@ -161,6 +168,13 @@ class _ResponsiveDrawerState extends State<ResponsiveDrawer> {
   Widget _buildFooter(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(AppTheme.spacingM),
+      decoration: BoxDecoration(
+        border: Border(
+          top: BorderSide(
+            color: Theme.of(context).colorScheme.outlineVariant.withValues(alpha: 0.3),
+          ),
+        ),
+      ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -175,7 +189,7 @@ class _ResponsiveDrawerState extends State<ResponsiveDrawer> {
               size: 14,
               color: Theme.of(
                 context,
-              ).colorScheme.onSurface.withValues(alpha: 0.6),
+              ).colorScheme.onSurface.withValues(alpha: 0.7),
             ),
           ),
           const SizedBox(width: AppTheme.spacingS),
@@ -184,7 +198,7 @@ class _ResponsiveDrawerState extends State<ResponsiveDrawer> {
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
               color: Theme.of(
                 context,
-              ).colorScheme.onSurface.withValues(alpha: 0.6),
+              ).colorScheme.onSurface.withValues(alpha: 0.7),
             ),
           ),
         ],

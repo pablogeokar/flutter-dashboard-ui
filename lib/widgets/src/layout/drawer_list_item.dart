@@ -7,6 +7,7 @@ class DrawerListItem extends StatelessWidget {
   final bool isSelected;
   final VoidCallback onTap;
   final bool isSubItem;
+  final bool isFooterItem; // Novo parâmetro para itens da parte inferior
 
   const DrawerListItem({
     super.key,
@@ -14,6 +15,7 @@ class DrawerListItem extends StatelessWidget {
     required this.isSelected,
     required this.onTap,
     this.isSubItem = false,
+    this.isFooterItem = false,
   });
 
   @override
@@ -24,10 +26,10 @@ class DrawerListItem extends StatelessWidget {
         color: Colors.transparent,
         child: InkWell(
           onTap: onTap,
-          hoverColor: Theme.of(context).colorScheme.primary.withValues(alpha: 0.08),
-          focusColor: Theme.of(context).colorScheme.primary.withValues(alpha: 0.12),
-          highlightColor: Theme.of(context).colorScheme.primary.withValues(alpha: 0.16),
-          splashColor: Theme.of(context).colorScheme.primary.withValues(alpha: 0.1),
+          hoverColor: Theme.of(context).colorScheme.primary.withValues(alpha: isFooterItem ? 0.05 : 0.08),
+          focusColor: Theme.of(context).colorScheme.primary.withValues(alpha: isFooterItem ? 0.08 : 0.12),
+          highlightColor: Theme.of(context).colorScheme.primary.withValues(alpha: isFooterItem ? 0.1 : 0.16),
+          splashColor: Theme.of(context).colorScheme.primary.withValues(alpha: isFooterItem ? 0.07 : 0.1),
           borderRadius: BorderRadius.circular(AppTheme.borderRadiusM),
           child: Container(
             margin: const EdgeInsets.symmetric(
@@ -39,12 +41,12 @@ class DrawerListItem extends StatelessWidget {
             ),
             decoration: BoxDecoration(
               color: isSelected
-                  ? Theme.of(context).colorScheme.primaryContainer.withValues(alpha: 0.3)
+                  ? Theme.of(context).colorScheme.primaryContainer.withValues(alpha: isFooterItem ? 0.15 : 0.2)
                   : Colors.transparent,
               borderRadius: BorderRadius.circular(AppTheme.borderRadiusM),
               border: Border.all(
                 color: isSelected
-                    ? Theme.of(context).colorScheme.primary.withValues(alpha: 0.5)
+                    ? Theme.of(context).colorScheme.primary.withValues(alpha: isFooterItem ? 0.5 : 0.7)
                     : Colors.transparent,
                 width: 1,
               ),
@@ -75,7 +77,9 @@ class DrawerListItem extends StatelessWidget {
                               ? Theme.of(context).colorScheme.primary
                               : Theme.of(
                                   context,
-                                ).colorScheme.onSurface,
+                                ).colorScheme.onSurface.withValues(
+                                  alpha: isFooterItem ? 0.7 : 0.9,
+                                ),
                         ),
                       ),
                       const SizedBox(width: AppTheme.spacingM),
@@ -92,7 +96,9 @@ class DrawerListItem extends StatelessWidget {
                                     : FontWeight.normal,
                                 color: isSelected
                                     ? Theme.of(context).colorScheme.primary
-                                    : Theme.of(context).colorScheme.onSurface,
+                                    : Theme.of(context).colorScheme.onSurface.withValues(
+                                        alpha: isFooterItem ? 0.8 : 1.0,
+                                      ),
                               ),
                         ),
                       ),

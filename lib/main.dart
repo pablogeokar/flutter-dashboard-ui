@@ -78,6 +78,8 @@ class MainApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(
           seedColor: AppTheme.primary, // Your primary color from theme file
           brightness: Brightness.light, // Changed to light theme for better contrast
+          surface: AppTheme.surfacePrimary, // Background color for main content
+          surfaceContainerLow: AppTheme.surfaceSecondary, // Background for containers like sidebar
         ),
         // Additional Material 3 styling
         navigationRailTheme: NavigationRailThemeData(
@@ -85,7 +87,7 @@ class MainApp extends StatelessWidget {
           indicatorColor: Theme.of(context).colorScheme.primaryContainer,
         ),
         drawerTheme: DrawerThemeData(
-          backgroundColor: Theme.of(context).colorScheme.surface,
+          backgroundColor: AppTheme.surfaceDark, // Força a cor de fundo do drawer
         ),
         appBarTheme: AppBarTheme(
           backgroundColor: Colors.transparent,

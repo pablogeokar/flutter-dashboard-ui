@@ -2,14 +2,15 @@ import 'package:flutter/material.dart';
 
 class AppTheme {
   // Cores principais
-  //static const Color primary = Color(0xFF4A90E2);
-  static const Color primary = Color(0xFFcc8e35);
+  static const Color primary = Color(0xFF4A90E2);
   static const Color primaryVariant = Color(0xFF357ABD);
   static const Color secondary = Color(0xFFC6C6C6);
   static const Color secondaryVariant = Color(0xFFA8A8A8);
   static const Color surfacePrimary = Color(0xFFFFFFFF);
-  static const Color surfaceSecondary = Color(0xFFF5F7FA);
-  static const Color surfaceTertiary = Color(0xFFE5E8ED);
+  static const Color surfaceSecondary = Color(0xFFFAFBFD);
+  static const Color surfaceTertiary = Color(0xFFF5F7FA);
+  static const Color surfaceDark = Color(0xFFEDEFF2);
+  static const Color surfaceFooter = Color(0xFFE6E8EB);
   static const Color onSurfacePrimary = Color(0xFF1A1C1E);
   static const Color onSurfaceSecondary = Color(0xFF636567);
   static const Color onSurfaceTertiary = Color(0xFF9DA0A3);
