@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
 
 class AppTheme {
-  // Cor principal usada como "semente" para gerar o ColorScheme
+  // Cores principais usadas como "sementes" para gerar o ColorScheme
   static const Color primary = Color(0xFF4A90E2);
+  static const Color secondary = Color(0xFF6C5CE7);
+
+  // Cores para gradientes
+  static const Color gradientStart = Color(0xFF4A90E2);
+  static const Color gradientEnd = Color(0xFF6C5CE7);
 
   // Bordas arredondadas padronizadas (valores de referência para uso nos widgets)
   static const double borderRadiusS = 8.0;

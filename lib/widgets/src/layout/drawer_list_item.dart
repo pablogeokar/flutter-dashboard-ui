@@ -49,19 +49,28 @@ class DrawerListItem extends StatelessWidget {
             ),
             decoration: BoxDecoration(
               color: isSelected
-                  ? Theme.of(context).colorScheme.primaryContainer.withValues(
-                      alpha: isFooterItem ? 0.15 : 0.2,
-                    )
+                  ? Theme.of(
+                      context,
+                    ).colorScheme.primary.withValues(alpha: 0.15)
                   : Colors.transparent,
               borderRadius: BorderRadius.circular(AppTheme.borderRadiusM),
               border: Border.all(
                 color: isSelected
-                    ? Theme.of(context).colorScheme.primary.withValues(
-                        alpha: isFooterItem ? 0.5 : 0.7,
-                      )
+                    ? Theme.of(context).colorScheme.primary
                     : Colors.transparent,
                 width: 1,
               ),
+              boxShadow: isSelected
+                  ? [
+                      BoxShadow(
+                        color: Theme.of(
+                          context,
+                        ).colorScheme.primary.withValues(alpha: 0.05),
+                        blurRadius: 3,
+                        offset: const Offset(0, 1),
+                      ),
+                    ]
+                  : null,
             ),
             child: Row(
               children: [

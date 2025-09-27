@@ -90,24 +90,24 @@ class _LayoutBaseWidgetState extends State<LayoutBaseWidget> {
           0,
         ),
         decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [
-              Theme.of(context).colorScheme.surfaceContainerLow.withValues(
-                alpha: AppTheme.appBarOpacity,
-              ),
-              Theme.of(context).colorScheme.surfaceContainer.withValues(
-                alpha: AppTheme.appBarOpacity - 0.1,
-              ),
-            ],
+          color: Theme.of(context).colorScheme.surfaceContainerLow.withValues(
+            alpha: AppTheme.appBarOpacity,
           ),
           borderRadius: BorderRadius.circular(AppTheme.borderRadiusM),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withValues(alpha: 0.1),
+              color: Theme.of(
+                context,
+              ).colorScheme.primary.withValues(alpha: 0.1),
               blurRadius: 12,
               offset: const Offset(0, 4),
+            ),
+            BoxShadow(
+              color: Theme.of(
+                context,
+              ).colorScheme.secondary.withValues(alpha: 0.05),
+              blurRadius: 8,
+              offset: const Offset(2, 2),
             ),
           ],
         ),
@@ -174,10 +174,8 @@ class _LayoutBaseWidgetState extends State<LayoutBaseWidget> {
                     decoration: BoxDecoration(
                       color: Theme.of(
                         context,
-                      ).colorScheme.surfaceContainerHighest,
-                      borderRadius: BorderRadius.circular(
-                        99, // Valor especial para formato circular, não substituído por constante
-                      ), // Valor especial para formato circular, não substituído por constante
+                      ).colorScheme.primary.withValues(alpha: 0.1),
+                      borderRadius: BorderRadius.circular(99),
                     ),
                     child: IconButton(
                       icon: const Icon(Icons.notifications_outlined),

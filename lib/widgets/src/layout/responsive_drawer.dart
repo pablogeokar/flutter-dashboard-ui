@@ -52,23 +52,23 @@ class _ResponsiveDrawerState extends State<ResponsiveDrawer> {
       duration: const Duration(milliseconds: 300),
       width: AppTheme.drawerWidth,
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surface, // Cor mais escura para o sidebar
+        color: Theme.of(context).colorScheme.surface,
         borderRadius: const BorderRadius.only(
           topRight: Radius.circular(AppTheme.borderRadiusXL),
           bottomRight: Radius.circular(AppTheme.borderRadiusXL),
         ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.15),
-            blurRadius: 12,
-            offset: const Offset(5, 0),
+            color: Colors.black.withValues(alpha: 0.08),
+            blurRadius: 8,
+            offset: const Offset(2, 0),
           ),
         ],
         border: Border(
           right: BorderSide(
             color: Theme.of(
               context,
-            ).colorScheme.outlineVariant.withValues(alpha: 0.2),
+            ).colorScheme.secondary.withValues(alpha: 0.1),
             width: 1,
           ),
         ),
@@ -80,6 +80,43 @@ class _ResponsiveDrawerState extends State<ResponsiveDrawer> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             const SizedBox(height: AppTheme.appBarHeight),
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: AppTheme.spacingM,
+              ),
+              child: Container(
+                padding: const EdgeInsets.all(AppTheme.spacingM),
+                decoration: BoxDecoration(
+                  color: Theme.of(
+                    context,
+                  ).colorScheme.primary.withValues(alpha: 0.1),
+                  borderRadius: BorderRadius.circular(AppTheme.borderRadiusL),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Painel de Controle',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
+                    ),
+                    const SizedBox(height: AppTheme.spacingS),
+                    Text(
+                      'Bem-vindo ao sistema',
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Theme.of(
+                          context,
+                        ).colorScheme.onSurface.withValues(alpha: 0.7),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
             const SizedBox(height: AppTheme.spacingL),
             Expanded(
               child: ListView(

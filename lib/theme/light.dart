@@ -5,6 +5,7 @@ final lightTheme = ThemeData(
   useMaterial3: true,
   colorScheme: ColorScheme.fromSeed(
     seedColor: AppTheme.primary,
+    secondary: AppTheme.secondary,
     brightness: Brightness.light,
   ),
   appBarTheme: const AppBarTheme(
