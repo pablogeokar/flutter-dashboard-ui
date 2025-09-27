@@ -1,5 +1,9 @@
 # Contexto do Projeto - Dashboard UI
 
+## Visão Geral
+
+Este projeto é uma interface de dashboard moderna desenvolvida em Flutter, com foco em design limpo e experiência de usuário intuitiva. O dashboard possui um tema personalizável (claro/escuro), uma barra lateral de navegação (sidebar) e uma AppBar superior.
+
 ## Configurações de Idioma
 
 - **Idioma principal:** Português do Brasil
