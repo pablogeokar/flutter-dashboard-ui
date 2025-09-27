@@ -37,3 +37,7 @@ Garantir consistência linguística em todo o projeto, proporcionando uma experi
   - Utilizar constantes de bordas arredondadas (AppTheme.borderRadiusS, AppTheme.borderRadiusM, etc.)
   - Utilizar constantes de dimensões específicas (AppTheme.drawerWidth, AppTheme.appBarHeight, etc.)
   - Sempre que um novo valor de estilo for necessário em um widget, deve-se verificar se já existe uma constante adequada no theme.dart ou adicionar uma nova constante ao arquivo antes de usar um valor fixo no widget
+- **Estrutura e Privacidade de Widgets:** Para garantir um código modular e de fácil manutenção, os widgets devem ser organizados em 'módulos' autocontidos.
+  - **Diretório `src`:** O código interno de um módulo de widget (widgets auxiliares, lógica interna, etc.) deve ser colocado dentro de um subdiretório `src`. Ex: `lib/widgets/nome_do_modulo/src/`.
+  - **Arquivo Barril (Barrel File):** Cada módulo deve ter um arquivo na sua raiz (ex: `lib/widgets/app_layout.dart`) que exporta apenas os widgets que compõem sua API pública.
+  - **Importações:** As telas e outros widgets fora do módulo devem importar **apenas** o arquivo barril, e nunca importar arquivos de dentro do diretório `src` de outro módulo diretamente.

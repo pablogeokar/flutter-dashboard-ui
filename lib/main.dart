@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'theme.dart';
+import 'widgets/app_layout.dart';
 import 'screens/em_construcao_screen.dart';
 import 'screens/teste_screen.dart';
-import 'widgets/app_layout.dart';
 
 void main() {
   runApp(const MainApp());
