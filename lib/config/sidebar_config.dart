@@ -20,7 +20,7 @@ class SidebarConfig {
         DrawerItem(
           title: 'Clientes',
           icon: Icons.people,
-          screen: FormTestScreen(),
+          screen: FormTestScreen(), // Widget diretamente
         ),
         DrawerItem(
           title: 'Fornecedores',

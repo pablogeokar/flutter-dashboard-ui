@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 import '../../../theme/theme.dart';
 
 /// Widget personalizado para entrada de data.
-///
-/// Este widget fornece uma interface visualmente consistente com o tema do aplicativo,
-/// incluindo bordas arredondadas, sombras sutis e suporte a temas claro/escuro.
-/// Ele exibe um campo de texto com um ícone de calendário à direita e abre um seletor de data
-/// quando pressionado.
 class DateInputField extends StatefulWidget {
   final String label;
   final DateTime? initialValue;
@@ -30,24 +26,64 @@ class DateInputField extends StatefulWidget {
 
 class _DateInputFieldState extends State<DateInputField> {
   late DateTime? _selectedDate;
+  late final TextEditingController _controller;
+
+  String _formatDate(DateTime date) {
+    return DateFormat('dd/MM/yyyy').format(date);
+  }
 
   @override
   void initState() {
     super.initState();
     _selectedDate = widget.initialValue;
+    _controller = TextEditingController(
+      text: _selectedDate != null ? _formatDate(_selectedDate!) : '',
+    );
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  Future<void> _pickDate(BuildContext context) async {
+    if (!widget.enabled) return;
+
+    final pickedDate = await showDatePicker(
+      context: context,
+      initialDate: _selectedDate ?? DateTime.now(),
+      firstDate: DateTime(1900),
+      lastDate: DateTime(2101),
+      builder: (context, child) {
+        // Para forçar o tema claro no picker, como no original
+        return Theme(
+          data: ThemeData.light().copyWith(
+            colorScheme: ColorScheme.fromSeed(
+              seedColor: AppTheme.primaryLight,
+            ),
+          ),
+          child: child!,
+        );
+      },
+    );
+
+    if (pickedDate != null && pickedDate != _selectedDate) {
+      setState(() {
+        _selectedDate = pickedDate;
+        _controller.text = _formatDate(pickedDate);
+      });
+      widget.onChanged?.call(pickedDate);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final isDarkMode = theme.brightness == Brightness.dark;
-    final backgroundColor = isDarkMode
-        ? AppTheme.surfaceDark
-        : AppTheme.surfaceLight;
+    final backgroundColor = isDarkMode ? AppTheme.surfaceDark : AppTheme.surfaceLight;
     final borderColor = isDarkMode ? AppTheme.neutral1 : AppTheme.neutral2;
-    final textColor = isDarkMode
-        ? AppTheme.secondaryDark
-        : AppTheme.secondaryLight;
+    final textColor = isDarkMode ? AppTheme.secondaryDark : AppTheme.secondaryLight;
     final errorColor = Colors.red;
 
     return Column(
@@ -67,7 +103,9 @@ class _DateInputFieldState extends State<DateInputField> {
             color: backgroundColor,
             borderRadius: BorderRadius.circular(AppTheme.borderRadiusL),
             border: Border.all(
-              color: widget.errorText != null ? errorColor : borderColor,
+              color: widget.errorText != null && widget.errorText!.isNotEmpty
+                  ? errorColor
+                  : borderColor,
             ),
             boxShadow: [
               BoxShadow(
@@ -78,91 +116,28 @@ class _DateInputFieldState extends State<DateInputField> {
             ],
           ),
           child: TextFormField(
-            readOnly:
-                true, // O campo é somente leitura; a data é selecionada via picker
-            onTap: () async {
-              if (!widget.enabled) return;
-              final pickedDate = await showDatePicker(
-                context: context,
-                initialDate: _selectedDate ?? DateTime.now(),
-                firstDate: DateTime(2000),
-                lastDate: DateTime(2100),
-                builder: (context, child) {
-                  return Theme(
-                    data: ThemeData.light().copyWith(
-                      colorScheme: ColorScheme.fromSeed(
-                        seedColor: AppTheme.primaryLight,
-                      ),
-                    ),
-                    child: child!,
-                  );
-                },
-              );
-              if (pickedDate != null && pickedDate != _selectedDate) {
-                setState(() {
-                  _selectedDate = pickedDate;
-                });
-                widget.onChanged?.call(pickedDate);
-              }
-            },
+            controller: _controller,
+            readOnly: true,
+            onTap: () => _pickDate(context),
             decoration: InputDecoration(
               hintText: 'Selecione uma data',
-              hintStyle: GoogleFonts.inter(
-                fontSize: 14,
-                color: AppTheme.neutral1,
-              ),
-              prefixIcon: Icon(
-                Icons.calendar_today,
-                color: textColor,
-                size: 18,
-              ),
-              suffixIcon: widget.enabled
-                  ? IconButton(
-                      onPressed: () async {
-                        if (!widget.enabled) return;
-                        final pickedDate = await showDatePicker(
-                          context: context,
-                          initialDate: _selectedDate ?? DateTime.now(),
-                          firstDate: DateTime(2000),
-                          lastDate: DateTime(2100),
-                          builder: (context, child) {
-                            return Theme(
-                              data: ThemeData.light().copyWith(
-                                colorScheme: ColorScheme.fromSeed(
-                                  seedColor: AppTheme.primaryLight,
-                                ),
-                              ),
-                              child: child!,
-                            );
-                          },
-                        );
-                        if (pickedDate != null && pickedDate != _selectedDate) {
-                          setState(() {
-                            _selectedDate = pickedDate;
-                          });
-                          widget.onChanged?.call(pickedDate);
-                        }
-                      },
-                      icon: const Icon(Icons.arrow_drop_down),
-                      color: textColor,
-                      padding: EdgeInsets.zero,
-                    )
-                  : null,
+              hintStyle: GoogleFonts.inter(fontSize: 14, color: AppTheme.neutral1),
+              prefixIcon: Icon(Icons.calendar_today, color: textColor, size: 18),
               contentPadding: const EdgeInsets.symmetric(
                 horizontal: AppTheme.spacingM,
                 vertical: AppTheme.spacingS,
               ),
               border: InputBorder.none,
               errorText: widget.errorText,
-              errorStyle: GoogleFonts.inter(fontSize: 12, color: errorColor),
+              errorStyle: const TextStyle(height: 0, fontSize: 0),
             ),
             style: GoogleFonts.inter(fontSize: 14, color: textColor),
             enabled: widget.enabled,
           ),
         ),
-        if (widget.errorText != null)
+        if (widget.errorText != null && widget.errorText!.isNotEmpty)
           Padding(
-            padding: const EdgeInsets.only(top: AppTheme.spacingS),
+            padding: const EdgeInsets.only(top: AppTheme.spacingS, left: AppTheme.spacingS),
             child: Text(
               widget.errorText!,
               style: GoogleFonts.inter(

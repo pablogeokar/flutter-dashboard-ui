@@ -40,14 +40,21 @@ lib/
 │   └── theme_manager.dart
 ├── widgets/
 │   ├── app_layout.dart
+│   ├── form_fields.dart
 │   └── src/
-│       └── layout/
-│           ├── app_shell.dart
-│           ├── drawer_item.dart
-│           ├── drawer_list_item.dart
-│           ├── modern_app_bar.dart
-│           ├── responsive_scaffold.dart
-│           └── responsive_drawer.dart
+│       ├── app_layout/
+│       │   ├── app_shell.dart
+│       │   ├── drawer_item.dart
+│       │   ├── drawer_list_item.dart
+│       │   ├── modern_app_bar.dart
+│       │   ├── responsive_scaffold.dart
+│       │   └── responsive_drawer.dart
+│       └── form_fields/
+│           ├── currency_pt_br_input_formatter.dart
+│           ├── custom_button.dart
+│           ├── date_input_field.dart
+│           ├── monetary_input_field.dart
+│           └── text_input_field.dart
 └── main.dart
 ```
 
@@ -63,6 +70,12 @@ lib/
 - **widgets/src/layout/app_shell.dart**: Widget "inteligente" (stateful) que gerencia o estado da navegação (item selecionado) e envolve a estrutura visual da aplicação.
 - **widgets/src/layout/responsive_scaffold.dart**: Widget "burro" (stateless) que constrói o `Scaffold` e adapta a UI entre telas grandes e pequenas, recebendo o estado do `AppShell`.
 - **widgets/src/layout/modern_app_bar.dart**: Widget que define a `AppBar` customizada da aplicação.
+- **widgets/form_fields.dart**: Arquivo barril que exporta os widgets públicos de campos de formulário.
+- **widgets/src/form_fields/currency_pt_br_input_formatter.dart**: Formatter para campos de entrada de moeda no formato brasileiro.
+- **widgets/src/form_fields/custom_button.dart**: Widget de botão customizado.
+- **widgets/src/form_fields/date_input_field.dart**: Campo de entrada para datas.
+- **widgets/src/form_fields/monetary_input_field.dart**: Campo de entrada para valores monetários.
+- **widgets/src/form_fields/text_input_field.dart**: Campo de entrada de texto genérico.
 
 ## Diretrizes de Codificação
 
@@ -107,6 +120,7 @@ Para garantir um código modular e de fácil manutenção, os widgets devem ser 
 - `provider`: Gerenciamento de estado
 - `shared_preferences`: Persistência de dados locais (preferência de tema)
 - `google_fonts`: Para carregamento de fontes do Google Fonts.
+- `intl`: Para internacionalização e localização.
 - `flutter_lints`: Regras de linting
 
 ## Boas Práticas

@@ -16,10 +16,16 @@ class CurrencyPtBrInputFormatter extends TextInputFormatter {
     }
 
     // 2. Remover zeros à esquerda que não sejam significativos
-    while (digitsOnly.length > 3 && digitsOnly.startsWith('0')) {
-      digitsOnly = digitsOnly.substring(1);
+    // Mantém zeros se o valor for menor que 1,00 (ex: 0,50)
+    if (digitsOnly.length > 1 && digitsOnly.startsWith('0')) {
+       if (digitsOnly.length < 3) {
+        // não faz nada, permite 01, 05 etc
+       } else {
+        digitsOnly = digitsOnly.replaceFirst(RegExp(r'^0+'), '');
+       }
     }
-    // Garante que valores como "0,50" (digitando 50) funcionem
+    
+    // Garante que o valor seja tratado corretamente (ex: 5 -> 0,05)
     while (digitsOnly.length < 3) {
       digitsOnly = '0$digitsOnly';
     }
@@ -33,15 +39,9 @@ class CurrencyPtBrInputFormatter extends TextInputFormatter {
     final re = RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))');
     integerPart = integerPart.replaceAllMapped(re, (Match m) => '${m[1]}.');
     
-    // Remove o ponto inicial se a parte inteira for algo como ".123"
-    if (integerPart.startsWith('.')) {
-      integerPart = integerPart.substring(1);
-    }
-    // Garante que a parte inteira seja '0' se estiver vazia
     if (integerPart.isEmpty) {
       integerPart = '0';
     }
-
 
     final String newText = '$integerPart,$decimalPart';
 
