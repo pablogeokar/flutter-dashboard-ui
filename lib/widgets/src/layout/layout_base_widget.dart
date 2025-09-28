@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'dart:ui';
 import 'drawer_item.dart';
 import 'responsive_drawer.dart';
+import 'modern_app_bar.dart';
 import '/theme/theme.dart';
-import '/theme/theme_manager.dart';
 
 class LayoutBaseWidget extends StatefulWidget {
   final Widget Function(int) screenBuilder;
@@ -56,7 +54,7 @@ class _LayoutBaseWidgetState extends State<LayoutBaseWidget> {
                 padding: const EdgeInsets.only(top: AppTheme.appBarHeight),
                 child: _buildMainContent(isLargeScreen: true),
               ),
-              _buildModernAppBar(isLargeScreen: true),
+              const ModernAppBar(isLargeScreen: true),
             ],
           ),
         ),
@@ -67,7 +65,7 @@ class _LayoutBaseWidgetState extends State<LayoutBaseWidget> {
   Widget _buildSmallScreenLayout() {
     return Scaffold(
       extendBodyBehindAppBar: true,
-      appBar: _buildModernAppBar(isLargeScreen: false),
+      appBar: const ModernAppBar(isLargeScreen: false),
       drawer: ResponsiveDrawer(
         currentIndex: widget.currentIndex,
         onTap: (int index) {
@@ -83,57 +81,6 @@ class _LayoutBaseWidgetState extends State<LayoutBaseWidget> {
         padding: const EdgeInsets.only(top: AppTheme.appBarHeight),
         child: _buildMainContent(isLargeScreen: false),
       ),
-    );
-  }
-
-  PreferredSizeWidget _buildModernAppBar({required bool isLargeScreen}) {
-    return AppBar(
-      elevation: 0,
-      toolbarHeight: AppTheme.appBarHeight,
-      backgroundColor: Colors.transparent,
-      automaticallyImplyLeading: !isLargeScreen,
-      leading: isLargeScreen
-          ? null
-          : Builder(
-              builder: (context) {
-                return IconButton(
-                  icon: const Icon(Icons.menu),
-                  onPressed: () => Scaffold.of(context).openDrawer(),
-                  iconSize: 24.0, // Reverted to a more standard size
-                );
-              },
-            ),
-      title: null,
-      actions: [
-        IconButton(
-          icon: const Icon(Icons.notifications_outlined),
-          onPressed: () {},
-          iconSize: 22.0,
-          tooltip: 'Notificações',
-        ),
-        IconButton(
-          icon: Icon(
-            Provider.of<ThemeManager>(context, listen: false).currentTheme ==
-                    ThemeModeType.dark
-                ? Icons.light_mode_outlined
-                : Icons.dark_mode_outlined,
-          ),
-          onPressed: () {
-            Provider.of<ThemeManager>(context, listen: false).toggleTheme();
-          },
-          iconSize: 22.0,
-          tooltip: 'Alternar Tema',
-        ),
-        const SizedBox(width: AppTheme.spacingS),
-        const CircleAvatar(
-          radius: AppTheme.avatarSizeSmall,
-          child: Icon(
-            Icons.person_outline,
-            size: 22.0,
-          ),
-        ),
-        const SizedBox(width: AppTheme.spacingM),
-      ],
     );
   }
 
