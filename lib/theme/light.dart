@@ -4,8 +4,8 @@ import 'theme.dart';
 final lightTheme = ThemeData(
   useMaterial3: true,
   colorScheme: ColorScheme.fromSeed(
-    seedColor: AppTheme.primary,
-    secondary: AppTheme.secondary,
+    seedColor: AppTheme.primaryLight,
+    secondary: AppTheme.secondaryLight,
     tertiary: AppTheme.neutral1,
     surface: AppTheme.surfaceLight,
     brightness: Brightness.light,

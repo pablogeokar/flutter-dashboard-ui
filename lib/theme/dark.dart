@@ -4,8 +4,8 @@ import 'theme.dart';
 final darkTheme = ThemeData(
   useMaterial3: true,
   colorScheme: ColorScheme.fromSeed(
-    seedColor: AppTheme.primary,
-    secondary: AppTheme.secondary,
+    seedColor: AppTheme.primaryDark,
+    secondary: AppTheme.secondaryDark,
     tertiary: AppTheme.neutral1,
     surface: AppTheme.surfaceDark,
     brightness: Brightness.dark,
