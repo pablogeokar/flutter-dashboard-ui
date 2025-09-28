@@ -48,4 +48,20 @@ class AppTheme {
   // Efeitos visuais
   static const double appBarBlur = 8.0;
   static const double appBarOpacity = 0.85;
+
+  // Definição da escala de texto personalizada
+  static const TextTheme textTheme = TextTheme(
+    headlineLarge: TextStyle(fontSize: 30.0, fontWeight: FontWeight.bold),
+    headlineMedium: TextStyle(fontSize: 26.0, fontWeight: FontWeight.bold),
+    headlineSmall: TextStyle(fontSize: 22.0, fontWeight: FontWeight.bold),
+    titleLarge: TextStyle(fontSize: 20.0, fontWeight: FontWeight.w600),
+    titleMedium: TextStyle(fontSize: 15.0, fontWeight: FontWeight.w600),
+    titleSmall: TextStyle(fontSize: 13.0, fontWeight: FontWeight.w600),
+    bodyLarge: TextStyle(fontSize: 15.0),
+    bodyMedium: TextStyle(fontSize: 13.0),
+    bodySmall: TextStyle(fontSize: 11.0),
+    labelLarge: TextStyle(fontSize: 13.0, fontWeight: FontWeight.w600),
+    labelMedium: TextStyle(fontSize: 11.0),
+    labelSmall: TextStyle(fontSize: 10.0),
+  );
 }
