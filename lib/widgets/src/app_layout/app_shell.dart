@@ -42,9 +42,8 @@ class _AppShellState extends State<AppShell> {
     return flatList;
   }
 
-  // Get the list of screens from the flattened list of items.
-  List<Widget> get _telas =>
-      _flatNavigableItems.map((item) => item.screen!).toList();
+  // Cache for screen instances to preserve their state.
+  final Map<int, Widget> _screenCache = {};
 
   @override
   Widget build(BuildContext context) {
@@ -52,10 +51,12 @@ class _AppShellState extends State<AppShell> {
       itensPrincipais: widget.itensPrincipais,
       itensInferiores: widget.itensInferiores,
       screenBuilder: (int index) {
-        if (index < 0 || index >= _telas.length) {
+        if (index < 0 || index >= _flatNavigableItems.length) {
           return const Placeholder(); // Should not happen
         }
-        return _telas[index];
+        // Retrieve from cache or create and add to cache
+        return _screenCache.putIfAbsent(
+            index, () => _flatNavigableItems[index].screen!);
       },
       currentIndex: _selectedIndex,
       onNavigation: (int index) {

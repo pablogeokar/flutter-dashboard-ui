@@ -46,11 +46,17 @@ class _ResponsiveScaffoldState extends State<ResponsiveScaffold> {
   Widget _buildLargeScreenLayout() {
     return Row(
       children: [
-        ResponsiveDrawer(
-          currentIndex: widget.currentIndex,
-          onTap: widget.onNavigation,
-          itensPrincipais: widget.itensPrincipais,
-          itensInferiores: widget.itensInferiores,
+        SizedBox(
+          width: AppTheme.drawerWidth,
+          child: ClipRect(
+            child: ResponsiveDrawer(
+              currentIndex: widget.currentIndex,
+              onTap: widget.onNavigation,
+              itensPrincipais: widget.itensPrincipais,
+              itensInferiores: widget.itensInferiores,
+              isPermanent: true, // Passar true para o modo permanente
+            ),
+          ),
         ),
         Expanded(
           child: Stack(
@@ -59,7 +65,7 @@ class _ResponsiveScaffoldState extends State<ResponsiveScaffold> {
                 padding: const EdgeInsets.only(top: AppTheme.appBarHeight),
                 child: _buildMainContent(isLargeScreen: true),
               ),
-              const ModernAppBar(isLargeScreen: true),
+              // const ModernAppBar(isLargeScreen: true), // Removido temporariamente para depuração
             ],
           ),
         ),
@@ -111,25 +117,7 @@ class _ResponsiveScaffoldState extends State<ResponsiveScaffold> {
       ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(AppTheme.borderRadiusXL),
-        child: AnimatedSwitcher(
-          duration: const Duration(milliseconds: 300),
-          transitionBuilder: (child, animation) {
-            return FadeTransition(
-              opacity: animation,
-              child: SlideTransition(
-                position: Tween<Offset>(
-                  begin: const Offset(0.05, 0),
-                  end: Offset.zero,
-                ).animate(animation),
-                child: child,
-              ),
-            );
-          },
-          child: KeyedSubtree(
-            key: ValueKey<int>(widget.currentIndex),
-            child: widget.screenBuilder(widget.currentIndex),
-          ),
-        ),
+        child: widget.screenBuilder(widget.currentIndex),
       ),
     );
   }

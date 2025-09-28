@@ -25,6 +25,14 @@ class _FormTestScreenState extends State<FormTestScreen> {
     _textController = TextEditingController(text: 'Exemplo de texto');
     // O valor inicial para o campo monetário. O formatador irá converter para "1.234,56".
     _monetaryController = TextEditingController(text: '123456');
+
+    // Adicionar listeners para depuração
+    _textController.addListener(() {
+      print('DEBUG: TextInputField value: ${_textController.text}');
+    });
+    _monetaryController.addListener(() {
+      print('DEBUG: MonetaryInputField value: ${_monetaryController.text}');
+    });
   }
 
   @override
@@ -48,7 +56,10 @@ class _FormTestScreenState extends State<FormTestScreen> {
                   : Icons.dark_mode,
             ),
             onPressed: () {
-              final themeManager = Provider.of<ThemeManager>(context, listen: false);
+              final themeManager = Provider.of<ThemeManager>(
+                context,
+                listen: false,
+              );
               themeManager.toggleTheme();
             },
           ),
@@ -96,7 +107,11 @@ class _FormTestScreenState extends State<FormTestScreen> {
                       TextInputField(
                         hintText: 'Digite seu nome',
                         labelText: 'Nome',
-                        controller: _textController, // Usa o controller do state
+                        controller:
+                            _textController, // Usa o controller do state
+                        onChanged: (value) {
+                          print('DEBUG: TextInputField onChanged: $value');
+                        },
                       ),
                       const SizedBox(height: 24),
 
@@ -106,6 +121,9 @@ class _FormTestScreenState extends State<FormTestScreen> {
                       DateInputField(
                         label: 'Data de Nascimento',
                         initialValue: DateTime.now(),
+                        onChanged: (date) {
+                          print('DEBUG: DateInputField onChanged: $date');
+                        },
                       ),
                       const SizedBox(height: 24),
 
@@ -115,7 +133,11 @@ class _FormTestScreenState extends State<FormTestScreen> {
                       MonetaryInputField(
                         label: 'Valor',
                         hintText: 'Digite o valor',
-                        controller: _monetaryController, // Usa o controller do state
+                        controller:
+                            _monetaryController, // Usa o controller do state
+                        onChanged: (value) {
+                          print('DEBUG: MonetaryInputField onChanged: $value');
+                        },
                       ),
                       const SizedBox(height: 24),
 
@@ -124,7 +146,7 @@ class _FormTestScreenState extends State<FormTestScreen> {
                       const SizedBox(height: 8),
                       CustomButton(
                         onPressed: () {
-                          // Lógica do botão
+                          print('DEBUG: CustomButton onPressed!');
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(content: Text('Botão pressionado!')),
                           );

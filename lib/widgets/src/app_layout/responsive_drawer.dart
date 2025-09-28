@@ -10,6 +10,7 @@ class ResponsiveDrawer extends StatefulWidget {
   final Function(int) onTap;
   final List<DrawerItem> itensPrincipais;
   final List<DrawerItem> itensInferiores;
+  final bool isPermanent; // Novo parâmetro
 
   const ResponsiveDrawer({
     super.key,
@@ -17,6 +18,7 @@ class ResponsiveDrawer extends StatefulWidget {
     required this.onTap,
     required this.itensPrincipais,
     required this.itensInferiores,
+    this.isPermanent = false, // Valor padrão
   });
 
   @override
@@ -54,118 +56,124 @@ class _ResponsiveDrawerState extends State<ResponsiveDrawer> {
     final drawerColor =
         isDarkMode ? AppTheme.drawerBackgroundDark : AppTheme.drawerBackgroundLight;
 
-    return AnimatedContainer(
-      duration: const Duration(milliseconds: 300),
-      width: AppTheme.drawerWidth,
-      decoration: BoxDecoration(
-        color: drawerColor,
-        borderRadius: const BorderRadius.only(
-          topRight: Radius.circular(AppTheme.borderRadiusXL),
-          bottomRight: Radius.circular(AppTheme.borderRadiusXL),
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.08),
-            blurRadius: 8,
-            offset: const Offset(2, 0),
+    final Widget drawerContent = Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Container(
+          padding: const EdgeInsets.symmetric(
+            vertical: AppTheme.spacingM,
+            horizontal: AppTheme.spacingS,
           ),
-        ],
-        border: Border(
-          right: BorderSide(
-            color: Theme.of(
-              context,
-            ).colorScheme.secondary.withValues(alpha: 0.1),
-            width: 1,
+          child: Image.asset(
+            Provider.of<ThemeManager>(context).currentTheme ==
+                    ThemeModeType.dark
+                ? 'assets/logo_dark.png'
+                : 'assets/logo_light.png',
+            height: 200.0,
           ),
         ),
-      ),
-      child: Drawer(
-        elevation: 0,
-        backgroundColor: Colors.transparent,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Container(
-              padding: const EdgeInsets.symmetric(
-                vertical: AppTheme.spacingM,
-                horizontal: AppTheme.spacingS,
-              ),
-              child: Image.asset(
-                Provider.of<ThemeManager>(context).currentTheme ==
-                        ThemeModeType.dark
-                    ? 'assets/logo_dark.png'
-                    : 'assets/logo_light.png',
-                height: 200.0,
-              ),
+        Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: AppTheme.spacingM,
+          ),
+          child: Container(
+            padding: const EdgeInsets.all(AppTheme.spacingM),
+            decoration: BoxDecoration(
+              color: Theme.of(
+                context,
+              ).colorScheme.primary.withValues(alpha: 0.1),
+              borderRadius: BorderRadius.circular(AppTheme.borderRadiusL),
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: AppTheme.spacingM,
-              ),
-              child: Container(
-                padding: const EdgeInsets.all(AppTheme.spacingM),
-                decoration: BoxDecoration(
-                  color: Theme.of(
-                    context,
-                  ).colorScheme.primary.withValues(alpha: 0.1),
-                  borderRadius: BorderRadius.circular(AppTheme.borderRadiusL),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Painel de Controle',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
                 ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Painel de Controle',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: Theme.of(context).colorScheme.primary,
-                      ),
-                    ),
-                    const SizedBox(height: AppTheme.spacingS),
-                    Text(
-                      'Bem-vindo ao sistema',
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: Theme.of(
-                          context,
-                        ).colorScheme.onSurface.withValues(alpha: 0.7),
-                      ),
-                    ),
-                  ],
+                const SizedBox(height: AppTheme.spacingS),
+                Text(
+                  'Bem-vindo ao sistema',
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: Theme.of(
+                      context,
+                    ).colorScheme.onSurface.withValues(alpha: 0.7),
+                  ),
                 ),
-              ),
+              ],
             ),
-            const SizedBox(height: AppTheme.spacingL),
-            Expanded(
-              child: ListView(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: AppTheme.spacingM,
-                ),
-                children: _buildItemList(widget.itensPrincipais),
-              ),
+          ),
+        ),
+        const SizedBox(height: AppTheme.spacingL),
+        Expanded(
+          child: ListView(
+            padding: const EdgeInsets.symmetric(
+              horizontal: AppTheme.spacingM,
             ),
-            const Padding(
-              padding: EdgeInsets.symmetric(vertical: AppTheme.spacingS),
-              child: Divider(height: 1),
+            children: _buildItemList(widget.itensPrincipais),
+          ),
+        ),
+        const Padding(
+          padding: EdgeInsets.symmetric(vertical: AppTheme.spacingS),
+          child: Divider(height: 1),
+        ),
+        Container(
+          decoration: BoxDecoration(
+            color: drawerColor,
+            borderRadius: const BorderRadius.only(
+              bottomRight: Radius.circular(AppTheme.borderRadiusXL),
             ),
-            Container(
-              decoration: BoxDecoration(
-                color: drawerColor,
-                borderRadius: const BorderRadius.only(
-                  bottomRight: Radius.circular(AppTheme.borderRadiusXL),
-                ),
-              ),
-              child: Column(
-                children: [
-                  ..._buildItemList(widget.itensInferiores, isFooterList: true),
-                  _buildFooter(context),
-                ],
-              ),
+          ),
+          child: Column(
+            children: [
+              ..._buildItemList(widget.itensInferiores, isFooterList: true),
+              _buildFooter(context),
+            ],
+          ),
+        ),
+      ],
+    );
+
+    if (widget.isPermanent) {
+      return AnimatedContainer(
+        duration: const Duration(milliseconds: 300),
+        width: AppTheme.drawerWidth,
+        decoration: BoxDecoration(
+          color: drawerColor,
+          borderRadius: const BorderRadius.only(
+            topRight: Radius.circular(AppTheme.borderRadiusXL),
+            bottomRight: Radius.circular(AppTheme.borderRadiusXL),
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.08),
+              blurRadius: 8,
+              offset: const Offset(2, 0),
             ),
           ],
+          border: Border(
+            right: BorderSide(
+              color: Theme.of(
+                context,
+              ).colorScheme.secondary.withValues(alpha: 0.1),
+              width: 1,
+            ),
+          ),
         ),
-      ),
-    );
+        child: drawerContent,
+      );
+    } else {
+      return Drawer(
+        elevation: 0,
+        backgroundColor: Colors.transparent,
+        child: drawerContent,
+      );
+    }
   }
 
   List<Widget> _buildItemList(
@@ -220,13 +228,11 @@ class _ResponsiveDrawerState extends State<ResponsiveDrawer> {
         key: PageStorageKey(item.title), // Persists expanded state
         initiallyExpanded: isGroupSelected,
         tilePadding: EdgeInsets.zero,
-        title: AbsorbPointer(
-          child: DrawerListItem(
-            item: item,
-            isSelected: isGroupSelected,
-            isFooterItem: isFooterList,
-            onTap: () {}, // The tile itself handles expansion
-          ),
+        title: DrawerListItem(
+          item: item,
+          isSelected: isGroupSelected,
+          isFooterItem: isFooterList,
+          onTap: () {}, // The tile itself handles expansion
         ),
         children: item.subItems!
             .map(

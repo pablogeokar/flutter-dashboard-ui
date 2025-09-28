@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 import 'config/sidebar_config.dart';
 import 'theme/dark.dart';
@@ -26,6 +27,14 @@ class MainApp extends StatelessWidget {
             themeMode: themeManager.currentTheme == ThemeModeType.dark
                 ? ThemeMode.dark
                 : ThemeMode.light,
+            localizationsDelegates: const [
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
+            supportedLocales: const [
+              Locale('pt', 'BR'), // Português do Brasil
+            ],
             home: const AppShell(
               itensPrincipais: SidebarConfig.itensPrincipais,
               itensInferiores: SidebarConfig.itensInferiores,
