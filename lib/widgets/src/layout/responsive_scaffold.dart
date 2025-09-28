@@ -4,14 +4,14 @@ import 'responsive_drawer.dart';
 import 'modern_app_bar.dart';
 import '/theme/theme.dart';
 
-class LayoutBaseWidget extends StatefulWidget {
+class ResponsiveScaffold extends StatefulWidget {
   final Widget Function(int) screenBuilder;
   final int currentIndex;
   final Function(int) onNavigation;
   final List<DrawerItem> itensPrincipais;
   final List<DrawerItem> itensInferiores;
 
-  const LayoutBaseWidget({
+  const ResponsiveScaffold({
     super.key,
     required this.screenBuilder,
     required this.currentIndex,
@@ -21,10 +21,10 @@ class LayoutBaseWidget extends StatefulWidget {
   });
 
   @override
-  State<LayoutBaseWidget> createState() => _LayoutBaseWidgetState();
+  State<ResponsiveScaffold> createState() => _ResponsiveScaffoldState();
 }
 
-class _LayoutBaseWidgetState extends State<LayoutBaseWidget> {
+class _ResponsiveScaffoldState extends State<ResponsiveScaffold> {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;

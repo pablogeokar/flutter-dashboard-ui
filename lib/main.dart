@@ -26,7 +26,7 @@ class MainApp extends StatelessWidget {
             themeMode: themeManager.currentTheme == ThemeModeType.dark
                 ? ThemeMode.dark
                 : ThemeMode.light,
-            home: const LayoutWidget(
+            home: const AppShell(
               itensPrincipais: SidebarConfig.itensPrincipais,
               itensInferiores: SidebarConfig.itensInferiores,
             ),

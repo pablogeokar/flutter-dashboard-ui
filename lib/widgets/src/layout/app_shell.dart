@@ -1,22 +1,22 @@
 import 'package:flutter/material.dart';
 import 'drawer_item.dart';
-import 'layout_base_widget.dart';
+import 'responsive_scaffold.dart';
 
-class LayoutWidget extends StatefulWidget {
+class AppShell extends StatefulWidget {
   final List<DrawerItem> itensPrincipais;
   final List<DrawerItem> itensInferiores;
 
-  const LayoutWidget({
+  const AppShell({
     super.key,
     required this.itensPrincipais,
     required this.itensInferiores,
   });
 
   @override
-  State<LayoutWidget> createState() => _LayoutWidgetState();
+  State<AppShell> createState() => _AppShellState();
 }
 
-class _LayoutWidgetState extends State<LayoutWidget> {
+class _AppShellState extends State<AppShell> {
   int _selectedIndex = 0;
 
   // Flattens the drawer items into a single list of navigable items.
@@ -43,7 +43,7 @@ class _LayoutWidgetState extends State<LayoutWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBaseWidget(
+    return ResponsiveScaffold(
       itensPrincipais: widget.itensPrincipais,
       itensInferiores: widget.itensInferiores,
       screenBuilder: (int index) {
