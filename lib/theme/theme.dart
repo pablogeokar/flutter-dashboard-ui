@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 
 class AppTheme {
   // Cores principais usadas como "sementes" para gerar o ColorScheme
-  static const Color primary = Color(0xFF4A90E2);
-  static const Color secondary = Color(0xFF6C5CE7);
+  static const Color primary = Color(0xFF6C91C2); // Azul
+  static const Color secondary = Color(0xFFC3C9E9); // Azul claro
 
-  // Cores para gradientes
-  static const Color gradientStart = Color(0xFF4A90E2);
-  static const Color gradientEnd = Color(0xFF6C5CE7);
+  // Cores adicionais da paleta
+  static const Color neutral1 = Color(0xFFAAABBC); // Cinza azulado
+  static const Color neutral2 = Color(0xFF8B8982); // Cinza
+  static const Color darkNeutral = Color(0xFF373F47); // Cinza escuro
 
   // Bordas arredondadas padronizadas (valores de referência para uso nos widgets)
   static const double borderRadiusS = 8.0;
@@ -24,6 +25,8 @@ class AppTheme {
   // Dimensões específicas para layout (valores de referência para uso nos widgets)
   static const double appBarHeight = 80.0;
   static const double drawerWidth = 280.0;
+  static const Color drawerBackgroundLight = Color(0xFFecf0f1);
+  static const Color drawerBackgroundDark = Color(0xFF2c3e50);
   static const double avatarSizeSmall = 22.0;
   static const double avatarSizeMedium = 40.0;
   static const double avatarSizeLarge = 60.0;

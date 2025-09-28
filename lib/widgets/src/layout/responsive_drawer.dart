@@ -1,3 +1,5 @@
+import 'package:provider/provider.dart';
+import '../../../theme/theme_manager.dart';
 import 'package:flutter/material.dart';
 import 'drawer_item.dart';
 import 'drawer_list_item.dart';
@@ -48,11 +50,15 @@ class _ResponsiveDrawerState extends State<ResponsiveDrawer> {
 
   @override
   Widget build(BuildContext context) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    final drawerColor =
+        isDarkMode ? AppTheme.drawerBackgroundDark : AppTheme.drawerBackgroundLight;
+
     return AnimatedContainer(
       duration: const Duration(milliseconds: 300),
       width: AppTheme.drawerWidth,
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surface,
+        color: drawerColor,
         borderRadius: const BorderRadius.only(
           topRight: Radius.circular(AppTheme.borderRadiusXL),
           bottomRight: Radius.circular(AppTheme.borderRadiusXL),
@@ -79,7 +85,19 @@ class _ResponsiveDrawerState extends State<ResponsiveDrawer> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            const SizedBox(height: AppTheme.appBarHeight),
+            Container(
+              padding: const EdgeInsets.symmetric(
+                vertical: AppTheme.spacingM,
+                horizontal: AppTheme.spacingS,
+              ),
+              child: Image.asset(
+                Provider.of<ThemeManager>(context).currentTheme ==
+                        ThemeModeType.dark
+                    ? 'assets/logo_dark.png'
+                    : 'assets/logo_light.png',
+                height: 200.0,
+              ),
+            ),
             Padding(
               padding: const EdgeInsets.symmetric(
                 horizontal: AppTheme.spacingM,
@@ -132,7 +150,7 @@ class _ResponsiveDrawerState extends State<ResponsiveDrawer> {
             ),
             Container(
               decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.surface,
+                color: drawerColor,
                 borderRadius: const BorderRadius.only(
                   bottomRight: Radius.circular(AppTheme.borderRadiusXL),
                 ),

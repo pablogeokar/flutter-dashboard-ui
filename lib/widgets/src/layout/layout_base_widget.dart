@@ -41,19 +41,25 @@ class _LayoutBaseWidgetState extends State<LayoutBaseWidget> {
   }
 
   Widget _buildLargeScreenLayout() {
-    return Scaffold(
-      appBar: _buildModernAppBar(isLargeScreen: true),
-      body: Row(
-        children: [
-          ResponsiveDrawer(
-            currentIndex: widget.currentIndex,
-            onTap: widget.onNavigation,
-            itensPrincipais: widget.itensPrincipais,
-            itensInferiores: widget.itensInferiores,
+    return Row(
+      children: [
+        ResponsiveDrawer(
+          currentIndex: widget.currentIndex,
+          onTap: widget.onNavigation,
+          itensPrincipais: widget.itensPrincipais,
+          itensInferiores: widget.itensInferiores,
+        ),
+        Expanded(
+          child: Column(
+            children: [
+              _buildModernAppBar(isLargeScreen: true),
+              Expanded(
+                child: _buildMainContent(isLargeScreen: true),
+              ),
+            ],
           ),
-          Expanded(child: _buildMainContent(isLargeScreen: true)),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
@@ -154,17 +160,7 @@ class _LayoutBaseWidgetState extends State<LayoutBaseWidget> {
                           );
                         },
                       ),
-                // The title is now the logo
-                title: Container(
-                  padding: const EdgeInsets.all(AppTheme.spacingS),
-                  child: ColorFiltered(
-                    colorFilter: ColorFilter.mode(
-                      Theme.of(context).colorScheme.primary,
-                      BlendMode.srcIn,
-                    ),
-                    child: Image.asset('assets/eikos.png', height: 55),
-                  ),
-                ),
+                title: null,
                 actions: [
                   // Search bar and spacer are removed
                   Container(
