@@ -8,7 +8,12 @@ class AppTheme {
   // Cores adicionais da paleta
   static const Color neutral1 = Color(0xFFAAABBC); // Cinza azulado
   static const Color neutral2 = Color(0xFF8B8982); // Cinza
-  static const Color darkNeutral = Color(0xFF373F47); // Cinza escuro
+
+  // Cores de superfície para os temas claro e escuro
+  static const Color surfaceLight = Color(0xFFbdc3c7);
+  static const Color surfaceDark = Color(0xFF373F47);
+  static const Color drawerBackgroundLight = Color(0xFFecf0f1);
+  static const Color drawerBackgroundDark = Color(0xFF2c3e50);
 
   // Bordas arredondadas padronizadas (valores de referência para uso nos widgets)
   static const double borderRadiusS = 8.0;
@@ -23,10 +28,8 @@ class AppTheme {
   static const double spacingL = 24.0;
 
   // Dimensões específicas para layout (valores de referência para uso nos widgets)
-  static const double appBarHeight = 80.0;
+  static const double appBarHeight = 60.0;
   static const double drawerWidth = 280.0;
-  static const Color drawerBackgroundLight = Color(0xFFecf0f1);
-  static const Color drawerBackgroundDark = Color(0xFF2c3e50);
   static const double avatarSizeSmall = 22.0;
   static const double avatarSizeMedium = 40.0;
   static const double avatarSizeLarge = 60.0;

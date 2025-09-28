@@ -7,7 +7,7 @@ final darkTheme = ThemeData(
     seedColor: AppTheme.primary,
     secondary: AppTheme.secondary,
     tertiary: AppTheme.neutral1,
-    surface: AppTheme.darkNeutral,
+    surface: AppTheme.surfaceDark,
     brightness: Brightness.dark,
   ),
   appBarTheme: const AppBarTheme(

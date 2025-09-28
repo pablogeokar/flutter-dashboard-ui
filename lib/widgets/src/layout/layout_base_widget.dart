@@ -85,104 +85,53 @@ class _LayoutBaseWidgetState extends State<LayoutBaseWidget> {
   }
 
   PreferredSizeWidget _buildModernAppBar({required bool isLargeScreen}) {
-    final appBarColor =
-        Theme.of(context).colorScheme.surface.withOpacity(0.7);
-
-    return PreferredSize(
-      preferredSize: const Size.fromHeight(AppTheme.appBarHeight),
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 300),
-        margin: EdgeInsets.fromLTRB(
-          isLargeScreen ? 0 : AppTheme.spacingM,
-          AppTheme.spacingM,
-          AppTheme.spacingM,
-          0,
-        ),
-        decoration: BoxDecoration(
-          color: appBarColor,
-          borderRadius: BorderRadius.circular(AppTheme.borderRadiusM),
-          border: Border(
-            bottom: BorderSide(
-              color: Theme.of(context).dividerColor.withOpacity(0.1),
-              width: 1.5,
+    return AppBar(
+      elevation: 0,
+      toolbarHeight: AppTheme.appBarHeight,
+      backgroundColor: Theme.of(context).colorScheme.surface,
+      automaticallyImplyLeading: !isLargeScreen,
+      leading: isLargeScreen
+          ? null
+          : Builder(
+              builder: (context) {
+                return IconButton(
+                  icon: const Icon(Icons.menu),
+                  onPressed: () => Scaffold.of(context).openDrawer(),
+                  iconSize: 24.0, // Reverted to a more standard size
+                );
+              },
             ),
+      title: null,
+      actions: [
+        IconButton(
+          icon: const Icon(Icons.notifications_outlined),
+          onPressed: () {},
+          iconSize: 22.0,
+          tooltip: 'Notificações',
+        ),
+        IconButton(
+          icon: Icon(
+            Provider.of<ThemeManager>(context, listen: false).currentTheme ==
+                    ThemeModeType.dark
+                ? Icons.light_mode_outlined
+                : Icons.dark_mode_outlined,
+          ),
+          onPressed: () {
+            Provider.of<ThemeManager>(context, listen: false).toggleTheme();
+          },
+          iconSize: 22.0,
+          tooltip: 'Alternar Tema',
+        ),
+        const SizedBox(width: AppTheme.spacingS),
+        const CircleAvatar(
+          radius: AppTheme.avatarSizeSmall,
+          child: Icon(
+            Icons.person_outline,
+            size: 22.0,
           ),
         ),
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(AppTheme.borderRadiusM),
-          child: BackdropFilter(
-            filter: ImageFilter.blur(
-              sigmaX: AppTheme.appBarBlur,
-              sigmaY: AppTheme.appBarBlur,
-            ),
-            child: SafeArea(
-              child: AppBar(
-                backgroundColor: Colors.transparent,
-                elevation: 0,
-                automaticallyImplyLeading: !isLargeScreen,
-                leading: isLargeScreen
-                    ? null
-                    : Builder(
-                        builder: (context) {
-                          return Container(
-                            margin: const EdgeInsets.all(AppTheme.spacingS),
-                            decoration: BoxDecoration(
-                              color: Theme.of(context)
-                                  .colorScheme
-                                  .surfaceContainerHighest,
-                              borderRadius:
-                                  BorderRadius.circular(AppTheme.borderRadiusM),
-                            ),
-                            child: IconButton(
-                              icon: const Icon(Icons.menu),
-                              onPressed: () =>
-                                  Scaffold.of(context).openDrawer(),
-                              style: ButtonStyle(
-                                iconSize:
-                                    WidgetStateProperty.all<double>(20.0),
-                              ),
-                            ),
-                          );
-                        },
-                      ),
-                title: null,
-                actions: [
-                  IconButton(
-                    icon: const Icon(Icons.notifications_outlined),
-                    onPressed: () {},
-                    iconSize: 22.0,
-                    tooltip: 'Notificações',
-                  ),
-                  IconButton(
-                    icon: Icon(
-                      Provider.of<ThemeManager>(context, listen: false)
-                                  .currentTheme ==
-                              ThemeModeType.dark
-                          ? Icons.light_mode_outlined
-                          : Icons.dark_mode_outlined,
-                    ),
-                    onPressed: () {
-                      Provider.of<ThemeManager>(context, listen: false)
-                          .toggleTheme();
-                    },
-                    iconSize: 22.0,
-                    tooltip: 'Alternar Tema',
-                  ),
-                  const SizedBox(width: AppTheme.spacingS),
-                  const CircleAvatar(
-                    radius: AppTheme.avatarSizeSmall,
-                    child: Icon(
-                      Icons.person_outline,
-                      size: 22.0,
-                    ),
-                  ),
-                  const SizedBox(width: AppTheme.spacingM),
-                ],
-              ),
-            ),
-          ),
-        ),
-      ),
+        const SizedBox(width: AppTheme.spacingM),
+      ],
     );
   }
 
