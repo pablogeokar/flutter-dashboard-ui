@@ -25,9 +25,9 @@ void main() {
     expect(materialApp.themeMode, ThemeMode.light);
 
     // Verifica se o ícone para ativar o modo escuro está visível
-    final darkModeIcon = find.byIcon(Icons.dark_mode);
+    final darkModeIcon = find.byIcon(Icons.dark_mode_outlined);
     expect(darkModeIcon, findsOneWidget);
-    expect(find.byIcon(Icons.light_mode), findsNothing);
+    expect(find.byIcon(Icons.light_mode_outlined), findsNothing);
 
     // 3. Simula o toque no botão para trocar para o Tema Escuro
     await tester.tap(darkModeIcon);
@@ -38,9 +38,9 @@ void main() {
     expect(materialApp.themeMode, ThemeMode.dark);
 
     // Verifica se o ícone para ativar o modo claro está visível
-    final lightModeIcon = find.byIcon(Icons.light_mode);
+    final lightModeIcon = find.byIcon(Icons.light_mode_outlined);
     expect(lightModeIcon, findsOneWidget);
-    expect(find.byIcon(Icons.dark_mode), findsNothing);
+    expect(find.byIcon(Icons.dark_mode_outlined), findsNothing);
 
     // 5. Simula o toque para voltar ao Tema Claro
     await tester.tap(lightModeIcon);
@@ -49,7 +49,7 @@ void main() {
     // 6. Verifica se o tema voltou para Claro
     materialApp = tester.widget<MaterialApp>(find.byType(MaterialApp));
     expect(materialApp.themeMode, ThemeMode.light);
-    expect(find.byIcon(Icons.dark_mode), findsOneWidget);
-    expect(find.byIcon(Icons.light_mode), findsNothing);
+    expect(find.byIcon(Icons.dark_mode_outlined), findsOneWidget);
+    expect(find.byIcon(Icons.light_mode_outlined), findsNothing);
   });
 }

@@ -38,18 +38,21 @@ class ModernAppBar extends StatelessWidget implements PreferredSizeWidget {
           iconSize: 22.0,
           tooltip: 'Notificações',
         ),
-        IconButton(
-          icon: Icon(
-            Provider.of<ThemeManager>(context, listen: false).currentTheme ==
-                    ThemeModeType.dark
-                ? Icons.light_mode_outlined
-                : Icons.dark_mode_outlined,
-          ),
-          onPressed: () {
-            Provider.of<ThemeManager>(context, listen: false).toggleTheme();
+        Consumer<ThemeManager>(
+          builder: (context, themeManager, child) {
+            return IconButton(
+              icon: Icon(
+                themeManager.currentTheme == ThemeModeType.dark
+                    ? Icons.light_mode_outlined
+                    : Icons.dark_mode_outlined,
+              ),
+              onPressed: () {
+                themeManager.toggleTheme();
+              },
+              iconSize: 22.0,
+              tooltip: 'Alternar Tema',
+            );
           },
-          iconSize: 22.0,
-          tooltip: 'Alternar Tema',
         ),
         const SizedBox(width: AppTheme.spacingS),
         const CircleAvatar(
