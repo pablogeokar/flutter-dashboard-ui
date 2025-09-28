@@ -59,9 +59,7 @@ class _DateInputFieldState extends State<DateInputField> {
         // Para forçar o tema claro no picker, como no original
         return Theme(
           data: ThemeData.light().copyWith(
-            colorScheme: ColorScheme.fromSeed(
-              seedColor: AppTheme.primaryLight,
-            ),
+            colorScheme: ColorScheme.fromSeed(seedColor: AppTheme.primaryLight),
           ),
           child: child!,
         );
@@ -81,9 +79,13 @@ class _DateInputFieldState extends State<DateInputField> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final isDarkMode = theme.brightness == Brightness.dark;
-    final backgroundColor = isDarkMode ? AppTheme.surfaceDark : AppTheme.surfaceLight;
+    final backgroundColor = isDarkMode
+        ? AppTheme.surfaceDark
+        : AppTheme.surfaceLight;
     final borderColor = isDarkMode ? AppTheme.neutral1 : AppTheme.neutral2;
-    final textColor = isDarkMode ? AppTheme.secondaryDark : AppTheme.secondaryLight;
+    final textColor = isDarkMode
+        ? AppTheme.secondaryDark
+        : AppTheme.secondaryLight;
     final errorColor = Colors.red;
 
     return Column(
@@ -109,7 +111,7 @@ class _DateInputFieldState extends State<DateInputField> {
             ),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.05),
+                color: Colors.black.withValues(alpha: 0.05),
                 blurRadius: 4,
                 offset: const Offset(0, 2),
               ),
@@ -121,8 +123,15 @@ class _DateInputFieldState extends State<DateInputField> {
             onTap: () => _pickDate(context),
             decoration: InputDecoration(
               hintText: 'Selecione uma data',
-              hintStyle: GoogleFonts.inter(fontSize: 14, color: AppTheme.neutral1),
-              prefixIcon: Icon(Icons.calendar_today, color: textColor, size: 18),
+              hintStyle: GoogleFonts.inter(
+                fontSize: 14,
+                color: AppTheme.neutral1,
+              ),
+              prefixIcon: Icon(
+                Icons.calendar_today,
+                color: textColor,
+                size: 18,
+              ),
               contentPadding: const EdgeInsets.symmetric(
                 horizontal: AppTheme.spacingM,
                 vertical: AppTheme.spacingS,
@@ -137,7 +146,10 @@ class _DateInputFieldState extends State<DateInputField> {
         ),
         if (widget.errorText != null && widget.errorText!.isNotEmpty)
           Padding(
-            padding: const EdgeInsets.only(top: AppTheme.spacingS, left: AppTheme.spacingS),
+            padding: const EdgeInsets.only(
+              top: AppTheme.spacingS,
+              left: AppTheme.spacingS,
+            ),
             child: Text(
               widget.errorText!,
               style: GoogleFonts.inter(

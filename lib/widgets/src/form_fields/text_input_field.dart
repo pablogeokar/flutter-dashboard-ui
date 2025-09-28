@@ -87,7 +87,7 @@ class _TextInputFieldState extends State<TextInputField> {
             ),
             boxShadow: [
               BoxShadow(
-                color: colorScheme.primary.withOpacity(0.1),
+                color: colorScheme.primary.withValues(alpha: 0.1),
                 blurRadius: 4.0,
                 spreadRadius: 1.0,
               ),

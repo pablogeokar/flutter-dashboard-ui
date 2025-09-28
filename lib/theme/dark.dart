@@ -8,6 +8,7 @@ final darkTheme = ThemeData(
     bodyColor: AppTheme.secondaryDark,
     displayColor: AppTheme.secondaryDark,
   ),
+  scaffoldBackgroundColor: Colors.transparent,
   colorScheme: ColorScheme.fromSeed(
     seedColor: AppTheme.primaryDark,
     secondary: AppTheme.secondaryDark,

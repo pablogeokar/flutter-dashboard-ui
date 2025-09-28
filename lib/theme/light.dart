@@ -8,6 +8,7 @@ final lightTheme = ThemeData(
     bodyColor: AppTheme.secondaryLight,
     displayColor: AppTheme.secondaryLight,
   ),
+  scaffoldBackgroundColor: Colors.transparent,
   colorScheme: ColorScheme.fromSeed(
     seedColor: AppTheme.primaryLight,
     secondary: AppTheme.secondaryLight,

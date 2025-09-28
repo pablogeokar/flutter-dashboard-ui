@@ -32,9 +32,7 @@ class MainApp extends StatelessWidget {
               GlobalWidgetsLocalizations.delegate,
               GlobalCupertinoLocalizations.delegate,
             ],
-            supportedLocales: const [
-              Locale('pt', 'BR'), // Português do Brasil
-            ],
+            supportedLocales: const [Locale('pt')],
             home: const AppShell(
               itensPrincipais: SidebarConfig.itensPrincipais,
               itensInferiores: SidebarConfig.itensInferiores,

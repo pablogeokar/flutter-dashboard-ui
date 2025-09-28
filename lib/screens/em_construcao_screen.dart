@@ -20,20 +20,22 @@ class EmConstrucaoPlaceholder extends StatelessWidget {
                 size: 80,
                 color: Theme.of(context).colorScheme.primary,
               ),
-              SizedBox(height: AppTheme.spacingL), // 24 é 1.5 vezes spacingM (16)
+              SizedBox(
+                height: AppTheme.spacingL,
+              ), // 24 é 1.5 vezes spacingM (16)
               Text(
                 'Em Construção',
                 style: Theme.of(context).textTheme.headlineLarge?.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ), // Aumentando o tamanho da fonte
+                  fontWeight: FontWeight.bold,
+                ), // Aumentando o tamanho da fonte
                 textAlign: TextAlign.center,
               ),
               SizedBox(height: AppTheme.spacingM),
               Text(
                 'Esta funcionalidade está sendo desenvolvida e estará disponível em breve.',
                 style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                      color: Theme.of(context).colorScheme.onSurfaceVariant,
-                    ),
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
+                ),
                 textAlign: TextAlign.center,
               ),
               SizedBox(

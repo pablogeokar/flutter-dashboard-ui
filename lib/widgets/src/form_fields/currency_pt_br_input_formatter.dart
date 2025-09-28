@@ -6,7 +6,9 @@ import 'package:flutter/services.dart';
 class CurrencyPtBrInputFormatter extends TextInputFormatter {
   @override
   TextEditingValue formatEditUpdate(
-      TextEditingValue oldValue, TextEditingValue newValue) {
+    TextEditingValue oldValue,
+    TextEditingValue newValue,
+  ) {
     // 1. Obter apenas os dígitos
     String digitsOnly = newValue.text.replaceAll(RegExp(r'[^0-9]'), '');
 
@@ -18,13 +20,13 @@ class CurrencyPtBrInputFormatter extends TextInputFormatter {
     // 2. Remover zeros à esquerda que não sejam significativos
     // Mantém zeros se o valor for menor que 1,00 (ex: 0,50)
     if (digitsOnly.length > 1 && digitsOnly.startsWith('0')) {
-       if (digitsOnly.length < 3) {
+      if (digitsOnly.length < 3) {
         // não faz nada, permite 01, 05 etc
-       } else {
+      } else {
         digitsOnly = digitsOnly.replaceFirst(RegExp(r'^0+'), '');
-       }
+      }
     }
-    
+
     // Garante que o valor seja tratado corretamente (ex: 5 -> 0,05)
     while (digitsOnly.length < 3) {
       digitsOnly = '0$digitsOnly';
@@ -38,7 +40,7 @@ class CurrencyPtBrInputFormatter extends TextInputFormatter {
     // 5. Adicionar separadores de milhar
     final re = RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))');
     integerPart = integerPart.replaceAllMapped(re, (Match m) => '${m[1]}.');
-    
+
     if (integerPart.isEmpty) {
       integerPart = '0';
     }

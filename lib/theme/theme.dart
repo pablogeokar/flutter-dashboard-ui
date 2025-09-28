@@ -5,11 +5,15 @@ class AppTheme {
 
   // Cores Primárias (usadas como semente para o ColorScheme)
   static const Color primaryLight = Color(0xFF3a99e8); // Azul vibrante da logo
-  static const Color primaryDark = Color(0xFF5aa6f2);  // Azul um pouco mais claro para o modo escuro
+  static const Color primaryDark = Color(
+    0xFF5aa6f2,
+  ); // Azul um pouco mais claro para o modo escuro
 
   // Cores Secundárias
   static const Color secondaryLight = Color(0xFF212529); // Cinza escuro da logo
-  static const Color secondaryDark = Color(0xFFdee2e6); // Cinza claro para textos no modo escuro
+  static const Color secondaryDark = Color(
+    0xFFdee2e6,
+  ); // Cinza claro para textos no modo escuro
 
   // Cores de Superfície (fundo principal da aplicação)
   static const Color surfaceLight = Color(0xFFf8f9fa);
