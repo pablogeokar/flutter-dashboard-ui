@@ -50,12 +50,13 @@ class _LayoutBaseWidgetState extends State<LayoutBaseWidget> {
           itensInferiores: widget.itensInferiores,
         ),
         Expanded(
-          child: Column(
+          child: Stack(
             children: [
-              _buildModernAppBar(isLargeScreen: true),
-              Expanded(
+              Padding(
+                padding: const EdgeInsets.only(top: AppTheme.appBarHeight),
                 child: _buildMainContent(isLargeScreen: true),
               ),
+              _buildModernAppBar(isLargeScreen: true),
             ],
           ),
         ),
@@ -65,6 +66,7 @@ class _LayoutBaseWidgetState extends State<LayoutBaseWidget> {
 
   Widget _buildSmallScreenLayout() {
     return Scaffold(
+      extendBodyBehindAppBar: true,
       appBar: _buildModernAppBar(isLargeScreen: false),
       drawer: ResponsiveDrawer(
         currentIndex: widget.currentIndex,
@@ -77,8 +79,8 @@ class _LayoutBaseWidgetState extends State<LayoutBaseWidget> {
         itensPrincipais: widget.itensPrincipais,
         itensInferiores: widget.itensInferiores,
       ),
-      body: Container(
-        padding: const EdgeInsets.only(top: AppTheme.spacingS),
+      body: Padding(
+        padding: const EdgeInsets.only(top: AppTheme.appBarHeight),
         child: _buildMainContent(isLargeScreen: false),
       ),
     );
@@ -88,7 +90,7 @@ class _LayoutBaseWidgetState extends State<LayoutBaseWidget> {
     return AppBar(
       elevation: 0,
       toolbarHeight: AppTheme.appBarHeight,
-      backgroundColor: Theme.of(context).colorScheme.surface,
+      backgroundColor: Colors.transparent,
       automaticallyImplyLeading: !isLargeScreen,
       leading: isLargeScreen
           ? null
