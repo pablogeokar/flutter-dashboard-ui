@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../../theme/theme.dart';
+import '../../../theme/theme.dart';
 
 /// Widget personalizado para entrada de data.
-/// 
+///
 /// Este widget fornece uma interface visualmente consistente com o tema do aplicativo,
 /// incluindo bordas arredondadas, sombras sutis e suporte a temas claro/escuro.
 /// Ele exibe um campo de texto com um ícone de calendário à direita e abre um seletor de data
@@ -41,9 +41,13 @@ class _DateInputFieldState extends State<DateInputField> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final isDarkMode = theme.brightness == Brightness.dark;
-    final backgroundColor = isDarkMode ? AppTheme.surfaceDark : AppTheme.surfaceLight;
+    final backgroundColor = isDarkMode
+        ? AppTheme.surfaceDark
+        : AppTheme.surfaceLight;
     final borderColor = isDarkMode ? AppTheme.neutral1 : AppTheme.neutral2;
-    final textColor = isDarkMode ? AppTheme.secondaryDark : AppTheme.secondaryLight;
+    final textColor = isDarkMode
+        ? AppTheme.secondaryDark
+        : AppTheme.secondaryLight;
     final errorColor = Colors.red;
 
     return Column(
@@ -62,7 +66,9 @@ class _DateInputFieldState extends State<DateInputField> {
           decoration: BoxDecoration(
             color: backgroundColor,
             borderRadius: BorderRadius.circular(AppTheme.borderRadiusL),
-            border: Border.all(color: widget.errorText != null ? errorColor : borderColor),
+            border: Border.all(
+              color: widget.errorText != null ? errorColor : borderColor,
+            ),
             boxShadow: [
               BoxShadow(
                 color: Colors.black.withOpacity(0.05),
@@ -72,7 +78,8 @@ class _DateInputFieldState extends State<DateInputField> {
             ],
           ),
           child: TextFormField(
-            readOnly: true, // O campo é somente leitura; a data é selecionada via picker
+            readOnly:
+                true, // O campo é somente leitura; a data é selecionada via picker
             onTap: () async {
               if (!widget.enabled) return;
               final pickedDate = await showDatePicker(
@@ -83,7 +90,9 @@ class _DateInputFieldState extends State<DateInputField> {
                 builder: (context, child) {
                   return Theme(
                     data: ThemeData.light().copyWith(
-                      colorScheme: ColorScheme.fromSeed(seedColor: AppTheme.primaryLight),
+                      colorScheme: ColorScheme.fromSeed(
+                        seedColor: AppTheme.primaryLight,
+                      ),
                     ),
                     child: child!,
                   );
@@ -119,7 +128,9 @@ class _DateInputFieldState extends State<DateInputField> {
                           builder: (context, child) {
                             return Theme(
                               data: ThemeData.light().copyWith(
-                                colorScheme: ColorScheme.fromSeed(seedColor: AppTheme.primaryLight),
+                                colorScheme: ColorScheme.fromSeed(
+                                  seedColor: AppTheme.primaryLight,
+                                ),
                               ),
                               child: child!,
                             );
@@ -143,15 +154,9 @@ class _DateInputFieldState extends State<DateInputField> {
               ),
               border: InputBorder.none,
               errorText: widget.errorText,
-              errorStyle: GoogleFonts.inter(
-                fontSize: 12,
-                color: errorColor,
-              ),
+              errorStyle: GoogleFonts.inter(fontSize: 12, color: errorColor),
             ),
-            style: GoogleFonts.inter(
-              fontSize: 14,
-              color: textColor,
-            ),
+            style: GoogleFonts.inter(fontSize: 14, color: textColor),
             enabled: widget.enabled,
           ),
         ),

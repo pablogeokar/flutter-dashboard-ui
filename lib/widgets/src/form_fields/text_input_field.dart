@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../theme/theme.dart';
+import '../../../theme/theme.dart';
 
 class TextInputField extends StatefulWidget {
   final String hintText;
@@ -123,4 +123,3 @@ class _TextInputFieldState extends State<TextInputField> {
     );
   }
 }
-

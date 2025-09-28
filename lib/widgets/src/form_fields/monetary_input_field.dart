@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../../theme/theme.dart';
+import '../../../theme/theme.dart';
 import 'currency_pt_br_input_formatter.dart';
 
 /// Widget personalizado para entrada de valores monetários.
@@ -56,9 +56,13 @@ class _MonetaryInputFieldState extends State<MonetaryInputField> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final isDarkMode = theme.brightness == Brightness.dark;
-    final backgroundColor = isDarkMode ? AppTheme.surfaceDark : AppTheme.surfaceLight;
+    final backgroundColor = isDarkMode
+        ? AppTheme.surfaceDark
+        : AppTheme.surfaceLight;
     final borderColor = isDarkMode ? AppTheme.neutral1 : AppTheme.neutral2;
-    final textColor = isDarkMode ? AppTheme.secondaryDark : AppTheme.secondaryLight;
+    final textColor = isDarkMode
+        ? AppTheme.secondaryDark
+        : AppTheme.secondaryLight;
     final errorColor = Colors.red;
 
     return Column(
@@ -78,9 +82,10 @@ class _MonetaryInputFieldState extends State<MonetaryInputField> {
             color: backgroundColor,
             borderRadius: BorderRadius.circular(AppTheme.borderRadiusL),
             border: Border.all(
-                color: widget.errorText != null && widget.errorText!.isNotEmpty
-                    ? errorColor
-                    : borderColor),
+              color: widget.errorText != null && widget.errorText!.isNotEmpty
+                  ? errorColor
+                  : borderColor,
+            ),
             boxShadow: [
               BoxShadow(
                 color: Colors.black.withOpacity(0.05),
@@ -95,9 +100,15 @@ class _MonetaryInputFieldState extends State<MonetaryInputField> {
             style: GoogleFonts.inter(fontSize: 14, color: textColor),
             decoration: InputDecoration(
               hintText: widget.hintText,
-              hintStyle: GoogleFonts.inter(fontSize: 14, color: AppTheme.neutral1),
+              hintStyle: GoogleFonts.inter(
+                fontSize: 14,
+                color: AppTheme.neutral1,
+              ),
               prefixIcon: Padding(
-                padding: const EdgeInsets.only(left: AppTheme.spacingM, right: AppTheme.spacingS),
+                padding: const EdgeInsets.only(
+                  left: AppTheme.spacingM,
+                  right: AppTheme.spacingS,
+                ),
                 child: Text(
                   'R\$ ',
                   style: GoogleFonts.inter(
@@ -107,7 +118,10 @@ class _MonetaryInputFieldState extends State<MonetaryInputField> {
                   ),
                 ),
               ),
-              prefixIconConstraints: const BoxConstraints(minWidth: 0, minHeight: 0),
+              prefixIconConstraints: const BoxConstraints(
+                minWidth: 0,
+                minHeight: 0,
+              ),
               contentPadding: const EdgeInsets.symmetric(
                 vertical: AppTheme.spacingS,
               ).copyWith(right: AppTheme.spacingM),
@@ -124,7 +138,9 @@ class _MonetaryInputFieldState extends State<MonetaryInputField> {
             onChanged: (value) {
               if (widget.onChanged != null) {
                 // Envia o valor numérico puro (ex: "1234.56")
-                final numericString = value.replaceAll('.', '').replaceAll(',', '.');
+                final numericString = value
+                    .replaceAll('.', '')
+                    .replaceAll(',', '.');
                 widget.onChanged!(numericString);
               }
             },
@@ -133,7 +149,10 @@ class _MonetaryInputFieldState extends State<MonetaryInputField> {
         ),
         if (widget.errorText != null && widget.errorText!.isNotEmpty)
           Padding(
-            padding: const EdgeInsets.only(top: AppTheme.spacingS, left: AppTheme.spacingS),
+            padding: const EdgeInsets.only(
+              top: AppTheme.spacingS,
+              left: AppTheme.spacingS,
+            ),
             child: Text(
               widget.errorText!,
               style: GoogleFonts.inter(

@@ -1,3 +1,4 @@
+import 'package:dashboard_ui/screens/form_test_screen.dart';
 import 'package:flutter/material.dart';
 import '../screens/em_construcao_screen.dart';
 import '../screens/teste_screen.dart';
@@ -19,7 +20,7 @@ class SidebarConfig {
         DrawerItem(
           title: 'Clientes',
           icon: Icons.people,
-          screen: EmConstrucaoPlaceholder(),
+          screen: FormTestScreen(),
         ),
         DrawerItem(
           title: 'Fornecedores',

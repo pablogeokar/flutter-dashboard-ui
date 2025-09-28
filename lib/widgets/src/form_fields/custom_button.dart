@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import '../../theme/theme.dart';
+import '../../../theme/theme.dart';
 
 /// Widget de botão personalizado.
-/// 
+///
 /// Este botão oferece um estilo consistente com a identidade visual do dashboard,
 /// incluindo bordas arredondadas, sombras sutis e suporte a temas claro/escuro.
 class CustomButton extends StatelessWidget {
@@ -39,8 +39,12 @@ class CustomButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final isDarkMode = theme.brightness == Brightness.dark;
-    final primaryColor = isDarkMode ? AppTheme.primaryDark : AppTheme.primaryLight;
-    final secondaryColor = isDarkMode ? AppTheme.secondaryDark : AppTheme.secondaryLight;
+    final primaryColor = isDarkMode
+        ? AppTheme.primaryDark
+        : AppTheme.primaryLight;
+    final secondaryColor = isDarkMode
+        ? AppTheme.secondaryDark
+        : AppTheme.secondaryLight;
 
     return SizedBox(
       width: width,
@@ -53,7 +57,8 @@ class CustomButton extends StatelessWidget {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(borderRadius),
           ),
-          padding: padding ??
+          padding:
+              padding ??
               const EdgeInsets.symmetric(
                 horizontal: AppTheme.spacingL,
                 vertical: AppTheme.spacingS,
@@ -63,19 +68,18 @@ class CustomButton extends StatelessWidget {
         ),
         child: isLoading
             ? showLoadingIndicator
-                ? const CircularProgressIndicator(
-                    valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-                  )
-                : Text(text, style: TextStyle(color: textColor ?? secondaryColor))
+                  ? const CircularProgressIndicator(
+                      valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                    )
+                  : Text(
+                      text,
+                      style: TextStyle(color: textColor ?? secondaryColor),
+                    )
             : Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   if (icon != null)
-                    Icon(
-                      icon,
-                      color: textColor ?? secondaryColor,
-                      size: 18,
-                    ),
+                    Icon(icon, color: textColor ?? secondaryColor, size: 18),
                   if (icon != null) const SizedBox(width: 8.0),
                   Text(
                     text,
