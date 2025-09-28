@@ -4,6 +4,11 @@ import 'responsive_drawer.dart';
 import 'modern_app_bar.dart';
 import '/theme/theme.dart';
 
+/// O `ResponsiveScaffold` é um widget presentacional (ou "burro").
+///
+/// Sua única responsabilidade é construir a estrutura visual da página (o `Scaffold`)
+/// de forma responsiva, decidindo entre um layout para telas grandes ou pequenas.
+/// Ele não gerencia nenhum estado, apenas recebe os dados e os exibe.
 class ResponsiveScaffold extends StatefulWidget {
   final Widget Function(int) screenBuilder;
   final int currentIndex;

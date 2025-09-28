@@ -2,6 +2,11 @@ import 'package:flutter/material.dart';
 import 'drawer_item.dart';
 import 'responsive_scaffold.dart';
 
+/// O widget `AppShell` é o "invólucro" principal da aplicação.
+///
+/// Ele é responsável por gerenciar o estado da navegação (qual tela está
+/// selecionada) e passar essa informação para o `ResponsiveScaffold` construir
+/// a interface.
 class AppShell extends StatefulWidget {
   final List<DrawerItem> itensPrincipais;
   final List<DrawerItem> itensInferiores;
