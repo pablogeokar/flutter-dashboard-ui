@@ -89,15 +89,15 @@ lib/
 
 Para garantir um código modular e de fácil manutenção, os widgets devem ser organizados em "módulos" autocontidos.
 
--   **Diretório `src`:** O código interno de um módulo de widget (widgets auxiliares, lógica interna, etc.) deve ser colocado dentro de um subdiretório `src`. Ex: `lib/widgets/nome_do_modulo/src/`.
--   **Arquivo Barril (Barrel File):** Cada módulo deve ter um arquivo na sua raiz (ex: `lib/widgets/app_layout.dart`) que exporta apenas os widgets que compõem sua API pública.
--   **Importações:** As telas e outros widgets fora do módulo devem importar **apenas** o arquivo barril, e nunca importar arquivos de dentro do diretório `src` de outro módulo diretamente.
+- **Diretório `src`:** O código interno de um módulo de widget (widgets auxiliares, lógica interna, etc.) deve ser colocado dentro de um subdiretório `src`. Ex: `lib/widgets/nome_do_modulo/src/`.
+- **Arquivo Barril (Barrel File):** Cada módulo deve ter um arquivo na sua raiz (ex: `lib/widgets/app_layout.dart`) que exporta apenas os widgets que compõem sua API pública.
+- **Importações:** As telas e outros widgets fora do módulo devem importar **apenas** o arquivo barril, e nunca importar arquivos de dentro do diretório `src` de outro módulo diretamente.
 
 ### Comentários e Documentação
 
--   **Código Auto-Documentado:** A prioridade é escrever um código claro e legível, com nomes de variáveis, funções e classes que descrevam suas próprias finalidades. O bom código deve ser a principal forma de documentação.
--   **Comente o "Porquê", não o "O Quê":** Evite comentários que apenas repetem o que o código já está fazendo. Use comentários para explicar a razão por trás de uma lógica complexa, uma decisão de arquitetura não óbvia ou uma solução alternativa para um problema específico.
--   **Comentários de Alto Nível:** É útil adicionar um breve comentário no topo de classes ou widgets importantes para descrever sua responsabilidade principal dentro da aplicação (ex: "Este widget gerencia o estado da navegação principal").
+- **Código Auto-Documentado:** A prioridade é escrever um código claro e legível, com nomes de variáveis, funções e classes que descrevam suas próprias finalidades. O bom código deve ser a principal forma de documentação.
+- **Comente o "Porquê", não o "O Quê":** Evite comentários que apenas repetem o que o código já está fazendo. Use comentários para explicar a razão por trás de uma lógica complexa, uma decisão de arquitetura não óbvia ou uma solução alternativa para um problema específico.
+- **Comentários de Alto Nível:** É útil adicionar um breve comentário no topo de classes ou widgets importantes para descrever sua responsabilidade principal dentro da aplicação (ex: "Este widget gerencia o estado da navegação principal").
 
 ### Navegação
 
@@ -129,3 +129,17 @@ Para garantir um código modular e de fácil manutenção, os widgets devem ser 
 - Manter consistência de estilos usando as constantes do `AppTheme`.
 - Organizar widgets em estruturas modulares com arquivos `src` e barril.
 - Documentar código usando comentários em português do Brasil.
+
+## Dívidas Técnicas e Refatorações Futuras
+
+### Refatorar `ModernAppBar` no `ResponsiveScaffold` para evitar interceptação de eventos em telas grandes.
+
+- **Problema Anterior:** Em telas grandes, a `FormTestScreen` (e potencialmente outras telas) não permitia interação com os campos de formulário. Após investigação, descobriu-se que a `ModernAppBar`, quando posicionada no `Stack` do `_buildLargeScreenLayout()` do `ResponsiveScaffold`, estava interceptando os eventos de toque do conteúdo principal, mesmo sendo transparente e tendo uma altura definida.
+- **Solução Temporária Aplicada:** A `ModernAppBar` foi removida temporariamente do `_buildLargeScreenLayout()` no `responsive_scaffold.dart` para permitir a interação com os campos de formulário.
+- **Urgência e Solução Adequada:**
+  - **Urgência:** Média. A funcionalidade principal está comprometida sem a `AppBar`. É crucial restaurar a `AppBar` sem reintroduzir o problema de interação.
+  - **Solução Adequada:** A `ModernAppBar` precisa ser reintroduzida no `_buildLargeScreenLayout()` de forma que não interfira com os eventos de toque do conteúdo principal. Isso pode envolver:
+    - **Revisar o `Stack`:** Garantir que o `Stack` esteja configurado corretamente para que a `AppBar` não se expanda além de sua área ou que seus eventos de toque não se propaguem para baixo.
+    - **Usar `Positioned`:** Posicionar a `ModernAppBar` explicitamente no `Stack` com `Positioned(top: 0, left: 0, right: 0, child: ModernAppBar(...))` para controlar sua área.
+    - **Considerar `IgnorePointer`:** Envolver a `ModernAppBar` em um `IgnorePointer` se ela for puramente visual e não precisar de interação (exceto para seus próprios botões, que teriam seus próprios `onPressed`). No entanto, isso pode ser complexo se os botões da `AppBar` precisarem ser clicáveis.
+    - **Reavaliar a estrutura do `ResponsiveScaffold`:** Se o `Stack` continuar a ser problemático, pode ser necessário repensar a forma como a `AppBar` e o conteúdo principal são combinados no layout de tela grande.

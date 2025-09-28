@@ -129,3 +129,17 @@ Para garantir um código modular e de fácil manutenção, os widgets devem ser 
 - Manter consistência de estilos usando as constantes do `AppTheme`.
 - Organizar widgets em estruturas modulares com arquivos `src` e barril.
 - Documentar código usando comentários em português do Brasil.
+
+## Dívidas Técnicas e Refatorações Futuras
+
+### Refatorar `ModernAppBar` no `ResponsiveScaffold` para evitar interceptação de eventos em telas grandes.
+
+- **Problema Anterior:** Em telas grandes, a `FormTestScreen` (e potencialmente outras telas) não permitia interação com os campos de formulário. Após investigação, descobriu-se que a `ModernAppBar`, quando posicionada no `Stack` do `_buildLargeScreenLayout()` do `ResponsiveScaffold`, estava interceptando os eventos de toque do conteúdo principal, mesmo sendo transparente e tendo uma altura definida.
+- **Solução Temporária Aplicada:** A `ModernAppBar` foi removida temporariamente do `_buildLargeScreenLayout()` no `responsive_scaffold.dart` para permitir a interação com os campos de formulário.
+- **Urgência e Solução Adequada:**
+  - **Urgência:** Média. A funcionalidade principal está comprometida sem a `AppBar`. É crucial restaurar a `AppBar` sem reintroduzir o problema de interação.
+  - **Solução Adequada:** A `ModernAppBar` precisa ser reintroduzida no `_buildLargeScreenLayout()` de forma que não interfira com os eventos de toque do conteúdo principal. Isso pode envolver:
+    - **Revisar o `Stack`:** Garantir que o `Stack` esteja configurado corretamente para que a `AppBar` não se expanda além de sua área ou que seus eventos de toque não se propaguem para baixo.
+    - **Usar `Positioned`:** Posicionar a `ModernAppBar` explicitamente no `Stack` com `Positioned(top: 0, left: 0, right: 0, child: ModernAppBar(...))` para controlar sua área.
+    - **Considerar `IgnorePointer`:** Envolver a `ModernAppBar` em um `IgnorePointer` se ela for puramente visual e não precisar de interação (exceto para seus próprios botões, que teriam seus próprios `onPressed`). No entanto, isso pode ser complexo se os botões da `AppBar` precisarem ser clicáveis.
+    - **Reavaliar a estrutura do `ResponsiveScaffold`:** Se o `Stack` continuar a ser problemático, pode ser necessário repensar a forma como a `AppBar` e o conteúdo principal são combinados no layout de tela grande.
