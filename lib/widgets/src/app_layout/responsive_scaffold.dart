@@ -61,11 +61,20 @@ class _ResponsiveScaffoldState extends State<ResponsiveScaffold> {
         Expanded(
           child: Stack(
             children: [
+              // Conteúdo principal da tela
               Padding(
-                padding: const EdgeInsets.only(top: AppTheme.appBarHeight),
-                child: _buildMainContent(isLargeScreen: true),
+                padding: const EdgeInsets.only(top: kToolbarHeight), // Adiciona padding para a AppBar
+                child: _buildMainContent(isLargeScreen: true), // Usar _buildMainContent
               ),
-              // const ModernAppBar(isLargeScreen: true), // Removido temporariamente para depuração
+              // A ModernAppBar é reintroduzida aqui, posicionada no topo para não interceptar eventos do corpo.
+              Positioned(
+                top: 0,
+                left: 0,
+                right: 0,
+                child: ModernAppBar(
+                  isLargeScreen: true, // Adicionar isLargeScreen
+                ),
+              ),
             ],
           ),
         ),
