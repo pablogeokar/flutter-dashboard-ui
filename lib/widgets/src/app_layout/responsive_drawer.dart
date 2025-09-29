@@ -1,9 +1,9 @@
-import 'package:provider/provider.dart';
-import '../../../theme/theme_manager.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '/theme/theme_manager.dart';
 import 'drawer_item.dart';
 import 'drawer_list_item.dart';
-import '../../../theme/theme.dart';
+import '/theme/theme.dart';
 
 class ResponsiveDrawer extends StatefulWidget {
   final int currentIndex;
@@ -53,8 +53,9 @@ class _ResponsiveDrawerState extends State<ResponsiveDrawer> {
   @override
   Widget build(BuildContext context) {
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
-    final drawerColor =
-        isDarkMode ? AppTheme.drawerBackgroundDark : AppTheme.drawerBackgroundLight;
+    final drawerColor = isDarkMode
+        ? AppTheme.drawerBackgroundDark
+        : AppTheme.drawerBackgroundLight;
 
     final Widget drawerContent = Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -73,9 +74,7 @@ class _ResponsiveDrawerState extends State<ResponsiveDrawer> {
           ),
         ),
         Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: AppTheme.spacingM,
-          ),
+          padding: const EdgeInsets.symmetric(horizontal: AppTheme.spacingM),
           child: Container(
             padding: const EdgeInsets.all(AppTheme.spacingM),
             decoration: BoxDecoration(
@@ -112,9 +111,7 @@ class _ResponsiveDrawerState extends State<ResponsiveDrawer> {
         const SizedBox(height: AppTheme.spacingL),
         Expanded(
           child: ListView(
-            padding: const EdgeInsets.symmetric(
-              horizontal: AppTheme.spacingM,
-            ),
+            padding: const EdgeInsets.symmetric(horizontal: AppTheme.spacingM),
             children: _buildItemList(widget.itensPrincipais),
           ),
         ),
