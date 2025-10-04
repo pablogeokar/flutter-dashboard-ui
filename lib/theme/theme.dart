@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
 class AppTheme {
-  // Paleta de Cores V2: Cores harmoniosas e profissionais
+  // === PALETA DE CORES V3: Sistema Semântico e Profissional ===
 
   // Cores Primárias (usadas como semente para o ColorScheme)
   static const Color primaryLight = Color(0xFF3a99e8); // Azul vibrante da logo
   static const Color primaryDark = Color(
     0xFF5aa6f2,
-  ); // Azul um pouco mais claro para o modo escuro
+  ); // Azul mais claro para modo escuro
 
   // Cores Secundárias
   static const Color secondaryLight = Color(0xFF212529); // Cinza escuro da logo
@@ -23,9 +23,61 @@ class AppTheme {
   static const Color drawerBackgroundLight = Color(0xFFFFFFFF);
   static const Color drawerBackgroundDark = Color(0xFF212529);
 
-  // Cores Neutras (para textos, bordas, etc.)
-  static const Color neutral1 = Color(0xFF6c757d); // Cinza médio
-  static const Color neutral2 = Color(0xFF343a40); // Cinza escuro
+  // === CORES SEMÂNTICAS ===
+
+  // Estados de Sucesso
+  static const Color successLight = Color(0xFF10b981); // Verde esmeralda
+  static const Color successDark = Color(0xFF34d399);
+  static const Color successSurfaceLight = Color(0xFFecfdf5);
+  static const Color successSurfaceDark = Color(0xFF064e3b);
+
+  // Estados de Erro
+  static const Color errorLight = Color(0xFFef4444); // Vermelho moderno
+  static const Color errorDark = Color(0xFFf87171);
+  static const Color errorSurfaceLight = Color(0xFFfef2f2);
+  static const Color errorSurfaceDark = Color(0xFF7f1d1d);
+
+  // Estados de Aviso
+  static const Color warningLight = Color(0xFFf59e0b); // Âmbar
+  static const Color warningDark = Color(0xFFfbbf24);
+  static const Color warningSurfaceLight = Color(0xFffffbeb);
+  static const Color warningSurfaceDark = Color(0xFF78350f);
+
+  // Estados de Informação
+  static const Color infoLight = Color(0xFF3b82f6); // Azul informativo
+  static const Color infoDark = Color(0xFF60a5fa);
+  static const Color infoSurfaceLight = Color(0xFFeff6ff);
+  static const Color infoSurfaceDark = Color(0xFF1e3a8a);
+
+  // === CORES NEUTRAS EXPANDIDAS ===
+  static const Color neutral50 = Color(0xFFf9fafb);
+  static const Color neutral100 = Color(0xFFf3f4f6);
+  static const Color neutral200 = Color(0xFFe5e7eb);
+  static const Color neutral300 = Color(0xFFd1d5db);
+  static const Color neutral400 = Color(0xFF9ca3af);
+  static const Color neutral500 = Color(0xFF6b7280);
+  static const Color neutral600 = Color(0xFF4b5563);
+  static const Color neutral700 = Color(0xFF374151);
+  static const Color neutral800 = Color(0xFF1f2937);
+  static const Color neutral900 = Color(0xFF111827);
+
+  // Cores Neutras (mantidas para compatibilidade)
+  static const Color neutral1 = neutral500; // Cinza médio
+  static const Color neutral2 = neutral700; // Cinza escuro
+
+  // === CORES INTERATIVAS ===
+
+  // Estados de Hover
+  static const Color hoverLight = Color(0xFFf1f5f9);
+  static const Color hoverDark = Color(0xFF334155);
+
+  // Estados de Foco
+  static const Color focusLight = Color(0xFF3b82f6);
+  static const Color focusDark = Color(0xFF60a5fa);
+
+  // Estados Ativos
+  static const Color activeLight = Color(0xFF1e40af);
+  static const Color activeDark = Color(0xFF3b82f6);
 
   // Bordas arredondadas padronizadas (valores de referência para uso nos widgets)
   static const double borderRadiusS = 8.0;
@@ -52,6 +104,22 @@ class AppTheme {
   // Efeitos visuais
   static const double appBarBlur = 8.0;
   static const double appBarOpacity = 0.85;
+
+  // === CONFIGURAÇÕES ESPECÍFICAS PARA WINDOWS DESKTOP ===
+
+  // Tamanhos de janela recomendados
+  static const double minWindowWidth = 800.0;
+  static const double minWindowHeight = 600.0;
+  static const double defaultWindowWidth = 1200.0;
+  static const double defaultWindowHeight = 800.0;
+
+  // Configurações de scroll para desktop
+  static const double desktopScrollSpeed = 120.0;
+
+  // Configurações de densidade para desktop
+  static const VisualDensity desktopDensity = VisualDensity.comfortable;
+
+  // Configurações de cursor para desktop (removidas - usar diretamente do Flutter)
 
   // Definição da escala de texto personalizada
   static const TextTheme textTheme = TextTheme(

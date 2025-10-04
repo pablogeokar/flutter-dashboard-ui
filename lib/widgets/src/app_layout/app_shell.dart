@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'drawer_item.dart';
 import 'responsive_scaffold.dart';
+import '../../../utils/keyboard_shortcuts.dart';
+import '../../../theme/theme_manager.dart';
 
 /// O widget `AppShell` é o "invólucro" principal da aplicação.
 ///
@@ -24,8 +27,18 @@ class AppShell extends StatefulWidget {
 class _AppShellState extends State<AppShell> {
   int _selectedIndex = 0;
 
-  // Flattens the drawer items into a single list of navigable items.
-  List<DrawerItem> get _flatNavigableItems {
+  // Cache otimizado para telas - inicializado uma vez
+  late final List<DrawerItem> _flatNavigableItems;
+  final Map<int, Widget> _screenCache = {};
+
+  @override
+  void initState() {
+    super.initState();
+    _flatNavigableItems = _buildFlatNavigableItems();
+  }
+
+  /// Constrói a lista plana de itens navegáveis uma única vez
+  List<DrawerItem> _buildFlatNavigableItems() {
     final List<DrawerItem> flatList = [];
 
     void processItems(List<DrawerItem> items) {
@@ -42,28 +55,51 @@ class _AppShellState extends State<AppShell> {
     return flatList;
   }
 
-  // Cache for screen instances to preserve their state.
-  final Map<int, Widget> _screenCache = {};
+  /// Constrói a tela para o índice especificado com cache otimizado
+  Widget _buildScreen(int index) {
+    if (index < 0 || index >= _flatNavigableItems.length) {
+      return const Center(child: Text('Tela não encontrada'));
+    }
+
+    // Cache otimizado - cria apenas quando necessário
+    return _screenCache.putIfAbsent(
+      index,
+      () => _flatNavigableItems[index].screen!,
+    );
+  }
+
+  /// Navega para o índice especificado com animação suave
+  void _navigateToIndex(int index) {
+    if (index != _selectedIndex) {
+      setState(() {
+        _selectedIndex = index;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    return ResponsiveScaffold(
-      itensPrincipais: widget.itensPrincipais,
-      itensInferiores: widget.itensInferiores,
-      screenBuilder: (int index) {
-        if (index < 0 || index >= _flatNavigableItems.length) {
-          return const Placeholder(); // Should not happen
-        }
-        // Retrieve from cache or create and add to cache
-        return _screenCache.putIfAbsent(
-            index, () => _flatNavigableItems[index].screen!);
-      },
-      currentIndex: _selectedIndex,
-      onNavigation: (int index) {
-        setState(() {
-          _selectedIndex = index;
-        });
-      },
+    final themeManager = Provider.of<ThemeManager>(context, listen: false);
+
+    return Shortcuts(
+      shortcuts: KeyboardShortcuts.getShortcuts(),
+      child: Actions(
+        actions: {
+          ToggleThemeIntent: ToggleThemeAction(
+            onToggle: () => themeManager.toggleTheme(),
+          ),
+        },
+        child: Focus(
+          autofocus: true,
+          child: ResponsiveScaffold(
+            itensPrincipais: widget.itensPrincipais,
+            itensInferiores: widget.itensInferiores,
+            screenBuilder: _buildScreen,
+            currentIndex: _selectedIndex,
+            onNavigation: _navigateToIndex,
+          ),
+        ),
+      ),
     );
   }
 }

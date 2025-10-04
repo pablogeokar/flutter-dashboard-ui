@@ -57,83 +57,141 @@ class _ResponsiveDrawerState extends State<ResponsiveDrawer> {
         ? AppTheme.drawerBackgroundDark
         : AppTheme.drawerBackgroundLight;
 
-    final Widget drawerContent = Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        Container(
-          padding: const EdgeInsets.symmetric(
-            vertical: AppTheme.spacingM,
-            horizontal: AppTheme.spacingS,
-          ),
-          child: Image.asset(
-            Provider.of<ThemeManager>(context).currentTheme ==
-                    ThemeModeType.dark
-                ? 'assets/logo_dark.png'
-                : 'assets/logo_light.png',
-            height: 200.0,
-          ),
+    // Cor de gradiente sutil para dar profundidade
+    final gradientColor = isDarkMode
+        ? AppTheme.drawerBackgroundDark.withValues(alpha: 0.95)
+        : AppTheme.drawerBackgroundLight.withValues(alpha: 0.98);
+
+    final Widget drawerContent = Container(
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [drawerColor, gradientColor],
+          stops: const [0.0, 1.0],
         ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: AppTheme.spacingM),
-          child: Container(
-            padding: const EdgeInsets.all(AppTheme.spacingM),
-            decoration: BoxDecoration(
-              color: Theme.of(
-                context,
-              ).colorScheme.primary.withValues(alpha: 0.1),
-              borderRadius: BorderRadius.circular(AppTheme.borderRadiusL),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Container(
+            padding: const EdgeInsets.symmetric(
+              vertical: AppTheme.spacingM,
+              horizontal: AppTheme.spacingS,
             ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Painel de Controle',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: Theme.of(context).colorScheme.primary,
-                  ),
-                ),
-                const SizedBox(height: AppTheme.spacingS),
-                Text(
-                  'Bem-vindo ao sistema',
-                  style: TextStyle(
-                    fontSize: 14,
+            child: Image.asset(
+              Provider.of<ThemeManager>(context).currentTheme ==
+                      ThemeModeType.dark
+                  ? 'assets/logo_dark.png'
+                  : 'assets/logo_light.png',
+              height: 200.0,
+              errorBuilder: (context, error, stackTrace) {
+                // Fallback caso a imagem não seja encontrada
+                return Container(
+                  height: 200.0,
+                  decoration: BoxDecoration(
                     color: Theme.of(
                       context,
-                    ).colorScheme.onSurface.withValues(alpha: 0.7),
+                    ).colorScheme.primary.withValues(alpha: 0.1),
+                    borderRadius: BorderRadius.circular(AppTheme.borderRadiusL),
                   ),
+                  child: Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.dashboard,
+                          size: 48,
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
+                        const SizedBox(height: AppTheme.spacingS),
+                        Text(
+                          'Dashboard UI',
+                          style: Theme.of(context).textTheme.titleLarge
+                              ?.copyWith(
+                                color: Theme.of(context).colorScheme.primary,
+                                fontWeight: FontWeight.bold,
+                              ),
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: AppTheme.spacingM),
+            child: Container(
+              padding: const EdgeInsets.all(AppTheme.spacingM),
+              decoration: BoxDecoration(
+                color: Theme.of(
+                  context,
+                ).colorScheme.primary.withValues(alpha: 0.1),
+                borderRadius: BorderRadius.circular(AppTheme.borderRadiusL),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Painel de Controle',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
+                  ),
+                  const SizedBox(height: AppTheme.spacingS),
+                  Text(
+                    'Bem-vindo ao sistema',
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: Theme.of(
+                        context,
+                      ).colorScheme.onSurface.withValues(alpha: 0.7),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          const SizedBox(height: AppTheme.spacingL),
+          Expanded(
+            child: ListView(
+              padding: const EdgeInsets.symmetric(
+                horizontal: AppTheme.spacingM,
+              ),
+              children: _buildItemList(widget.itensPrincipais),
+            ),
+          ),
+          const Padding(
+            padding: EdgeInsets.symmetric(vertical: AppTheme.spacingS),
+            child: Divider(height: 1),
+          ),
+          Container(
+            decoration: BoxDecoration(
+              color: drawerColor,
+              borderRadius: const BorderRadius.only(
+                bottomRight: Radius.circular(AppTheme.borderRadiusXL),
+              ),
+              // Adiciona uma sombra sutil na parte superior para separar do conteúdo
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withValues(alpha: isDarkMode ? 0.3 : 0.1),
+                  blurRadius: 4,
+                  offset: const Offset(0, -2),
                 ),
               ],
             ),
-          ),
-        ),
-        const SizedBox(height: AppTheme.spacingL),
-        Expanded(
-          child: ListView(
-            padding: const EdgeInsets.symmetric(horizontal: AppTheme.spacingM),
-            children: _buildItemList(widget.itensPrincipais),
-          ),
-        ),
-        const Padding(
-          padding: EdgeInsets.symmetric(vertical: AppTheme.spacingS),
-          child: Divider(height: 1),
-        ),
-        Container(
-          decoration: BoxDecoration(
-            color: drawerColor,
-            borderRadius: const BorderRadius.only(
-              bottomRight: Radius.circular(AppTheme.borderRadiusXL),
+            child: Column(
+              children: [
+                ..._buildItemList(widget.itensInferiores, isFooterList: true),
+                _buildFooter(context),
+              ],
             ),
           ),
-          child: Column(
-            children: [
-              ..._buildItemList(widget.itensInferiores, isFooterList: true),
-              _buildFooter(context),
-            ],
-          ),
-        ),
-      ],
+        ],
+      ),
     );
 
     if (widget.isPermanent) {
@@ -167,7 +225,7 @@ class _ResponsiveDrawerState extends State<ResponsiveDrawer> {
     } else {
       return Drawer(
         elevation: 0,
-        backgroundColor: Colors.transparent,
+        backgroundColor: drawerColor,
         child: drawerContent,
       );
     }

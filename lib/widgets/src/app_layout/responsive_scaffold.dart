@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'drawer_item.dart';
 import 'responsive_drawer.dart';
 import 'modern_app_bar.dart';
+import 'desktop_status_bar.dart';
 import '/theme/theme.dart';
 
 /// O `ResponsiveScaffold` é um widget presentacional (ou "burro").
@@ -33,12 +34,18 @@ class _ResponsiveScaffoldState extends State<ResponsiveScaffold> {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
-    final isLargeScreen = screenWidth >= 768;
+
+    // Breakpoints otimizados para desktop Windows
+    final isLargeScreen = screenWidth >= 1024; // Desktop padrão
+    final isMediumScreen =
+        screenWidth >= 768 && screenWidth < 1024; // Tablet/Desktop pequeno
 
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
       body: isLargeScreen
           ? _buildLargeScreenLayout()
+          : isMediumScreen
+          ? _buildMediumScreenLayout()
           : _buildSmallScreenLayout(),
     );
   }
@@ -48,32 +55,52 @@ class _ResponsiveScaffoldState extends State<ResponsiveScaffold> {
       children: [
         SizedBox(
           width: AppTheme.drawerWidth,
-          child: ClipRect(
-            child: ResponsiveDrawer(
-              currentIndex: widget.currentIndex,
-              onTap: widget.onNavigation,
-              itensPrincipais: widget.itensPrincipais,
-              itensInferiores: widget.itensInferiores,
-              isPermanent: true, // Passar true para o modo permanente
-            ),
-          ),
+          child: ClipRect(child: _buildDrawer(isPermanent: true)),
         ),
         Expanded(
-          child: Stack(
+          child: Column(
             children: [
-              // Conteúdo principal da tela
-              Padding(
-                padding: const EdgeInsets.only(top: kToolbarHeight), // Adiciona padding para a AppBar
-                child: _buildMainContent(isLargeScreen: true), // Usar _buildMainContent
+              // AppBar fixa no topo
+              SizedBox(
+                height: AppTheme.appBarHeight,
+                child: ModernAppBar(isLargeScreen: true),
               ),
-              // A ModernAppBar é reintroduzida aqui, posicionada no topo para não interceptar eventos do corpo.
-              Positioned(
-                top: 0,
-                left: 0,
-                right: 0,
-                child: ModernAppBar(
-                  isLargeScreen: true, // Adicionar isLargeScreen
-                ),
+              // Conteúdo principal expandido
+              Expanded(child: _buildMainContent(isLargeScreen: true)),
+              // Barra de status para desktop
+              const DesktopStatusBar(
+                statusMessage: 'Aplicação carregada com sucesso',
+                isConnected: true,
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  /// Layout para telas médias (tablets/desktop pequeno)
+  Widget _buildMediumScreenLayout() {
+    return Row(
+      children: [
+        SizedBox(
+          width: AppTheme.drawerWidth * 0.8, // Drawer mais estreito
+          child: ClipRect(child: _buildDrawer(isPermanent: true)),
+        ),
+        Expanded(
+          child: Column(
+            children: [
+              SizedBox(
+                height: AppTheme.appBarHeight,
+                child: ModernAppBar(isLargeScreen: true),
+              ),
+              Expanded(
+                child: _buildMainContent(isLargeScreen: false), // Padding menor
+              ),
+              // Barra de status também para telas médias
+              const DesktopStatusBar(
+                statusMessage: 'Modo compacto ativo',
+                isConnected: true,
               ),
             ],
           ),
@@ -86,21 +113,29 @@ class _ResponsiveScaffoldState extends State<ResponsiveScaffold> {
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: const ModernAppBar(isLargeScreen: false),
-      drawer: ResponsiveDrawer(
-        currentIndex: widget.currentIndex,
-        onTap: (int index) {
-          widget.onNavigation(index);
-          if (context.mounted) {
-            Navigator.pop(context);
-          }
-        },
-        itensPrincipais: widget.itensPrincipais,
-        itensInferiores: widget.itensInferiores,
-      ),
+      drawer: _buildDrawer(isPermanent: false),
       body: Padding(
         padding: const EdgeInsets.only(top: AppTheme.appBarHeight),
         child: _buildMainContent(isLargeScreen: false),
       ),
+    );
+  }
+
+  /// Constrói o drawer com configurações específicas para cada layout
+  Widget _buildDrawer({required bool isPermanent}) {
+    return ResponsiveDrawer(
+      currentIndex: widget.currentIndex,
+      onTap: isPermanent
+          ? widget.onNavigation
+          : (int index) {
+              widget.onNavigation(index);
+              if (context.mounted) {
+                Navigator.pop(context);
+              }
+            },
+      itensPrincipais: widget.itensPrincipais,
+      itensInferiores: widget.itensInferiores,
+      isPermanent: isPermanent,
     );
   }
 
