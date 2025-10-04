@@ -15,12 +15,16 @@ class AppTheme {
     0xFFdee2e6,
   ); // Cinza claro para textos no modo escuro
 
-  // Cores de Superfície (fundo principal da aplicação)
-  static const Color surfaceLight = Color(0xFFf8f9fa);
+  // Cores de Superfície (fundo principal da aplicação) - Inspiradas na referência
+  static const Color surfaceLight = Color(
+    0xFFf5f5f0,
+  ); // Bege suave como na referência
   static const Color surfaceDark = Color(0xFF1a1a1a);
 
   // Cores de Fundo da Drawer (barra lateral)
-  static const Color drawerBackgroundLight = Color(0xFFFFFFFF);
+  static const Color drawerBackgroundLight = Color(
+    0xFFfefefe,
+  ); // Branco muito suave
   static const Color drawerBackgroundDark = Color(0xFF212529);
 
   // === CORES SEMÂNTICAS ===
@@ -81,16 +85,18 @@ class AppTheme {
 
   // === CORES ESPECÍFICAS PARA FORMULÁRIOS ===
 
-  // Campos de formulário - modo claro (mais suaves)
+  // Campos de formulário - modo claro (inspirados na referência)
   static const Color formFieldBackgroundLight = Color(
-    0xFFf8fafc,
-  ); // Cinza muito claro com toque azulado
+    0xFFfbfbf8,
+  ); // Bege muito claro
   static const Color formFieldBorderLight = Color(
-    0xFFe2e8f0,
-  ); // Cinza claro suave
-  static const Color formFieldHoverLight = Color(0xFFf1f5f9); // Hover sutil
+    0xFFe8e8e3,
+  ); // Borda bege suave
+  static const Color formFieldHoverLight = Color(
+    0xFFf8f8f5,
+  ); // Hover bege sutil
   static const Color formFieldFocusLight = Color(
-    0xFFeff6ff,
+    0xFFf0f7ff,
   ); // Foco azul muito claro
 
   // Campos de formulário - modo escuro (mais harmoniosos)
@@ -102,6 +108,22 @@ class AppTheme {
   ); // Borda mais clara
   static const Color formFieldHoverDark = Color(0xFF293548); // Hover sutil
   static const Color formFieldFocusDark = Color(0xFF1e3a5f); // Foco azul escuro
+
+  // === CORES PARA CARDS E CONTAINERS (Inspiradas na referência) ===
+
+  // Cards e containers - modo claro
+  static const Color cardBackgroundLight = Color(
+    0xFFffffff,
+  ); // Branco puro para cards
+  static const Color cardBorderLight = Color(0xFFe8e8e3); // Borda sutil
+  static const Color cardShadowLight = Color(0x08000000); // Sombra muito sutil
+
+  // Cards e containers - modo escuro
+  static const Color cardBackgroundDark = Color(
+    0xFF1f2937,
+  ); // Cinza escuro para cards
+  static const Color cardBorderDark = Color(0xFF374151); // Borda escura
+  static const Color cardShadowDark = Color(0x20000000); // Sombra mais intensa
 
   // Bordas arredondadas padronizadas (valores de referência para uso nos widgets)
   static const double borderRadiusS = 8.0;

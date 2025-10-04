@@ -41,10 +41,12 @@ final lightTheme = ThemeData(
     ),
   ),
   cardTheme: CardThemeData(
-    elevation: 4,
-    shadowColor: Colors.black.withValues(alpha: 0.08),
+    color: AppTheme.cardBackgroundLight,
+    elevation: 2, // Elevação mais sutil
+    shadowColor: AppTheme.cardShadowLight,
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(AppTheme.borderRadiusL),
+      side: BorderSide(color: AppTheme.cardBorderLight, width: 1),
     ),
   ),
 );

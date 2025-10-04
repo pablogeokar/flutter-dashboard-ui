@@ -41,10 +41,12 @@ final darkTheme = ThemeData(
     ),
   ),
   cardTheme: CardThemeData(
-    elevation: 4,
-    shadowColor: Colors.black.withValues(alpha: 0.15),
+    color: AppTheme.cardBackgroundDark,
+    elevation: 2, // Elevação mais sutil
+    shadowColor: AppTheme.cardShadowDark,
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(AppTheme.borderRadiusL),
+      side: BorderSide(color: AppTheme.cardBorderDark, width: 1),
     ),
   ),
 );

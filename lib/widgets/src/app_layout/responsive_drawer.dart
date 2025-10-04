@@ -55,12 +55,12 @@ class _ResponsiveDrawerState extends State<ResponsiveDrawer> {
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
     final drawerColor = isDarkMode
         ? AppTheme.drawerBackgroundDark
-        : AppTheme.drawerBackgroundLight;
+        : AppTheme.cardBackgroundLight; // Usar cor de card para mais elegância
 
     // Cor de gradiente sutil para dar profundidade
     final gradientColor = isDarkMode
         ? AppTheme.drawerBackgroundDark.withValues(alpha: 0.95)
-        : AppTheme.drawerBackgroundLight.withValues(alpha: 0.98);
+        : AppTheme.formFieldBackgroundLight; // Gradiente mais suave
 
     final Widget drawerContent = Container(
       decoration: BoxDecoration(
@@ -74,81 +74,177 @@ class _ResponsiveDrawerState extends State<ResponsiveDrawer> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
+          // Header moderno com logo do app
           Container(
-            padding: const EdgeInsets.symmetric(
-              vertical: AppTheme.spacingM,
-              horizontal: AppTheme.spacingS,
+            margin: const EdgeInsets.all(AppTheme.spacingM),
+            padding: const EdgeInsets.all(AppTheme.spacingL),
+            decoration: BoxDecoration(
+              color: isDarkMode
+                  ? AppTheme.formFieldBackgroundDark.withValues(alpha: 0.5)
+                  : AppTheme.cardBackgroundLight,
+              borderRadius: BorderRadius.circular(AppTheme.borderRadiusL),
+              border: Border.all(
+                color: isDarkMode
+                    ? AppTheme.formFieldBorderDark.withValues(alpha: 0.3)
+                    : AppTheme.formFieldBorderLight,
+                width: 1,
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: isDarkMode
+                      ? Colors.black.withValues(alpha: 0.2)
+                      : Colors.black.withValues(alpha: 0.05),
+                  blurRadius: 8,
+                  offset: const Offset(0, 4),
+                ),
+              ],
             ),
-            child: Image.asset(
-              Provider.of<ThemeManager>(context).currentTheme ==
-                      ThemeModeType.dark
-                  ? 'assets/logo_dark.png'
-                  : 'assets/logo_light.png',
-              height: 200.0,
-              errorBuilder: (context, error, stackTrace) {
-                // Fallback caso a imagem não seja encontrada
-                return Container(
-                  height: 200.0,
+            child:
+                // Logo do app - ocupando todo o espaço disponível
+                Container(
+                  height: 160, // Aumentado de 120 para 160
+                  width: double.infinity,
                   decoration: BoxDecoration(
-                    color: Theme.of(
-                      context,
-                    ).colorScheme.primary.withValues(alpha: 0.1),
-                    borderRadius: BorderRadius.circular(AppTheme.borderRadiusL),
+                    color: isDarkMode
+                        ? AppTheme.formFieldBackgroundDark.withValues(
+                            alpha: 0.3,
+                          )
+                        : AppTheme.formFieldBackgroundLight.withValues(
+                            alpha: 0.5,
+                          ),
+                    borderRadius: BorderRadius.circular(AppTheme.borderRadiusM),
                   ),
-                  child: Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.dashboard,
-                          size: 48,
-                          color: Theme.of(context).colorScheme.primary,
-                        ),
-                        const SizedBox(height: AppTheme.spacingS),
-                        Text(
-                          'Dashboard UI',
-                          style: Theme.of(context).textTheme.titleLarge
-                              ?.copyWith(
-                                color: Theme.of(context).colorScheme.primary,
-                                fontWeight: FontWeight.bold,
-                              ),
-                        ),
-                      ],
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(AppTheme.borderRadiusM),
+                    child: Image.asset(
+                      Provider.of<ThemeManager>(context).currentTheme ==
+                              ThemeModeType.dark
+                          ? 'assets/logo_dark.png'
+                          : 'assets/logo_light.png',
+                      fit: BoxFit.contain,
+                      width: double.infinity,
+                      height: double.infinity,
+                      errorBuilder: (context, error, stackTrace) {
+                        // Fallback elegante caso a imagem não seja encontrada
+                        return Container(
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                              colors: [
+                                Theme.of(context).colorScheme.primary,
+                                Theme.of(
+                                  context,
+                                ).colorScheme.primary.withValues(alpha: 0.8),
+                              ],
+                            ),
+                            borderRadius: BorderRadius.circular(
+                              AppTheme.borderRadiusM,
+                            ),
+                          ),
+                          child: Center(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.dashboard_rounded,
+                                  size: 100, // Aumentado ainda mais para 100
+                                  color: Colors.white,
+                                ),
+                                const SizedBox(height: AppTheme.spacingS),
+                                Text(
+                                  'Dashboard UI',
+                                  style: TextStyle(
+                                    fontSize: 22, // Aumentado para 22
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      },
                     ),
                   ),
-                );
-              },
-            ),
+                ),
           ),
+          // Card de status/informações
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: AppTheme.spacingM),
             child: Container(
               padding: const EdgeInsets.all(AppTheme.spacingM),
               decoration: BoxDecoration(
-                color: Theme.of(
-                  context,
-                ).colorScheme.primary.withValues(alpha: 0.1),
-                borderRadius: BorderRadius.circular(AppTheme.borderRadiusL),
+                color: isDarkMode
+                    ? AppTheme.formFieldBackgroundDark.withValues(alpha: 0.5)
+                    : AppTheme.formFieldBackgroundLight,
+                borderRadius: BorderRadius.circular(AppTheme.borderRadiusM),
+                border: Border.all(
+                  color: isDarkMode
+                      ? AppTheme.formFieldBorderDark.withValues(alpha: 0.3)
+                      : AppTheme.formFieldBorderLight,
+                  width: 1,
+                ),
               ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              child: Row(
                 children: [
-                  Text(
-                    'Painel de Controle',
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: Theme.of(context).colorScheme.primary,
+                  // Avatar do usuário
+                  Container(
+                    width: 40,
+                    height: 40,
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [
+                          Theme.of(context).colorScheme.primary,
+                          Theme.of(
+                            context,
+                          ).colorScheme.primary.withValues(alpha: 0.7),
+                        ],
+                      ),
+                      borderRadius: BorderRadius.circular(
+                        AppTheme.borderRadiusS,
+                      ),
+                    ),
+                    child: const Icon(
+                      Icons.person_rounded,
+                      color: Colors.white,
+                      size: 20,
                     ),
                   ),
-                  const SizedBox(height: AppTheme.spacingS),
-                  Text(
-                    'Bem-vindo ao sistema',
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: Theme.of(
-                        context,
-                      ).colorScheme.onSurface.withValues(alpha: 0.7),
+                  const SizedBox(width: AppTheme.spacingM),
+                  // Informações do usuário
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Bem-vindo!',
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600,
+                            color: Theme.of(context).colorScheme.onSurface,
+                          ),
+                        ),
+                        const SizedBox(height: 2),
+                        Text(
+                          'Usuário Admin',
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: Theme.of(
+                              context,
+                            ).colorScheme.onSurface.withValues(alpha: 0.6),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  // Indicador de status
+                  Container(
+                    width: 8,
+                    height: 8,
+                    decoration: BoxDecoration(
+                      color: AppTheme.successLight,
+                      borderRadius: BorderRadius.circular(4),
                     ),
                   ),
                 ],
@@ -164,9 +260,26 @@ class _ResponsiveDrawerState extends State<ResponsiveDrawer> {
               children: _buildItemList(widget.itensPrincipais),
             ),
           ),
-          const Padding(
-            padding: EdgeInsets.symmetric(vertical: AppTheme.spacingS),
-            child: Divider(height: 1),
+          // Separador elegante
+          Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: AppTheme.spacingL,
+              vertical: AppTheme.spacingM,
+            ),
+            child: Container(
+              height: 1,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    Colors.transparent,
+                    Theme.of(
+                      context,
+                    ).colorScheme.outline.withValues(alpha: 0.3),
+                    Colors.transparent,
+                  ],
+                ),
+              ),
+            ),
           ),
           Container(
             decoration: BoxDecoration(
@@ -206,16 +319,18 @@ class _ResponsiveDrawerState extends State<ResponsiveDrawer> {
           ),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withValues(alpha: 0.08),
-              blurRadius: 8,
-              offset: const Offset(2, 0),
+              color: isDarkMode
+                  ? Colors.black.withValues(alpha: 0.3)
+                  : Colors.black.withValues(alpha: 0.06),
+              blurRadius: 12,
+              offset: const Offset(4, 0),
             ),
           ],
           border: Border(
             right: BorderSide(
-              color: Theme.of(
-                context,
-              ).colorScheme.secondary.withValues(alpha: 0.1),
+              color: isDarkMode
+                  ? AppTheme.formFieldBorderDark.withValues(alpha: 0.3)
+                  : AppTheme.formFieldBorderLight,
               width: 1,
             ),
           ),
@@ -303,41 +418,101 @@ class _ResponsiveDrawerState extends State<ResponsiveDrawer> {
   }
 
   Widget _buildFooter(BuildContext context) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+
     return Container(
+      margin: const EdgeInsets.all(AppTheme.spacingM),
       padding: const EdgeInsets.all(AppTheme.spacingM),
       decoration: BoxDecoration(
-        border: Border(
-          top: BorderSide(
-            color: Theme.of(
-              context,
-            ).colorScheme.outlineVariant.withValues(alpha: 0.3),
-          ),
+        color: isDarkMode
+            ? AppTheme.formFieldBackgroundDark.withValues(alpha: 0.3)
+            : AppTheme.formFieldBackgroundLight.withValues(alpha: 0.7),
+        borderRadius: BorderRadius.circular(AppTheme.borderRadiusM),
+        border: Border.all(
+          color: isDarkMode
+              ? AppTheme.formFieldBorderDark.withValues(alpha: 0.3)
+              : AppTheme.formFieldBorderLight,
+          width: 1,
         ),
       ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
+      child: Column(
         children: [
-          Container(
-            padding: const EdgeInsets.all(AppTheme.spacingXS),
-            decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.surfaceContainerHighest,
-              borderRadius: BorderRadius.circular(AppTheme.borderRadiusS),
-            ),
-            child: Icon(
-              Icons.info_outline,
-              size: 14,
-              color: Theme.of(
-                context,
-              ).colorScheme.onSurface.withValues(alpha: 0.7),
-            ),
+          // Informações da versão
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(6),
+                    decoration: BoxDecoration(
+                      color: Theme.of(
+                        context,
+                      ).colorScheme.primary.withValues(alpha: 0.1),
+                      borderRadius: BorderRadius.circular(6),
+                    ),
+                    child: Icon(
+                      Icons.info_outline,
+                      size: 14,
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
+                  ),
+                  const SizedBox(width: AppTheme.spacingS),
+                  Text(
+                    'Versão 1.0.0',
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: Theme.of(
+                        context,
+                      ).colorScheme.onSurface.withValues(alpha: 0.8),
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ],
+              ),
+              // Status de conexão
+              Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: AppTheme.spacingS,
+                  vertical: 4,
+                ),
+                decoration: BoxDecoration(
+                  color: AppTheme.successLight.withValues(alpha: 0.1),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Container(
+                      width: 6,
+                      height: 6,
+                      decoration: BoxDecoration(
+                        color: AppTheme.successLight,
+                        borderRadius: BorderRadius.circular(3),
+                      ),
+                    ),
+                    const SizedBox(width: 4),
+                    Text(
+                      'Online',
+                      style: TextStyle(
+                        fontSize: 10,
+                        color: AppTheme.successLight,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ),
-          const SizedBox(width: AppTheme.spacingS),
+          const SizedBox(height: AppTheme.spacingS),
+          // Informações adicionais
           Text(
-            'v1.0.0',
+            '© 2024 Dashboard UI',
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
               color: Theme.of(
                 context,
-              ).colorScheme.onSurface.withValues(alpha: 0.7),
+              ).colorScheme.onSurface.withValues(alpha: 0.5),
+              fontSize: 10,
             ),
           ),
         ],
