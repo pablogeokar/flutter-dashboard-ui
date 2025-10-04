@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import '../../../theme/theme.dart';
+import '../../../theme/animations.dart';
 
 /// Widget personalizado para entrada de data.
 class DateInputField extends StatefulWidget {
@@ -27,6 +27,8 @@ class DateInputField extends StatefulWidget {
 class _DateInputFieldState extends State<DateInputField> {
   late DateTime? _selectedDate;
   late final TextEditingController _controller;
+  bool _isHovered = false;
+  bool _isFocused = false;
 
   String _formatDate(DateTime date) {
     return DateFormat('dd/MM/yyyy').format(date);
@@ -75,87 +77,172 @@ class _DateInputFieldState extends State<DateInputField> {
     }
   }
 
+  Color _getBorderColor(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+
+    if (widget.errorText != null && widget.errorText!.isNotEmpty) {
+      return AppTheme.errorLight;
+    }
+    if (_isFocused) {
+      return colorScheme.primary;
+    }
+    if (_isHovered) {
+      return colorScheme.primary.withValues(alpha: 0.6);
+    }
+    return isDarkMode
+        ? AppTheme.formFieldBorderDark
+        : AppTheme.formFieldBorderLight;
+  }
+
+  Color _getBackgroundColor(BuildContext context) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+
+    if (!widget.enabled) {
+      return isDarkMode
+          ? AppTheme.formFieldBackgroundDark.withValues(alpha: 0.5)
+          : AppTheme.formFieldBackgroundLight.withValues(alpha: 0.5);
+    }
+    if (_isFocused) {
+      return isDarkMode
+          ? AppTheme.formFieldFocusDark
+          : AppTheme.formFieldFocusLight;
+    }
+    if (_isHovered) {
+      return isDarkMode
+          ? AppTheme.formFieldHoverDark
+          : AppTheme.formFieldHoverLight;
+    }
+    return isDarkMode
+        ? AppTheme.formFieldBackgroundDark
+        : AppTheme.formFieldBackgroundLight;
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final isDarkMode = theme.brightness == Brightness.dark;
-    final backgroundColor = isDarkMode
-        ? AppTheme.surfaceDark
-        : AppTheme.surfaceLight;
-    final borderColor = isDarkMode ? AppTheme.neutral1 : AppTheme.neutral2;
-    final textColor = isDarkMode
-        ? AppTheme.secondaryDark
-        : AppTheme.secondaryLight;
-    final errorColor = Colors.red;
+    final colorScheme = theme.colorScheme;
+    final hasError = widget.errorText != null && widget.errorText!.isNotEmpty;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          widget.label,
-          style: GoogleFonts.inter(
+        AnimatedDefaultTextStyle(
+          duration: AppAnimations.fast,
+          style: TextStyle(
             fontSize: 14,
             fontWeight: FontWeight.w600,
-            color: textColor,
+            color: hasError
+                ? AppTheme.errorLight
+                : _isFocused
+                ? colorScheme.primary
+                : colorScheme.onSurface.withValues(alpha: 0.8),
           ),
+          child: Text(widget.label),
         ),
         const SizedBox(height: AppTheme.spacingS),
-        Container(
-          decoration: BoxDecoration(
-            color: backgroundColor,
-            borderRadius: BorderRadius.circular(AppTheme.borderRadiusL),
-            border: Border.all(
-              color: widget.errorText != null && widget.errorText!.isNotEmpty
-                  ? errorColor
-                  : borderColor,
-            ),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withValues(alpha: 0.05),
-                blurRadius: 4,
-                offset: const Offset(0, 2),
+        MouseRegion(
+          onEnter: (_) => setState(() => _isHovered = true),
+          onExit: (_) => setState(() => _isHovered = false),
+          child: AnimatedContainer(
+            duration: AppAnimations.fast,
+            curve: AppAnimations.easeOut,
+            decoration: BoxDecoration(
+              color: _getBackgroundColor(context),
+              borderRadius: BorderRadius.circular(AppTheme.borderRadiusM),
+              border: Border.all(
+                color: _getBorderColor(context),
+                width: _isFocused ? 2.0 : 1.0,
               ),
-            ],
-          ),
-          child: TextFormField(
-            controller: _controller,
-            readOnly: true,
-            onTap: () => _pickDate(context),
-            decoration: InputDecoration(
-              hintText: 'Selecione uma data',
-              hintStyle: GoogleFonts.inter(
+              boxShadow: [
+                if (_isFocused || _isHovered) ...[
+                  BoxShadow(
+                    color: hasError
+                        ? AppTheme.errorLight.withValues(alpha: 0.15)
+                        : colorScheme.primary.withValues(
+                            alpha: _isFocused ? 0.15 : 0.08,
+                          ),
+                    blurRadius: _isFocused ? 8.0 : 4.0,
+                    spreadRadius: _isFocused ? 1.0 : 0.0,
+                    offset: const Offset(0, 2),
+                  ),
+                ],
+              ],
+            ),
+            child: TextFormField(
+              controller: _controller,
+              readOnly: true,
+              onTap: widget.enabled ? () => _pickDate(context) : null,
+              decoration: InputDecoration(
+                hintText: 'Selecione uma data',
+                hintStyle: TextStyle(
+                  fontSize: 14,
+                  color: colorScheme.onSurface.withValues(alpha: 0.5),
+                ),
+                prefixIcon: AnimatedContainer(
+                  duration: AppAnimations.fast,
+                  child: Icon(
+                    Icons.calendar_today_outlined,
+                    color: hasError
+                        ? AppTheme.errorLight
+                        : _isFocused
+                        ? colorScheme.primary
+                        : colorScheme.onSurface.withValues(alpha: 0.6),
+                    size: 20,
+                  ),
+                ),
+                suffixIcon: _selectedDate != null
+                    ? IconButton(
+                        icon: Icon(
+                          Icons.clear,
+                          color: colorScheme.onSurface.withValues(alpha: 0.6),
+                          size: 18,
+                        ),
+                        onPressed: widget.enabled
+                            ? () {
+                                setState(() {
+                                  _selectedDate = null;
+                                  _controller.clear();
+                                });
+                                widget.onChanged?.call(null);
+                              }
+                            : null,
+                      )
+                    : null,
+                contentPadding: const EdgeInsets.symmetric(
+                  horizontal: AppTheme.spacingM,
+                  vertical: AppTheme.spacingM,
+                ),
+                border: InputBorder.none,
+              ),
+              style: TextStyle(
                 fontSize: 14,
-                color: AppTheme.neutral1,
+                color: widget.enabled
+                    ? colorScheme.onSurface
+                    : colorScheme.onSurface.withValues(alpha: 0.5),
+                fontWeight: FontWeight.w500,
               ),
-              prefixIcon: Icon(
-                Icons.calendar_today,
-                color: textColor,
-                size: 18,
-              ),
-              contentPadding: const EdgeInsets.symmetric(
-                horizontal: AppTheme.spacingM,
-                vertical: AppTheme.spacingS,
-              ),
-              border: InputBorder.none,
-              errorText: widget.errorText,
-              errorStyle: const TextStyle(height: 0, fontSize: 0),
+              enabled: widget.enabled,
+              onTapOutside: (_) => setState(() => _isFocused = false),
             ),
-            style: GoogleFonts.inter(fontSize: 14, color: textColor),
-            enabled: widget.enabled,
           ),
         ),
-        if (widget.errorText != null && widget.errorText!.isNotEmpty)
+        if (hasError)
           Padding(
             padding: const EdgeInsets.only(
               top: AppTheme.spacingS,
               left: AppTheme.spacingS,
             ),
-            child: Text(
-              widget.errorText!,
-              style: GoogleFonts.inter(
-                fontSize: 12,
-                color: errorColor,
-                fontWeight: FontWeight.w600,
+            child: AnimatedOpacity(
+              duration: AppAnimations.fast,
+              opacity: 1.0,
+              child: Text(
+                widget.errorText!,
+                style: TextStyle(
+                  fontSize: 12,
+                  color: AppTheme.errorLight,
+                  fontWeight: FontWeight.w500,
+                ),
               ),
             ),
           ),

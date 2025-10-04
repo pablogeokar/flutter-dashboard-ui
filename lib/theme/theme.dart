@@ -79,6 +79,30 @@ class AppTheme {
   static const Color activeLight = Color(0xFF1e40af);
   static const Color activeDark = Color(0xFF3b82f6);
 
+  // === CORES ESPECÍFICAS PARA FORMULÁRIOS ===
+
+  // Campos de formulário - modo claro (mais suaves)
+  static const Color formFieldBackgroundLight = Color(
+    0xFFf8fafc,
+  ); // Cinza muito claro com toque azulado
+  static const Color formFieldBorderLight = Color(
+    0xFFe2e8f0,
+  ); // Cinza claro suave
+  static const Color formFieldHoverLight = Color(0xFFf1f5f9); // Hover sutil
+  static const Color formFieldFocusLight = Color(
+    0xFFeff6ff,
+  ); // Foco azul muito claro
+
+  // Campos de formulário - modo escuro (mais harmoniosos)
+  static const Color formFieldBackgroundDark = Color(
+    0xFF1e293b,
+  ); // Cinza azulado escuro
+  static const Color formFieldBorderDark = Color(
+    0xFF334155,
+  ); // Borda mais clara
+  static const Color formFieldHoverDark = Color(0xFF293548); // Hover sutil
+  static const Color formFieldFocusDark = Color(0xFF1e3a5f); // Foco azul escuro
+
   // Bordas arredondadas padronizadas (valores de referência para uso nos widgets)
   static const double borderRadiusS = 8.0;
   static const double borderRadiusM = 12.0;

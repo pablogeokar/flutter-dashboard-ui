@@ -1,29 +1,27 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import '../../../theme/theme.dart';
 import '../../../theme/animations.dart';
-import 'currency_pt_br_input_formatter.dart';
 
-/// Widget personalizado para entrada de valores monetários.
+/// Widget de seleção (dropdown) personalizado usando a API atual do Flutter
 ///
-/// Este widget fornece uma interface visualmente consistente com o tema do aplicativo,
-/// incluindo bordas arredondadas, sombras sutis e suporte a temas claro/escuro.
-/// Ele utiliza um [TextFormField] para permitir validação e um [CurrencyPtBrInputFormatter]
-/// para formatar automaticamente o texto como moeda brasileira (BRL).
-class MonetaryInputField extends StatefulWidget {
-  final String label;
-  final TextEditingController? controller;
-  final String? hintText;
-  final ValueChanged<String>? onChanged;
+/// Este widget implementa um dropdown com design consistente usando FormField
+/// e DropdownButton ao invés da API depreciada DropdownButtonFormField.
+class SelectInputField<T> extends StatefulWidget {
+  final String labelText;
+  final String hintText;
+  final T? value;
+  final List<SelectOption<T>> options;
+  final ValueChanged<T?>? onChanged;
   final String? errorText;
   final bool enabled;
-  final String? Function(String?)? validator;
+  final String? Function(T?)? validator;
 
-  const MonetaryInputField({
+  const SelectInputField({
     super.key,
-    required this.label,
-    this.controller,
-    this.hintText = '0,00',
+    required this.labelText,
+    required this.hintText,
+    required this.options,
+    this.value,
     this.onChanged,
     this.errorText,
     this.enabled = true,
@@ -31,32 +29,36 @@ class MonetaryInputField extends StatefulWidget {
   });
 
   @override
-  State<MonetaryInputField> createState() => _MonetaryInputFieldState();
+  State<SelectInputField<T>> createState() => _SelectInputFieldState<T>();
 }
 
-class _MonetaryInputFieldState extends State<MonetaryInputField> {
-  late final TextEditingController _controller;
+class _SelectInputFieldState<T> extends State<SelectInputField<T>> {
   late final FocusNode _focusNode;
-  bool _isFocused = false;
   bool _isHovered = false;
+  bool _isFocused = false;
   bool _hasError = false;
+  T? _currentValue;
 
   @override
   void initState() {
     super.initState();
-    _controller = widget.controller ?? TextEditingController();
+    _currentValue = widget.value;
     _focusNode = FocusNode();
     _focusNode.addListener(_onFocusChange);
+  }
+
+  @override
+  void didUpdateWidget(SelectInputField<T> oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.value != widget.value) {
+      _currentValue = widget.value;
+    }
   }
 
   @override
   void dispose() {
     _focusNode.removeListener(_onFocusChange);
     _focusNode.dispose();
-    // Se o controller foi criado internamente, faça o dispose.
-    if (widget.controller == null) {
-      _controller.dispose();
-    }
     super.dispose();
   }
 
@@ -66,6 +68,20 @@ class _MonetaryInputFieldState extends State<MonetaryInputField> {
         _isFocused = _focusNode.hasFocus;
       });
     }
+  }
+
+  void _handleTap() {
+    if (widget.enabled) {
+      _focusNode.requestFocus();
+    }
+  }
+
+  /// Reseta o valor selecionado para null
+  void reset() {
+    setState(() {
+      _currentValue = null;
+    });
+    widget.onChanged?.call(null);
   }
 
   Color _getBorderColor(BuildContext context) {
@@ -105,8 +121,7 @@ class _MonetaryInputFieldState extends State<MonetaryInputField> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final colorScheme = theme.colorScheme;
+    final colorScheme = Theme.of(context).colorScheme;
     final hasError = widget.errorText != null && widget.errorText!.isNotEmpty;
 
     return Column(
@@ -123,7 +138,7 @@ class _MonetaryInputFieldState extends State<MonetaryInputField> {
                 ? colorScheme.primary
                 : colorScheme.onSurface.withValues(alpha: 0.8),
           ),
-          child: Text(widget.label),
+          child: Text(widget.labelText),
         ),
         const SizedBox(height: AppTheme.spacingS),
         MouseRegion(
@@ -154,74 +169,91 @@ class _MonetaryInputFieldState extends State<MonetaryInputField> {
                 ],
               ],
             ),
-            child: Row(
-              children: [
-                // Prefixo R$ com animação
-                AnimatedContainer(
-                  duration: AppAnimations.fast,
-                  padding: const EdgeInsets.only(
-                    left: AppTheme.spacingM,
-                    right: AppTheme.spacingS,
+            child: GestureDetector(
+              onTap: _handleTap,
+              child: Focus(
+                focusNode: _focusNode,
+                child: Container(
+                  height: 48, // Altura fixa consistente com outros campos
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: AppTheme.spacingM,
                   ),
-                  child: AnimatedDefaultTextStyle(
-                    duration: AppAnimations.fast,
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: _isFocused
-                          ? colorScheme.primary
-                          : colorScheme.onSurface.withValues(alpha: 0.7),
-                      fontWeight: FontWeight.bold,
+                  alignment:
+                      Alignment.centerLeft, // Alinhamento vertical centralizado
+                  child: DropdownButton<T>(
+                    value: _currentValue,
+                    hint: Text(
+                      widget.hintText,
+                      style: TextStyle(
+                        color: colorScheme.onSurface.withValues(alpha: 0.5),
+                        fontSize: 14,
+                      ),
                     ),
-                    child: const Text('R\$'),
-                  ),
-                ),
-                // Campo de entrada
-                Expanded(
-                  child: TextFormField(
-                    controller: _controller,
-                    focusNode: _focusNode,
-                    enabled: widget.enabled,
+                    isExpanded: true,
+                    underline: const SizedBox(), // Remove a linha padrão
                     style: TextStyle(
-                      fontSize: 14,
                       color: widget.enabled
                           ? colorScheme.onSurface
                           : colorScheme.onSurface.withValues(alpha: 0.5),
+                      fontSize: 14,
                       fontWeight: FontWeight.w500,
                     ),
-                    decoration: InputDecoration(
-                      hintText: widget.hintText,
-                      hintStyle: TextStyle(
-                        fontSize: 14,
-                        color: colorScheme.onSurface.withValues(alpha: 0.5),
+                    dropdownColor:
+                        Theme.of(context).brightness == Brightness.dark
+                        ? AppTheme.formFieldBackgroundDark
+                        : AppTheme.formFieldBackgroundLight,
+                    icon: AnimatedRotation(
+                      duration: AppAnimations.fast,
+                      turns: _isFocused ? 0.5 : 0.0,
+                      child: Icon(
+                        Icons.keyboard_arrow_down,
+                        color: hasError
+                            ? AppTheme.errorLight
+                            : _isFocused
+                            ? colorScheme.primary
+                            : colorScheme.onSurface.withValues(alpha: 0.6),
                       ),
-                      contentPadding: const EdgeInsets.symmetric(
-                        vertical: AppTheme.spacingM,
-                        horizontal: AppTheme.spacingS,
-                      ),
-                      border: InputBorder.none,
                     ),
-                    keyboardType: TextInputType.number,
-                    inputFormatters: [
-                      FilteringTextInputFormatter.digitsOnly,
-                      CurrencyPtBrInputFormatter(),
-                    ],
-                    onChanged: (value) {
-                      if (widget.onChanged != null) {
-                        // Envia o valor numérico puro (ex: "1234.56")
-                        final numericString = value
-                            .replaceAll('.', '')
-                            .replaceAll(',', '.');
-                        widget.onChanged!(numericString);
-                      }
-                    },
-                    validator: (value) {
-                      final result = widget.validator?.call(value);
-                      setState(() => _hasError = result != null);
-                      return result;
-                    },
+                    onChanged: widget.enabled
+                        ? (T? value) {
+                            setState(() {
+                              _currentValue = value;
+                            });
+
+                            // Executar validação se fornecida
+                            if (widget.validator != null) {
+                              final result = widget.validator!(value);
+                              setState(() => _hasError = result != null);
+                            }
+
+                            widget.onChanged?.call(value);
+
+                            // Remover o foco após a seleção para comportamento natural
+                            Future.delayed(
+                              const Duration(milliseconds: 100),
+                              () {
+                                if (mounted) {
+                                  _focusNode.unfocus();
+                                }
+                              },
+                            );
+                          }
+                        : null,
+                    items: widget.options.map((option) {
+                      return DropdownMenuItem<T>(
+                        value: option.value,
+                        child: Text(
+                          option.label,
+                          style: TextStyle(
+                            color: colorScheme.onSurface,
+                            fontSize: 14,
+                          ),
+                        ),
+                      );
+                    }).toList(),
                   ),
                 ),
-              ],
+              ),
             ),
           ),
         ),
@@ -247,4 +279,12 @@ class _MonetaryInputFieldState extends State<MonetaryInputField> {
       ],
     );
   }
+}
+
+class SelectOption<T> {
+  final T value;
+  final String label;
+  final IconData? icon;
+
+  const SelectOption({required this.value, required this.label, this.icon});
 }
