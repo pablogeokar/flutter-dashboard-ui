@@ -28,6 +28,9 @@ class _DrawerListItemState extends State<DrawerListItem> {
 
   @override
   Widget build(BuildContext context) {
+    // Detecta se é um item com subitens (grupo)
+    final bool hasSubItems = widget.item.subItems?.isNotEmpty ?? false;
+
     Widget content = MouseRegion(
       onEnter: (_) => setState(() => _isHovered = true),
       onExit: (_) => setState(() => _isHovered = false),
@@ -41,141 +44,24 @@ class _DrawerListItemState extends State<DrawerListItem> {
           borderRadius: BorderRadius.circular(AppTheme.borderRadiusM),
           child: Material(
             color: Colors.transparent,
-            child: InkWell(
-              onTap: widget.onTap,
-              hoverColor: Colors.transparent, // Controlamos o hover manualmente
-              focusColor: Theme.of(context).colorScheme.primary.withValues(
-                alpha: widget.isFooterItem ? 0.08 : 0.12,
-              ),
-              highlightColor: Theme.of(context).colorScheme.primary.withValues(
-                alpha: widget.isFooterItem ? 0.1 : 0.16,
-              ),
-              splashColor: Theme.of(context).colorScheme.primary.withValues(
-                alpha: widget.isFooterItem ? 0.07 : 0.1,
-              ),
-              borderRadius: BorderRadius.circular(AppTheme.borderRadiusM),
-              child: AnimatedContainer(
-                duration: AppAnimations.normal,
-                curve: AppAnimations.easeInOut,
-                margin: const EdgeInsets.symmetric(
-                  vertical: AppTheme.spacingXS / 2,
-                ),
-                padding: const EdgeInsets.symmetric(
-                  horizontal: AppTheme.spacingM,
-                  vertical: AppTheme.spacingS,
-                ),
-                decoration: BoxDecoration(
-                  color: widget.isSelected
-                      ? Theme.of(
-                          context,
-                        ).colorScheme.primary.withValues(alpha: 0.15)
-                      : _isHovered
-                      ? Theme.of(context).colorScheme.primary.withValues(
-                          alpha: widget.isFooterItem ? 0.05 : 0.08,
-                        )
-                      : Colors.transparent,
-                  borderRadius: BorderRadius.circular(AppTheme.borderRadiusM),
-                  border: Border.all(
-                    color: widget.isSelected
-                        ? Theme.of(context).colorScheme.primary
-                        : Colors.transparent,
-                    width: 1,
+            child: hasSubItems
+                ? Container(
+                    // Para itens com subitens, não usamos InkWell pois o ExpansionTile gerencia o toque
+                    child: _buildItemContent(),
+                  )
+                : InkWell(
+                    onTap: widget.onTap,
+                    hoverColor:
+                        Colors.transparent, // Controlamos o hover manualmente
+                    focusColor: Theme.of(context).colorScheme.primary
+                        .withValues(alpha: widget.isFooterItem ? 0.08 : 0.12),
+                    highlightColor: Theme.of(context).colorScheme.primary
+                        .withValues(alpha: widget.isFooterItem ? 0.1 : 0.16),
+                    splashColor: Theme.of(context).colorScheme.primary
+                        .withValues(alpha: widget.isFooterItem ? 0.07 : 0.1),
+                    borderRadius: BorderRadius.circular(AppTheme.borderRadiusM),
+                    child: _buildItemContent(),
                   ),
-                  boxShadow: widget.isSelected || _isHovered
-                      ? [
-                          BoxShadow(
-                            color: Theme.of(context).colorScheme.primary
-                                .withValues(
-                                  alpha: widget.isSelected ? 0.1 : 0.05,
-                                ),
-                            blurRadius: widget.isSelected ? 6 : 3,
-                            offset: Offset(0, widget.isSelected ? 2 : 1),
-                          ),
-                        ]
-                      : null,
-                ),
-                child: Row(
-                  children: [
-                    // Flexible content area
-                    Expanded(
-                      child: Row(
-                        children: [
-                          // Icon com animação
-                          AnimatedContainer(
-                            duration: AppAnimations.normal,
-                            curve: AppAnimations.easeOut,
-                            width: 24,
-                            height: 24,
-                            decoration: BoxDecoration(
-                              color: widget.isSelected
-                                  ? Theme.of(
-                                      context,
-                                    ).colorScheme.primaryContainer
-                                  : _isHovered
-                                  ? Theme.of(
-                                      context,
-                                    ).colorScheme.primary.withValues(alpha: 0.1)
-                                  : Colors.transparent,
-                              borderRadius: BorderRadius.circular(
-                                AppTheme.borderRadiusS / 2,
-                              ),
-                            ),
-                            child: AnimatedRotation(
-                              duration: AppAnimations.fast,
-                              turns: _isHovered ? 0.02 : 0.0,
-                              child: Icon(
-                                widget.item.icon,
-                                size: 18,
-                                color: widget.isSelected
-                                    ? Theme.of(context).colorScheme.primary
-                                    : _isHovered
-                                    ? Theme.of(context).colorScheme.primary
-                                    : Theme.of(
-                                        context,
-                                      ).colorScheme.onSurface.withValues(
-                                        alpha: widget.isFooterItem ? 0.7 : 0.9,
-                                      ),
-                              ),
-                            ),
-                          ),
-                          const SizedBox(width: AppTheme.spacingM),
-                          // Title com animação
-                          Expanded(
-                            child: AnimatedDefaultTextStyle(
-                              duration: AppAnimations.fast,
-                              style: Theme.of(context).textTheme.bodyLarge!
-                                  .copyWith(
-                                    fontWeight: widget.isSelected
-                                        ? FontWeight.bold
-                                        : _isHovered
-                                        ? FontWeight.w600
-                                        : FontWeight.normal,
-                                    color: widget.isSelected
-                                        ? Theme.of(context).colorScheme.primary
-                                        : _isHovered
-                                        ? Theme.of(context).colorScheme.primary
-                                        : Theme.of(
-                                            context,
-                                          ).colorScheme.onSurface.withValues(
-                                            alpha: widget.isFooterItem
-                                                ? 0.8
-                                                : 1.0,
-                                          ),
-                                  ),
-                              child: Text(
-                                widget.item.title,
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
           ),
         ),
       ),
@@ -189,5 +75,185 @@ class _DrawerListItemState extends State<DrawerListItem> {
     }
 
     return content;
+  }
+
+  Widget _buildItemContent() {
+    return AnimatedContainer(
+      duration: AppAnimations.normal,
+      curve: AppAnimations.easeInOut,
+      margin: const EdgeInsets.symmetric(vertical: AppTheme.spacingXS / 2),
+      padding: const EdgeInsets.symmetric(
+        horizontal: AppTheme.spacingM,
+        vertical: AppTheme.spacingS,
+      ),
+      decoration: BoxDecoration(
+        gradient: widget.isSelected
+            ? LinearGradient(
+                begin: Alignment.centerLeft,
+                end: Alignment.centerRight,
+                colors: [
+                  Theme.of(context).colorScheme.primary.withValues(alpha: 0.12),
+                  Theme.of(context).colorScheme.primary.withValues(alpha: 0.08),
+                ],
+              )
+            : _isHovered
+            ? LinearGradient(
+                begin: Alignment.centerLeft,
+                end: Alignment.centerRight,
+                colors: [
+                  Theme.of(context).colorScheme.primary.withValues(
+                    alpha: widget.isFooterItem ? 0.06 : 0.08,
+                  ),
+                  Theme.of(context).colorScheme.primary.withValues(
+                    alpha: widget.isFooterItem ? 0.03 : 0.04,
+                  ),
+                ],
+              )
+            : null,
+        borderRadius: BorderRadius.circular(AppTheme.borderRadiusM),
+        border: widget.isSelected
+            ? Border(
+                left: BorderSide(
+                  color: Theme.of(context).colorScheme.primary,
+                  width: 3,
+                ),
+                top: BorderSide.none,
+                right: BorderSide.none,
+                bottom: BorderSide.none,
+              )
+            : Border.all(color: Colors.transparent, width: 1),
+        boxShadow: widget.isSelected
+            ? [
+                BoxShadow(
+                  color: Theme.of(
+                    context,
+                  ).colorScheme.primary.withValues(alpha: 0.15),
+                  blurRadius: 8,
+                  offset: const Offset(0, 2),
+                  spreadRadius: 0,
+                ),
+                BoxShadow(
+                  color: Theme.of(
+                    context,
+                  ).colorScheme.primary.withValues(alpha: 0.08),
+                  blurRadius: 4,
+                  offset: const Offset(2, 0),
+                  spreadRadius: 0,
+                ),
+              ]
+            : _isHovered
+            ? [
+                BoxShadow(
+                  color: Theme.of(
+                    context,
+                  ).colorScheme.primary.withValues(alpha: 0.08),
+                  blurRadius: 4,
+                  offset: const Offset(0, 1),
+                  spreadRadius: 0,
+                ),
+              ]
+            : null,
+      ),
+      child: Row(
+        children: [
+          // Flexible content area
+          Expanded(
+            child: Row(
+              children: [
+                // Icon com animação e destaque
+                AnimatedContainer(
+                  duration: AppAnimations.normal,
+                  curve: AppAnimations.easeOut,
+                  width: 32,
+                  height: 32,
+                  decoration: BoxDecoration(
+                    gradient: widget.isSelected
+                        ? LinearGradient(
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                            colors: [
+                              Theme.of(context).colorScheme.primary,
+                              Theme.of(
+                                context,
+                              ).colorScheme.primary.withValues(alpha: 0.8),
+                            ],
+                          )
+                        : _isHovered
+                        ? LinearGradient(
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                            colors: [
+                              Theme.of(
+                                context,
+                              ).colorScheme.primary.withValues(alpha: 0.15),
+                              Theme.of(
+                                context,
+                              ).colorScheme.primary.withValues(alpha: 0.08),
+                            ],
+                          )
+                        : null,
+                    borderRadius: BorderRadius.circular(AppTheme.borderRadiusS),
+                    boxShadow: widget.isSelected
+                        ? [
+                            BoxShadow(
+                              color: Theme.of(
+                                context,
+                              ).colorScheme.primary.withValues(alpha: 0.3),
+                              blurRadius: 6,
+                              offset: const Offset(0, 2),
+                            ),
+                          ]
+                        : null,
+                  ),
+                  child: AnimatedRotation(
+                    duration: AppAnimations.fast,
+                    turns: _isHovered ? 0.02 : 0.0,
+                    child: Icon(
+                      widget.item.icon,
+                      size: 18,
+                      color: widget.isSelected
+                          ? Colors.white
+                          : _isHovered
+                          ? Theme.of(context).colorScheme.primary
+                          : Theme.of(context).colorScheme.onSurface.withValues(
+                              alpha: widget.isFooterItem ? 0.7 : 0.9,
+                            ),
+                    ),
+                  ),
+                ),
+                const SizedBox(width: AppTheme.spacingM),
+                // Title com animação e melhor destaque
+                Expanded(
+                  child: AnimatedDefaultTextStyle(
+                    duration: AppAnimations.fast,
+                    style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                      fontWeight: widget.isSelected
+                          ? FontWeight.w700
+                          : _isHovered
+                          ? FontWeight.w600
+                          : FontWeight.w500,
+                      fontSize: widget.isSelected ? 15 : 14,
+                      letterSpacing: widget.isSelected ? 0.2 : 0.0,
+                      color: widget.isSelected
+                          ? Theme.of(context).colorScheme.primary
+                          : _isHovered
+                          ? Theme.of(context).colorScheme.primary
+                          : Theme.of(context).colorScheme.onSurface.withValues(
+                              alpha: widget.isFooterItem ? 0.8 : 0.95,
+                            ),
+                    ),
+                    child: Text(
+                      widget.item.title,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
