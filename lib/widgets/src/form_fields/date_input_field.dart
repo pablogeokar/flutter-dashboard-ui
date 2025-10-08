@@ -67,8 +67,10 @@ class _DateInputFieldState extends State<DateInputField> {
                     seedColor: AppTheme.primaryDark,
                     brightness: Brightness.dark,
                   ),
-                  dialogBackgroundColor: AppTheme.drawerBackgroundDark,
                   cardColor: AppTheme.neutral800,
+                  dialogTheme: DialogThemeData(
+                    backgroundColor: AppTheme.drawerBackgroundDark,
+                  ),
                 )
               : ThemeData.light().copyWith(
                   colorScheme: ColorScheme.fromSeed(

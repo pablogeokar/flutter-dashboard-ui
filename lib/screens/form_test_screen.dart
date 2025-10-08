@@ -69,7 +69,7 @@ class _FormTestScreenState extends State<FormTestScreen> {
                     fontSize: 18,
                     fontWeight: FontWeight.w600,
                     color: Theme.of(context).brightness == Brightness.dark
-                        ? AppTheme.primaryDark.withValues(alpha: 0.9)
+                        ? Theme.of(context).colorScheme.onSurface
                         : Theme.of(context).colorScheme.primary,
                   ),
                 ),
