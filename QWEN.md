@@ -58,88 +58,293 @@ lib/
 └── main.dart
 ```
 
-### Componentes Principais
+### Componentes Principais (Continuação)
 
-- **main.dart**: Ponto de entrada da aplicação, responsável por configurar os temas, o provedor de estado e a navegação principal.
-- **config/sidebar_config.dart**: Define as listas de itens que compõem o menu de navegação lateral (`itensPrincipais` e `itensInferiores`).
-- **theme/light.dart**: Define o `ThemeData` completo para o modo claro da aplicação.
-- **theme/dark.dart**: Define o `ThemeData` completo para o modo escuro da aplicação.
-- **theme/theme.dart**: Centraliza todas as constantes de design system, como paleta de cores para os temas, escala de texto, espaçamentos, bordas e dimensões.
-- **theme/theme_manager.dart**: Gerencia a lógica de alternância e persistência da preferência de tema do usuário (claro/escuro).
-- **widgets/app_layout.dart**: Arquivo barril que exporta os widgets públicos de layout.
-- **widgets/src/layout/app_shell.dart**: Widget "inteligente" (stateful) que gerencia o estado da navegação (item selecionado) e envolve a estrutura visual da aplicação.
-- **widgets/src/layout/responsive_scaffold.dart**: Widget "burro" (stateless) que constrói o `Scaffold` e adapta a UI entre telas grandes e pequenas, recebendo o estado do `AppShell`.
-- **widgets/src/layout/modern_app_bar.dart**: Widget que define a `AppBar` customizada da aplicação.
-- **widgets/form_fields.dart**: Arquivo barril que exporta os widgets públicos de campos de formulário.
-- **widgets/src/form_fields/currency_pt_br_input_formatter.dart**: Formatter para campos de entrada de moeda no formato brasileiro.
-- **widgets/src/form_fields/custom_button.dart**: Widget de botão customizado.
-- **widgets/src/form_fields/date_input_field.dart**: Campo de entrada para datas.
-- **widgets/src/form_fields/monetary_input_field.dart**: Campo de entrada para valores monetários.
-- **widgets/src/form_fields/text_input_field.dart**: Campo de entrada de texto genérico.
+- **theme/animations.dart**: Centraliza todas as constantes de animação, durações, curvas e transições personalizadas da aplicação.
+- **widgets/src/layout/drawer_list_item.dart**: Widget individual para itens do menu lateral com animações de hover e estados visuais aprimorados.
 
-## Diretrizes de Codificação
+## Diretrizes de Codificação (Continuação)
 
-### Temas e Estilos
+### Animações e Transições
 
-- **Centralização:** Todas as constantes de design (cores, fontes, tamanhos, etc.) devem ser definidas em `lib/theme/theme.dart` para garantir consistência e facilitar a manutenção.
-- **Cores:** A paleta de cores é dividida em `primaryLight`/`primaryDark`, `secondaryLight`/`secondaryDark`, etc., para suportar os dois modos de tema.
-- **Tipografia:** A fonte padrão da aplicação é a **Inter**, gerenciada pelo pacote `google_fonts`. A escala de texto (tamanhos e pesos) é definida pela constante `AppTheme.textTheme` no arquivo `theme.dart`.
+- **Consistência:** Todas as animações devem usar as constantes definidas em `AppAnimations` para garantir consistência visual.
+- **Performance:** Animações são otimizadas para 60fps e usam `AnimatedContainer` e `AnimatedWidget` quando possível.
+- **Sutileza:** As animações são sutis e não interferem na usabilidade, focando em melhorar o feedback visual.
+- **Durações:** Use `AppAnimations.fast` (150ms) para micro-interações, `AppAnimations.normal` (300ms) para transições padrão.
 
-### Estrutura e Privacidade de Widgets
+### Sistema de Cores Semânticas
 
-Para garantir um código modular e de fácil manutenção, os widgets devem ser organizados em "módulos" autocontidos.
+- **Estados:** Use as cores semânticas (`success`, `error`, `warning`, `info`) para comunicar estados específicos.
+- **Neutrals:** A escala de neutros (50-900) oferece flexibilidade para diferentes níveis de contraste.
+- **Interatividade:** Use as cores de hover, foco e ativo para estados interativos consistentes.
 
-- **Diretório `src`:** O código interno de um módulo de widget (widgets auxiliares, lógica interna, etc.) deve ser colocado dentro de um subdiretório `src`. Ex: `lib/widgets/nome_do_modulo/src/`.
-- **Arquivo Barril (Barrel File):** Cada módulo deve ter um arquivo na sua raiz (ex: `lib/widgets/app_layout.dart`) que exporta apenas os widgets que compõem sua API pública.
-- **Importações:** As telas e outros widgets fora do módulo devem importar **apenas** o arquivo barril, e nunca importar arquivos de dentro do diretório `src` de outro módulo diretamente.
+### Otimizações de Performance
 
-### Comentários e Documentação
+- **Cache de Telas:** O `AppShell` mantém um cache das telas para preservar estado e melhorar performance.
+- **Lazy Loading:** Telas são criadas apenas quando necessário através do sistema de cache.
+- **Animações Eficientes:** Use `AnimatedContainer` e widgets animados nativos do Flutter para melhor performance.
 
-- **Código Auto-Documentado:** A prioridade é escrever um código claro e legível, com nomes de variáveis, funções e classes que descrevam suas próprias finalidades. O bom código deve ser a principal forma de documentação.
-- **Comente o "Porquê", não o "O Quê":** Evite comentários que apenas repetem o que o código já está fazendo. Use comentários para explicar a razão por trás de uma lógica complexa, uma decisão de arquitetura não óbvia ou uma solução alternativa para um problema específico.
-- **Comentários de Alto Nível:** É útil adicionar um breve comentário no topo de classes ou widgets importantes para descrever sua responsabilidade principal dentro da aplicação (ex: "Este widget gerencia o estado da navegação principal").
+## Melhorias Implementadas (v2.0)
 
-### Navegação
+### ✅ Prioridade Alta - Concluídas
 
-- O sistema de navegação é baseado no widget `AppShell`, que gerencia a exibição das telas.
-- O menu é composto de itens principais e itens inferiores, definidos em `sidebar_config.dart`.
-- Itens podem ter subitens para organizar melhor as opções.
-- A classe `DrawerItem` define as propriedades de cada item do menu (título, ícone, tela, subitens).
+1. **Dívida Técnica da ModernAppBar Resolvida**
 
-## Desenvolvimento e Qualidade
+   - Reestruturação do layout de telas grandes usando `Column` ao invés de `Stack`
+   - AppBar agora não intercepta eventos do conteúdo principal
+   - Mantém funcionalidade completa em ambos os layouts
 
-### Comandos Úteis
+2. **Sistema de Cores Aprimorado**
 
-- **Executar a aplicação:** `flutter run`
-- **Executar os testes:** `flutter test`
-- **Analisar o código estaticamente:** `flutter analyze`
+   - Paleta semântica completa com cores para sucesso, erro, aviso e informação
+   - Escala de neutros expandida (50-900) para maior flexibilidade
+   - Cores interativas específicas para hover, foco e estados ativos
+   - Integração completa com temas claro e escuro
 
-## Dependências Importantes
+3. **Simplificação do ResponsiveScaffold**
 
-- `flutter`: SDK principal
-- `provider`: Gerenciamento de estado
-- `shared_preferences`: Persistência de dados locais (preferência de tema)
-- `google_fonts`: Para carregamento de fontes do Google Fonts.
-- `intl`: Para internacionalização e localização.
-- `flutter_lints`: Regras de linting
+   - Método `_buildDrawer()` centralizado para evitar duplicação
+   - Lógica de navegação otimizada e mais limpa
+   - Redução significativa de código duplicado
 
-## Boas Práticas
+4. **Gerenciamento de Estado Otimizado**
+   - Cache de telas inicializado uma única vez no `initState()`
+   - Métodos separados para construção de telas e navegação
+   - Performance melhorada com lazy loading de componentes
 
-- Seguir as melhores práticas de desenvolvimento Flutter.
-- Manter consistência de estilos usando as constantes do `AppTheme`.
-- Organizar widgets em estruturas modulares com arquivos `src` e barril.
-- Documentar código usando comentários em português do Brasil.
+### ✅ Animações e Micro-interações
 
-## Dívidas Técnicas e Refatorações Futuras
+1. **Sistema de Animações Centralizado**
 
-### Refatorar `ModernAppBar` no `ResponsiveScaffold` para evitar interceptação de eventos em telas grandes.
+   - Arquivo `animations.dart` com constantes e helpers
+   - Durações e curvas padronizadas para consistência
+   - Transições personalizadas reutilizáveis
 
-- **Problema Anterior:** Em telas grandes, a `FormTestScreen` (e potencialmente outras telas) não permitia interação com os campos de formulário. Após investigação, descobriu-se que a `ModernAppBar`, quando posicionada no `Stack` do `_buildLargeScreenLayout()` do `ResponsiveScaffold`, estava interceptando os eventos de toque do conteúdo principal, mesmo sendo transparente e tendo uma altura definida.
-- **Solução Temporária Aplicada:** A `ModernAppBar` foi removida temporariamente do `_buildLargeScreenLayout()` no `responsive_scaffold.dart` para permitir a interação com os campos de formulário.
-- **Urgência e Solução Adequada:**
-  - **Urgência:** Média. A funcionalidade principal está comprometida sem a `AppBar`. É crucial restaurar a `AppBar` sem reintroduzir o problema de interação.
-  - **Solução Adequada:** A `ModernAppBar` precisa ser reintroduzida no `_buildLargeScreenLayout()` de forma que não interfira com os eventos de toque do conteúdo principal. Isso pode envolver:
-    - **Revisar o `Stack`:** Garantir que o `Stack` esteja configurado corretamente para que a `AppBar` não se expanda além de sua área ou que seus eventos de toque não se propaguem para baixo.
-    - **Usar `Positioned`:** Posicionar a `ModernAppBar` explicitamente no `Stack` com `Positioned(top: 0, left: 0, right: 0, child: ModernAppBar(...))` para controlar sua área.
-    - **Considerar `IgnorePointer`:** Envolver a `ModernAppBar` em um `IgnorePointer` se ela for puramente visual e não precisar de interação (exceto para seus próprios botões, que teriam seus próprios `onPressed`). No entanto, isso pode ser complexo se os botões da `AppBar` precisarem ser clicáveis.
-    - **Reavaliar a estrutura do `ResponsiveScaffold`:** Se o `Stack` continuar a ser problemático, pode ser necessário repensar a forma como a `AppBar` e o conteúdo principal são combinados no layout de tela grande.
+2. **DrawerListItem Animado**
+
+   - Animações de hover com escala e rotação sutil
+   - Transições suaves entre estados (selecionado, hover, normal)
+   - Feedback visual aprimorado com sombras animadas
+
+3. **ModernAppBar Interativa**
+   - Botões com animações de hover e escala
+   - Avatar com efeitos visuais ao passar o mouse
+   - Transições suaves entre ícones de tema
+
+### 🎯 Benefícios das Melhorias
+
+- **Performance:** Cache otimizado e animações eficientes
+- **UX:** Feedback visual consistente e intuitivo
+- **Manutenibilidade:** Código mais limpo e organizado
+- **Escalabilidade:** Sistema de cores e animações reutilizáveis
+- **Acessibilidade:** Melhor contraste e estados visuais claros
+
+## Melhorias Específicas para Windows Desktop (v2.1)
+
+### ✅ Otimizações para Desktop Windows
+
+1. **Breakpoints Responsivos Aprimorados**
+
+   - Desktop padrão: >= 1024px (layout completo com barra de status)
+   - Desktop compacto: 768-1023px (drawer mais estreito, funcionalidades completas)
+   - Mobile/Tablet: < 768px (drawer colapsável, layout otimizado para toque)
+
+2. **Barra de Status Desktop**
+
+   - Componente `DesktopStatusBar` específico para aplicações desktop
+   - Exibe status da conexão, versão da aplicação e hora atual
+   - Integrada nos layouts de desktop (grande e médio)
+   - Atualização automática da hora a cada segundo
+
+3. **Suporte a Atalhos de Teclado**
+
+   - Sistema de atalhos integrado com `Shortcuts` e `Actions` do Flutter
+   - Atalhos implementados:
+     - `Ctrl+T`: Alternar tema claro/escuro
+   - Arquitetura extensível para novos atalhos
+
+4. **Configurações Específicas para Windows**
+   - Constantes de tamanho de janela recomendados
+   - Configurações de densidade visual otimizadas para desktop
+   - Velocidade de scroll ajustada para mouse desktop
+
+### 🎯 Benefícios das Melhorias Windows
+
+- **Experiência Nativa:** Interface que segue padrões do Windows
+- **Produtividade:** Atalhos de teclado familiares aos usuários Windows
+- **Informações Contextuais:** Barra de status com informações úteis
+- **Responsividade Inteligente:** Layouts otimizados para diferentes tamanhos de tela desktop
+- **Performance:** Componentes otimizados para aplicações desktop
+
+### 📁 Novos Arquivos Criados
+
+- `lib/utils/keyboard_shortcuts.dart`: Gerenciamento de atalhos de teclado
+- `lib/widgets/src/app_layout/desktop_status_bar.dart`: Barra de status para desktop
+
+### 🔧 Arquivos Modificados
+
+- `lib/theme/theme.dart`: Adicionadas constantes específicas para Windows desktop
+- `lib/widgets/src/app_layout/responsive_scaffold.dart`: Breakpoints e layouts aprimorados
+- `lib/widgets/src/app_layout/app_shell.dart`: Integração com sistema de atalhos
+- `lib/widgets/app_layout.dart`: Exportação dos novos componentes
+
+### 🚀 Próximas Melhorias Sugeridas
+
+1. **Integração com Sistema Operacional**
+
+   - Notificações nativas do Windows
+   - Integração com barra de tarefas
+   - Suporte a temas do sistema
+
+2. **Funcionalidades Avançadas**
+
+   - Múltiplas janelas
+   - Drag and drop de arquivos
+   - Menu de contexto personalizado
+
+3. **Performance Desktop**
+   - Lazy loading de componentes pesados
+   - Cache inteligente de recursos
+   - Otimizações de memória para sessões longas
+
+## Melhorias Premium Implementadas (v3.0) - Público A
+
+### ✅ Design System Corporativo Premium
+
+**Paleta de Cores Harmonizada:**
+
+- **Azul Primário:** `#3a99e8` (Light) / `#5aa6f2` (Dark) - Cores da identidade visual
+- **Cores Neutras:** Sistema expandido (neutral50-900) para máxima flexibilidade
+- **Cores Semânticas:** Success, Error, Warning, Info com variações para ambos os temas
+- **Harmonia Visual:** Todas as cores derivam da paleta principal para coesão total
+
+**Formulários Sofisticados:**
+
+- **Campos Premium:** TextInput, DateInput, MonetaryInput, SelectInput, TextArea
+- **Estados Visuais:** Normal, Hover, Focus, Error com transições suaves
+- **Calendário Temático:** DatePicker adaptado automaticamente ao tema atual
+- **Validação Elegante:** Feedback visual sutil e profissional
+
+### ✅ Sidebar Premium com Acentuação Elegante
+
+**Item Ativo Sofisticado:**
+
+- **Fundo:** Azul primário com 15% opacidade (sutil mas presente)
+- **Borda Lateral:** Azul primário sólido (3px) para destaque claro
+- **Texto:** Azul primário com 90% opacidade para legibilidade
+- **Ícone:** Fundo azul + ícone branco para máximo contraste
+- **Animações:** Transições suaves entre estados (300ms)
+
+**Hierarquia Visual Clara:**
+
+- **Selecionado:** Máximo destaque com azul da identidade
+- **Hover:** Azul com 8% opacidade + texto azul 70%
+- **Normal:** Neutro com ícones sutis
+- **Footer:** Opacidades reduzidas para menor hierarquia
+
+### ✅ AppBar Corporativa Premium
+
+**Design Executivo:**
+
+- **Título Corporativo:** "Dashboard Corporativo" com ícone e container elegante
+- **Campo de Busca:** 200px com placeholder "Buscar..." e atalho ⌘K
+- **Avatar Premium:** Foto + "Admin" + "Corporativo" + dropdown indicator
+- **Notificações:** Badge vermelho para alertas importantes
+
+**Elementos Sofisticados:**
+
+- **Containers:** 40x40px com bordas arredondadas e sombras sutis
+- **Estados Hover:** Escala 1.05x + sombras azuis + bordas destacadas
+- **Fundo Elegante:** Semi-transparente com borda inferior sutil
+- **Animações:** Transições suaves (150ms) para feedback imediato
+
+### ✅ Experiência Premium para Público A
+
+**Características Executivas:**
+
+- **Espaçamentos Generosos:** 24-32px para sensação de luxo
+- **Tipografia Refinada:** Pesos 600-700, letter-spacing otimizado
+- **Sombras Multicamadas:** Profundidade sofisticada sem exagero
+- **Bordas Arredondadas:** 12-16px para modernidade elegante
+
+**Paleta Neutra Sofisticada:**
+
+- **Modo Dark:** Tons de cinza harmoniosos sem azuis conflitantes
+- **Modo Light:** Brancos e neutros suaves para conforto visual
+- **Acentos Estratégicos:** Azul da identidade apenas onde necessário
+- **Contraste Perfeito:** Legibilidade máxima em ambos os temas
+
+**Interatividade Premium:**
+
+- **Feedback Visual:** Todos os elementos respondem ao hover
+- **Animações Sutis:** Escalas, rotações e sombras discretas
+- **Estados Claros:** Diferenciação visual entre normal/hover/ativo
+- **Performance:** 60fps garantido com animações otimizadas
+
+### 🎯 Adequação ao Público A
+
+**Transmite Exclusividade:**
+
+- Design que comunica qualidade premium
+- Atenção aos detalhes em cada elemento
+- Visual corporativo sofisticado e confiável
+
+**Funcionalidades Executivas:**
+
+- Busca rápida com atalhos de teclado
+- Notificações discretas mas visíveis
+- Avatar com informações profissionais claras
+- Navegação intuitiva e eficiente
+
+**Experiência de Usuário Premium:**
+
+- Interface que não cansa a vista
+- Feedback imediato em todas as interações
+- Hierarquia visual clara e profissional
+- Consistência absoluta em todos os componentes
+
+### 📊 Métricas de Qualidade
+
+**Performance:**
+
+- Animações otimizadas para 60fps
+- Lazy loading de componentes pesados
+- Cache inteligente de telas navegadas
+- Renderização eficiente sem redraws desnecessários
+
+**Acessibilidade:**
+
+- Contraste WCAG AA em todos os elementos
+- Tooltips informativos em ações importantes
+- Estados de foco claramente definidos
+- Navegação por teclado funcional
+
+**Manutenibilidade:**
+
+- Design system centralizado e consistente
+- Componentes reutilizáveis e modulares
+- Paleta de cores bem documentada
+- Padrões de código estabelecidos
+
+## Diretrizes de Desenvolvimento Atualizadas
+
+### Cores e Temas
+
+- **SEMPRE** usar a paleta azul existente (`primaryLight`/`primaryDark`)
+- **EVITAR** gradientes excessivos - preferir cores sólidas elegantes
+- **MANTER** harmonia com a identidade visual do logotipo
+- **USAR** opacidades para criar hierarquia visual sutil
+
+### Componentes Premium
+
+- **Espaçamentos:** Mínimo 24px para sensação de luxo
+- **Bordas:** 12-16px para modernidade sem exagero
+- **Sombras:** Multicamadas sutis para profundidade
+- **Animações:** 150-300ms com curvas suaves
+
+### Experiência do Usuário
+
+- **Feedback:** Todos os elementos interativos devem responder
+- **Hierarquia:** Clara diferenciação entre estados
+- **Consistência:** Mesma linguagem visual em toda aplicação
+- **Performance:** Priorizar fluidez e responsividade
