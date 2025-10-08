@@ -78,6 +78,69 @@ class _DrawerListItemState extends State<DrawerListItem> {
   }
 
   Widget _buildItemContent() {
+    final Color primaryColor = Theme.of(context).colorScheme.primary;
+    final Color onSurfaceColor = Theme.of(context).colorScheme.onSurface;
+
+    // Define a decoração baseada nos estados
+    BoxDecoration decoration;
+    if (widget.isSelected) {
+      decoration = BoxDecoration(
+        color: primaryColor.withValues(alpha: 0.15),
+        border: Border(left: BorderSide(color: primaryColor, width: 3)),
+      );
+    } else if (_isHovered) {
+      decoration = BoxDecoration(
+        color: primaryColor.withValues(alpha: 0.08),
+        borderRadius: BorderRadius.circular(AppTheme.borderRadiusM),
+      );
+    } else {
+      decoration = BoxDecoration(
+        color: Colors.transparent,
+        borderRadius: BorderRadius.circular(AppTheme.borderRadiusM),
+      );
+    }
+
+    // Define a decoração do ícone baseada nos estados
+    BoxDecoration iconDecoration;
+    Color iconColor;
+    FontWeight titleFontWeight = FontWeight.w500;
+    Color titleColor = onSurfaceColor.withValues(
+      alpha: widget.isFooterItem ? 0.8 : 0.95,
+    );
+
+    if (widget.isSelected) {
+      iconDecoration = BoxDecoration(
+        color: primaryColor,
+        borderRadius: BorderRadius.circular(AppTheme.borderRadiusS),
+        boxShadow: [
+          BoxShadow(
+            color: primaryColor.withValues(alpha: 0.3),
+            blurRadius: 6,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      );
+      iconColor = Colors.white;
+      titleFontWeight = FontWeight.w700;
+      titleColor = primaryColor;
+    } else if (_isHovered) {
+      iconDecoration = BoxDecoration(
+        color: primaryColor.withValues(alpha: 0.12),
+        borderRadius: BorderRadius.circular(AppTheme.borderRadiusS),
+      );
+      iconColor = primaryColor;
+      titleFontWeight = FontWeight.w600;
+      titleColor = primaryColor;
+    } else {
+      iconDecoration = BoxDecoration(
+        color: onSurfaceColor.withValues(alpha: 0.05),
+        borderRadius: BorderRadius.circular(AppTheme.borderRadiusS),
+      );
+      iconColor = onSurfaceColor.withValues(
+        alpha: widget.isFooterItem ? 0.7 : 0.85,
+      );
+    }
+
     return AnimatedContainer(
       duration: AppAnimations.normal,
       curve: AppAnimations.easeInOut,
@@ -86,199 +149,33 @@ class _DrawerListItemState extends State<DrawerListItem> {
         horizontal: AppTheme.spacingM,
         vertical: AppTheme.spacingS,
       ),
-      decoration: BoxDecoration(
-        color: widget.isSelected
-            ? Theme.of(context).brightness == Brightness.dark
-                  ? AppTheme.primaryDark.withValues(
-                      alpha: 0.15,
-                    ) // Azul sutil da paleta
-                  : Theme.of(
-                      context,
-                    ).colorScheme.primary.withValues(alpha: 0.08)
-            : _isHovered
-            ? Theme.of(context).brightness == Brightness.dark
-                  ? AppTheme.primaryDark.withValues(
-                      alpha: 0.08,
-                    ) // Azul mais sutil para hover
-                  : Theme.of(context).colorScheme.primary.withValues(
-                      alpha: widget.isFooterItem ? 0.04 : 0.06,
-                    )
-            : null,
-        // Só aplica borderRadius quando não há borda lateral
-        borderRadius: widget.isSelected
-            ? null
-            : BorderRadius.circular(AppTheme.borderRadiusM),
-        border: widget.isSelected
-            ? Border(
-                left: BorderSide(
-                  color: Theme.of(context).brightness == Brightness.dark
-                      ? AppTheme
-                            .primaryDark // Azul da paleta
-                      : Theme.of(context).colorScheme.primary,
-                  width: 3,
-                ),
-                top: BorderSide.none,
-                right: BorderSide.none,
-                bottom: BorderSide.none,
-              )
-            : null, // Remove a borda transparente que causa conflito
-        boxShadow: widget.isSelected
-            ? Theme.of(context).brightness == Brightness.dark
-                  ? [
-                      BoxShadow(
-                        color: Colors.black.withValues(alpha: 0.2),
-                        blurRadius: 6,
-                        offset: const Offset(0, 2),
-                        spreadRadius: 0,
-                      ),
-                    ]
-                  : [
-                      BoxShadow(
-                        color: Theme.of(
-                          context,
-                        ).colorScheme.primary.withValues(alpha: 0.15),
-                        blurRadius: 8,
-                        offset: const Offset(0, 2),
-                        spreadRadius: 0,
-                      ),
-                      BoxShadow(
-                        color: Theme.of(
-                          context,
-                        ).colorScheme.primary.withValues(alpha: 0.08),
-                        blurRadius: 4,
-                        offset: const Offset(2, 0),
-                        spreadRadius: 0,
-                      ),
-                    ]
-            : _isHovered
-            ? [
-                BoxShadow(
-                  color: Theme.of(context).brightness == Brightness.dark
-                      ? Colors.black.withValues(alpha: 0.1)
-                      : Theme.of(
-                          context,
-                        ).colorScheme.primary.withValues(alpha: 0.08),
-                  blurRadius: 4,
-                  offset: const Offset(0, 1),
-                  spreadRadius: 0,
-                ),
-              ]
-            : null,
-      ),
+      decoration: decoration,
       child: Row(
         children: [
-          // Flexible content area
+          // Ícone
+          AnimatedContainer(
+            duration: AppAnimations.normal,
+            curve: AppAnimations.easeOut,
+            width: 32,
+            height: 32,
+            decoration: iconDecoration,
+            child: Icon(widget.item.icon, size: 18, color: iconColor),
+          ),
+          const SizedBox(width: AppTheme.spacingM),
+          // Título
           Expanded(
-            child: Row(
-              children: [
-                // Icon com animação e destaque
-                AnimatedContainer(
-                  duration: AppAnimations.normal,
-                  curve: AppAnimations.easeOut,
-                  width: 32,
-                  height: 32,
-                  decoration: BoxDecoration(
-                    color: widget.isSelected
-                        ? Theme.of(context).brightness == Brightness.dark
-                              ? AppTheme
-                                    .primaryDark // Azul da paleta
-                              : Theme.of(context).colorScheme.primary
-                        : _isHovered
-                        ? Theme.of(context).brightness == Brightness.dark
-                              ? AppTheme.primaryDark.withValues(
-                                  alpha: 0.3,
-                                ) // Azul sutil
-                              : Theme.of(
-                                  context,
-                                ).colorScheme.primary.withValues(alpha: 0.12)
-                        : Theme.of(context).brightness == Brightness.dark
-                        ? AppTheme.neutral800.withValues(
-                            alpha: 0.6,
-                          ) // Neutro para normal
-                        : Theme.of(
-                            context,
-                          ).colorScheme.onSurface.withValues(alpha: 0.05),
-                    borderRadius: BorderRadius.circular(AppTheme.borderRadiusS),
-                    boxShadow: widget.isSelected
-                        ? Theme.of(context).brightness == Brightness.dark
-                              ? [
-                                  BoxShadow(
-                                    color: Colors.black.withValues(alpha: 0.3),
-                                    blurRadius: 4,
-                                    offset: const Offset(0, 2),
-                                  ),
-                                ]
-                              : [
-                                  BoxShadow(
-                                    color: Theme.of(context).colorScheme.primary
-                                        .withValues(alpha: 0.3),
-                                    blurRadius: 6,
-                                    offset: const Offset(0, 2),
-                                  ),
-                                ]
-                        : null,
-                  ),
-                  child: AnimatedRotation(
-                    duration: AppAnimations.fast,
-                    turns: _isHovered ? 0.02 : 0.0,
-                    child: Icon(
-                      widget.item.icon,
-                      size: 18,
-                      color: widget.isSelected
-                          ? Colors
-                                .white // Branco para contraste com azul
-                          : _isHovered
-                          ? Theme.of(context).brightness == Brightness.dark
-                                ? Colors
-                                      .white // Branco para contraste com azul hover
-                                : Theme.of(context).colorScheme.primary
-                          : Theme.of(context).brightness == Brightness.dark
-                          ? Theme.of(context).colorScheme.onSurface.withValues(
-                              alpha: widget.isFooterItem ? 0.8 : 0.95,
-                            )
-                          : Theme.of(context).colorScheme.onSurface.withValues(
-                              alpha: widget.isFooterItem ? 0.7 : 0.85,
-                            ),
-                    ),
-                  ),
-                ),
-                const SizedBox(width: AppTheme.spacingM),
-                // Title com animação e melhor destaque
-                Expanded(
-                  child: AnimatedDefaultTextStyle(
-                    duration: AppAnimations.fast,
-                    style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                      fontWeight: widget.isSelected
-                          ? FontWeight.w700
-                          : _isHovered
-                          ? FontWeight.w600
-                          : FontWeight.w500,
-                      fontSize: widget.isSelected ? 15 : 14,
-                      letterSpacing: widget.isSelected ? 0.2 : 0.0,
-                      color: widget.isSelected
-                          ? Theme.of(context).brightness == Brightness.dark
-                                ? AppTheme.primaryDark.withValues(
-                                    alpha: 0.9,
-                                  ) // Azul da paleta
-                                : Theme.of(context).colorScheme.primary
-                          : _isHovered
-                          ? Theme.of(context).brightness == Brightness.dark
-                                ? AppTheme.primaryDark.withValues(
-                                    alpha: 0.7,
-                                  ) // Azul mais claro
-                                : Theme.of(context).colorScheme.primary
-                          : Theme.of(context).colorScheme.onSurface.withValues(
-                              alpha: widget.isFooterItem ? 0.8 : 0.95,
-                            ),
-                    ),
-                    child: Text(
-                      widget.item.title,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ),
-                ),
-              ],
+            child: AnimatedDefaultTextStyle(
+              duration: AppAnimations.fast,
+              style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                fontWeight: titleFontWeight,
+                fontSize: 14,
+                color: titleColor,
+              ),
+              child: Text(
+                widget.item.title,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
             ),
           ),
         ],

@@ -213,7 +213,7 @@ lib/
 
 **Paleta de Cores Harmonizada:**
 
-- **Azul Primário:** `#3a99e8` (Light) / `#5aa6f2` (Dark) - Cores da identidade visual
+- **Azul Primário:** `#4A6C8B` (Light) / `#6C93B8` (Dark) - Azul acinzentado para um visual profissional e acolhedor
 - **Cores Neutras:** Sistema expandido (neutral50-900) para máxima flexibilidade
 - **Cores Semânticas:** Success, Error, Warning, Info com variações para ambos os temas
 - **Harmonia Visual:** Todas as cores derivam da paleta principal para coesão total

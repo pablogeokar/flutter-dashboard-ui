@@ -21,6 +21,7 @@ final lightTheme = ThemeData(
         errorContainer: AppTheme.errorSurfaceLight,
       ).copyWith(
         // Extensões personalizadas usando as novas cores
+        surfaceContainerLow: Colors.white, // Define o fundo da área de conteúdo como branco
         surfaceContainerHighest: AppTheme.neutral100,
         surfaceContainerHigh: AppTheme.neutral50,
         outline: AppTheme.neutral300,

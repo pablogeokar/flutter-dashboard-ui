@@ -1,31 +1,25 @@
 import 'package:flutter/material.dart';
 
 class AppTheme {
-  // === PALETA DE CORES V3: Sistema Semântico e Profissional ===
+  // === PALETA DE CORES V4: Tema Profissional e Acolhedor ===
 
-  // Cores Primárias (usadas como semente para o ColorScheme)
-  static const Color primaryLight = Color(0xFF3a99e8); // Azul vibrante da logo
-  static const Color primaryDark = Color(
-    0xFF5aa6f2,
-  ); // Azul mais claro para modo escuro
+  // Cores Primárias (Azul Acinzentado)
+  static const Color primaryLight = Color(0xFF4A6C8B); // Azul acinzentado profissional
+  static const Color primaryDark = Color(0xFF6C93B8); // Azul acinzentado mais claro para contraste
 
   // Cores Secundárias
-  static const Color secondaryLight = Color(0xFF212529); // Cinza escuro da logo
+  static const Color secondaryLight = Color(0xFF212529); // Cinza escuro para texto (mantido)
   static const Color secondaryDark = Color(
     0xFFdee2e6,
-  ); // Cinza claro para textos no modo escuro
+  ); // Cinza claro para textos no modo escuro (mantido)
 
-  // Cores de Superfície (fundo principal da aplicação) - Inspiradas na referência
-  static const Color surfaceLight = Color(
-    0xFFf5f5f0,
-  ); // Bege suave como na referência
-  static const Color surfaceDark = Color(0xFF1a1a1a);
+  // Cores de Superfície (fundo principal da aplicação)
+  static const Color surfaceLight = Color(0xFFF5F5F5); // Branco suave para conforto visual
+  static const Color surfaceDark = Color(0xFF2C2C2C); // Cinza escuro e elegante
 
   // Cores de Fundo da Drawer (barra lateral)
-  static const Color drawerBackgroundLight = Color(
-    0xFFfefefe,
-  ); // Branco muito suave
-  static const Color drawerBackgroundDark = Color(0xFF212529);
+  static const Color drawerBackgroundLight = Color(0xFFFFFFFF); // Branco puro para contraste sutil
+  static const Color drawerBackgroundDark = Color(0xFF343A40); // Tom de cinza ligeiramente diferente
 
   // === CORES SEMÂNTICAS ===
 
@@ -85,44 +79,32 @@ class AppTheme {
 
   // === CORES ESPECÍFICAS PARA FORMULÁRIOS ===
 
-  // Campos de formulário - modo claro (inspirados na referência)
-  static const Color formFieldBackgroundLight = Color(
-    0xFFfbfbf8,
-  ); // Bege muito claro
-  static const Color formFieldBorderLight = Color(
-    0xFFe8e8e3,
-  ); // Borda bege suave
-  static const Color formFieldHoverLight = Color(
-    0xFFf8f8f5,
-  ); // Hover bege sutil
+  // Campos de formulário - modo claro
+  static const Color formFieldBackgroundLight = AppTheme.neutral50; // Cinza levíssimo para diferenciar
+  static const Color formFieldBorderLight = AppTheme.neutral300; // Borda mais escura para visibilidade
+  static const Color formFieldHoverLight = AppTheme.neutral100;
   static const Color formFieldFocusLight = Color(
     0xFFf0f7ff,
-  ); // Foco azul muito claro
+  ); // Foco azul muito claro (mantido)
 
-  // Campos de formulário - modo escuro (mais harmoniosos)
-  static const Color formFieldBackgroundDark = Color(
-    0xFF1e293b,
-  ); // Cinza azulado escuro
-  static const Color formFieldBorderDark = Color(
-    0xFF334155,
-  ); // Borda mais clara
-  static const Color formFieldHoverDark = Color(0xFF293548); // Hover sutil
-  static const Color formFieldFocusDark = Color(0xFF1e3a5f); // Foco azul escuro
+  // Campos de formulário - modo escuro (Harmonizados com a cor primária)
+  static const Color formFieldBackgroundDark = Color(0xFF2A3A4B); // Fundo azul-acinzentado escuro
+  static const Color formFieldBorderDark = Color(0xFF4A6C8B); // Borda sutil no tom da cor primária
+  static const Color formFieldHoverDark = Color(0xFF33465F); // Fundo um pouco mais claro no hover
+  static const Color formFieldFocusDark = Color(0xFF33465F); // Fundo igual ao hover, destaque vem da borda
 
-  // === CORES PARA CARDS E CONTAINERS (Inspiradas na referência) ===
+  // === CORES PARA CARDS E CONTAINERS ===
 
   // Cards e containers - modo claro
-  static const Color cardBackgroundLight = Color(
-    0xFFffffff,
-  ); // Branco puro para cards
-  static const Color cardBorderLight = Color(0xFFe8e8e3); // Borda sutil
+  static const Color cardBackgroundLight = AppTheme.neutral50; // Cinza levíssimo para diferenciar
+  static const Color cardBorderLight = AppTheme.neutral300; // Borda mais escura para visibilidade
   static const Color cardShadowLight = Color(0x08000000); // Sombra muito sutil
 
   // Cards e containers - modo escuro
   static const Color cardBackgroundDark = Color(
-    0xFF1f2937,
-  ); // Cinza escuro para cards
-  static const Color cardBorderDark = Color(0xFF374151); // Borda escura
+    0xFF3A3A3A,
+  ); // Cinza claro para cards
+  static const Color cardBorderDark = AppTheme.neutral700; // Borda cinza neutra
   static const Color cardShadowDark = Color(0x20000000); // Sombra mais intensa
 
   // Bordas arredondadas padronizadas (valores de referência para uso nos widgets)

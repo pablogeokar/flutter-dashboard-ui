@@ -134,8 +134,8 @@ class _ResponsiveDrawerState extends State<ResponsiveDrawer> {
               padding: const EdgeInsets.all(AppTheme.spacingM),
               decoration: BoxDecoration(
                 color: isDarkMode
-                    ? AppTheme.drawerBackgroundDark.withValues(alpha: 0.7)
-                    : AppTheme.formFieldBackgroundLight,
+                    ? AppTheme.drawerBackgroundDark.withOpacity(0.7)
+                    : AppTheme.neutral100, // Cor mais escura para contraste
                 borderRadius: BorderRadius.circular(AppTheme.borderRadiusM),
                 border: Border.all(
                   color: isDarkMode
@@ -378,8 +378,8 @@ class _ResponsiveDrawerState extends State<ResponsiveDrawer> {
       padding: const EdgeInsets.all(AppTheme.spacingM),
       decoration: BoxDecoration(
         color: isDarkMode
-            ? AppTheme.drawerBackgroundDark.withValues(alpha: 0.5)
-            : AppTheme.formFieldBackgroundLight.withValues(alpha: 0.7),
+            ? AppTheme.drawerBackgroundDark.withOpacity(0.5)
+            : AppTheme.neutral100, // Cor mais escura para contraste
         borderRadius: BorderRadius.circular(AppTheme.borderRadiusM),
         border: Border.all(
           color: isDarkMode
