@@ -72,9 +72,7 @@ class _TextInputFieldState extends State<TextInputField> {
     if (_isHovered) {
       return colorScheme.primary.withValues(alpha: 0.6);
     }
-    return isDarkMode
-        ? AppTheme.formFieldBorderDark
-        : AppTheme.formFieldBorderLight;
+    return isDarkMode ? AppTheme.neutral600 : AppTheme.formFieldBorderLight;
   }
 
   Color _getBackgroundColor(BuildContext context) {
@@ -90,9 +88,7 @@ class _TextInputFieldState extends State<TextInputField> {
           ? AppTheme.formFieldHoverDark
           : AppTheme.formFieldHoverLight;
     }
-    return isDarkMode
-        ? AppTheme.formFieldBackgroundDark
-        : AppTheme.formFieldBackgroundLight;
+    return isDarkMode ? AppTheme.neutral800 : AppTheme.formFieldBackgroundLight;
   }
 
   @override

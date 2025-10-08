@@ -75,9 +75,7 @@ class _MonetaryInputFieldState extends State<MonetaryInputField> {
     if (_hasError) return AppTheme.errorLight;
     if (_isFocused) return colorScheme.primary;
     if (_isHovered) return colorScheme.primary.withValues(alpha: 0.6);
-    return isDarkMode
-        ? AppTheme.formFieldBorderDark
-        : AppTheme.formFieldBorderLight;
+    return isDarkMode ? AppTheme.neutral600 : AppTheme.formFieldBorderLight;
   }
 
   Color _getBackgroundColor(BuildContext context) {
@@ -85,7 +83,7 @@ class _MonetaryInputFieldState extends State<MonetaryInputField> {
 
     if (!widget.enabled) {
       return isDarkMode
-          ? AppTheme.formFieldBackgroundDark.withValues(alpha: 0.5)
+          ? AppTheme.neutral800.withValues(alpha: 0.5)
           : AppTheme.formFieldBackgroundLight.withValues(alpha: 0.5);
     }
     if (_isFocused) {
@@ -98,9 +96,7 @@ class _MonetaryInputFieldState extends State<MonetaryInputField> {
           ? AppTheme.formFieldHoverDark
           : AppTheme.formFieldHoverLight;
     }
-    return isDarkMode
-        ? AppTheme.formFieldBackgroundDark
-        : AppTheme.formFieldBackgroundLight;
+    return isDarkMode ? AppTheme.neutral800 : AppTheme.formFieldBackgroundLight;
   }
 
   @override

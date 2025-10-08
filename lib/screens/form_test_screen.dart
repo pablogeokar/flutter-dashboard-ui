@@ -193,7 +193,6 @@ class _FormTestScreenState extends State<FormTestScreen> {
                       const SizedBox(height: 8),
                       MonetaryInputField(
                         label: 'Valor',
-                        hintText: 'Digite o valor',
                         controller:
                             _monetaryController, // Usa o controller do state
                       ),
