@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import '../widgets/form_fields.dart';
-import '../theme/theme_manager.dart';
 import '../theme/theme.dart';
 
 class FormTestScreen extends StatefulWidget {
@@ -119,25 +117,6 @@ class _FormTestScreenState extends State<FormTestScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Teste de Widgets'),
-        actions: [
-          IconButton(
-            icon: Icon(
-              Theme.of(context).brightness == Brightness.dark
-                  ? Icons.light_mode
-                  : Icons.dark_mode,
-            ),
-            onPressed: () {
-              final themeManager = Provider.of<ThemeManager>(
-                context,
-                listen: false,
-              );
-              themeManager.toggleTheme();
-            },
-          ),
-        ],
-      ),
       body: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
         padding: const EdgeInsets.all(24.0),
