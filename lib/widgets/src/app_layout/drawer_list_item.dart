@@ -110,7 +110,10 @@ class _DrawerListItemState extends State<DrawerListItem> {
                 ],
               )
             : null,
-        borderRadius: BorderRadius.circular(AppTheme.borderRadiusM),
+        // Só aplica borderRadius quando não há borda lateral
+        borderRadius: widget.isSelected
+            ? null
+            : BorderRadius.circular(AppTheme.borderRadiusM),
         border: widget.isSelected
             ? Border(
                 left: BorderSide(
@@ -121,7 +124,7 @@ class _DrawerListItemState extends State<DrawerListItem> {
                 right: BorderSide.none,
                 bottom: BorderSide.none,
               )
-            : Border.all(color: Colors.transparent, width: 1),
+            : null, // Remove a borda transparente que causa conflito
         boxShadow: widget.isSelected
             ? [
                 BoxShadow(
