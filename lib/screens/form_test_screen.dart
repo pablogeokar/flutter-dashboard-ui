@@ -39,7 +39,7 @@ class _FormTestScreenState extends State<FormTestScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Header da seção
+          // Header da seção - mais sutil
           Container(
             padding: EdgeInsets.symmetric(
               horizontal: AppTheme.spacingL,
@@ -47,8 +47,8 @@ class _FormTestScreenState extends State<FormTestScreen> {
             ),
             decoration: BoxDecoration(
               color: Theme.of(context).brightness == Brightness.dark
-                  ? AppTheme.neutral800.withValues(alpha: 0.4)
-                  : AppTheme.neutral100.withValues(alpha: 0.8),
+                  ? AppTheme.neutral800.withValues(alpha: 0.3)
+                  : AppTheme.neutral100.withValues(alpha: 0.6),
               borderRadius: const BorderRadius.only(
                 topLeft: Radius.circular(12),
                 topRight: Radius.circular(12),
@@ -56,7 +56,7 @@ class _FormTestScreenState extends State<FormTestScreen> {
               border: Border(
                 left: BorderSide(
                   color: Theme.of(context).brightness == Brightness.dark
-                      ? AppTheme.neutral600
+                      ? AppTheme.primaryDark.withValues(alpha: 0.6)
                       : Theme.of(context).colorScheme.primary,
                   width: 3,
                 ),
@@ -70,7 +70,9 @@ class _FormTestScreenState extends State<FormTestScreen> {
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.w600,
-                    color: Theme.of(context).colorScheme.onSurface,
+                    color: Theme.of(context).brightness == Brightness.dark
+                        ? AppTheme.primaryDark.withValues(alpha: 0.9)
+                        : Theme.of(context).colorScheme.primary,
                   ),
                 ),
                 const SizedBox(height: 4),
@@ -86,12 +88,12 @@ class _FormTestScreenState extends State<FormTestScreen> {
               ],
             ),
           ),
-          // Conteúdo da seção
+          // Conteúdo da seção - limpo
           Container(
             padding: EdgeInsets.all(AppTheme.spacingL),
             decoration: BoxDecoration(
               color: Theme.of(context).brightness == Brightness.dark
-                  ? AppTheme.neutral800.withValues(alpha: 0.2)
+                  ? AppTheme.neutral800.withValues(alpha: 0.15)
                   : Colors.white.withValues(alpha: 0.9),
               borderRadius: const BorderRadius.only(
                 bottomLeft: Radius.circular(12),
@@ -99,7 +101,7 @@ class _FormTestScreenState extends State<FormTestScreen> {
               ),
               border: Border.all(
                 color: Theme.of(context).brightness == Brightness.dark
-                    ? AppTheme.neutral700.withValues(alpha: 0.3)
+                    ? AppTheme.neutral700.withValues(alpha: 0.2)
                     : AppTheme.neutral200.withValues(alpha: 0.5),
                 width: 1,
               ),
@@ -148,13 +150,19 @@ class _FormTestScreenState extends State<FormTestScreen> {
                   ? AppTheme.drawerBackgroundDark
                   : Colors.white,
               borderRadius: BorderRadius.circular(16),
+              border: Theme.of(context).brightness == Brightness.dark
+                  ? Border.all(
+                      color: AppTheme.primaryDark.withValues(alpha: 0.15),
+                      width: 1,
+                    )
+                  : null,
               boxShadow: [
                 BoxShadow(
                   color: Theme.of(context).brightness == Brightness.dark
-                      ? Colors.black.withValues(alpha: 0.2)
+                      ? Colors.black.withValues(alpha: 0.3)
                       : Colors.black.withValues(alpha: 0.06),
-                  blurRadius: 16,
-                  offset: const Offset(0, 8),
+                  blurRadius: 20,
+                  offset: const Offset(0, 10),
                 ),
               ],
             ),
@@ -162,18 +170,18 @@ class _FormTestScreenState extends State<FormTestScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Header principal
+                // Header principal - elegante mas sutil
                 Container(
                   padding: const EdgeInsets.all(24.0),
                   margin: const EdgeInsets.only(bottom: 32.0),
                   decoration: BoxDecoration(
                     color: Theme.of(context).brightness == Brightness.dark
-                        ? AppTheme.neutral800.withValues(alpha: 0.5)
+                        ? AppTheme.neutral800.withValues(alpha: 0.4)
                         : AppTheme.neutral50,
                     borderRadius: BorderRadius.circular(12),
                     border: Border.all(
                       color: Theme.of(context).brightness == Brightness.dark
-                          ? AppTheme.neutral600.withValues(alpha: 0.3)
+                          ? AppTheme.primaryDark.withValues(alpha: 0.2)
                           : AppTheme.neutral200,
                       width: 1,
                     ),
@@ -184,15 +192,25 @@ class _FormTestScreenState extends State<FormTestScreen> {
                         padding: const EdgeInsets.all(16),
                         decoration: BoxDecoration(
                           color: Theme.of(context).brightness == Brightness.dark
-                              ? AppTheme.neutral600
+                              ? AppTheme.primaryDark.withValues(alpha: 0.8)
                               : Theme.of(context).colorScheme.primary,
                           borderRadius: BorderRadius.circular(12),
+                          boxShadow: [
+                            BoxShadow(
+                              color:
+                                  Theme.of(context).brightness ==
+                                      Brightness.dark
+                                  ? AppTheme.primaryDark.withValues(alpha: 0.2)
+                                  : Theme.of(context).colorScheme.primary
+                                        .withValues(alpha: 0.2),
+                              blurRadius: 8,
+                              offset: const Offset(0, 4),
+                            ),
+                          ],
                         ),
                         child: Icon(
                           Icons.widgets_rounded,
-                          color: Theme.of(context).brightness == Brightness.dark
-                              ? AppTheme.neutral100
-                              : Colors.white,
+                          color: Colors.white,
                           size: 28,
                         ),
                       ),
