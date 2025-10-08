@@ -74,98 +74,58 @@ class _ResponsiveDrawerState extends State<ResponsiveDrawer> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          // Header moderno com logo do app
-          Container(
-            margin: const EdgeInsets.all(AppTheme.spacingM),
-            padding: const EdgeInsets.all(AppTheme.spacingL),
-            decoration: BoxDecoration(
-              color: isDarkMode
-                  ? AppTheme.drawerBackgroundDark.withValues(alpha: 0.8)
-                  : AppTheme.cardBackgroundLight,
-              borderRadius: BorderRadius.circular(AppTheme.borderRadiusL),
-              border: Border.all(
-                color: isDarkMode
-                    ? AppTheme.neutral600.withValues(alpha: 0.3)
-                    : AppTheme.formFieldBorderLight,
-                width: 1,
-              ),
-              boxShadow: [
-                BoxShadow(
-                  color: isDarkMode
-                      ? Colors.black.withValues(alpha: 0.2)
-                      : Colors.black.withValues(alpha: 0.05),
-                  blurRadius: 8,
-                  offset: const Offset(0, 4),
-                ),
-              ],
-            ),
-            child:
-                // Logo do app - ocupando todo o espaço disponível
-                Container(
-                  height: 160, // Aumentado de 120 para 160
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    color: isDarkMode
-                        ? AppTheme.drawerBackgroundDark.withValues(alpha: 0.6)
-                        : AppTheme.formFieldBackgroundLight.withValues(
-                            alpha: 0.5,
-                          ),
-                    borderRadius: BorderRadius.circular(AppTheme.borderRadiusM),
-                  ),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(AppTheme.borderRadiusM),
-                    child: Image.asset(
-                      Provider.of<ThemeManager>(context).currentTheme ==
-                              ThemeModeType.dark
-                          ? 'assets/logo_dark.png'
-                          : 'assets/logo_light.png',
-                      fit: BoxFit.contain,
-                      width: double.infinity,
-                      height: double.infinity,
-                      errorBuilder: (context, error, stackTrace) {
-                        // Fallback elegante caso a imagem não seja encontrada
-                        return Container(
-                          decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                              begin: Alignment.topLeft,
-                              end: Alignment.bottomRight,
-                              colors: [
-                                Theme.of(context).colorScheme.primary,
-                                Theme.of(
-                                  context,
-                                ).colorScheme.primary.withValues(alpha: 0.8),
-                              ],
-                            ),
-                            borderRadius: BorderRadius.circular(
-                              AppTheme.borderRadiusM,
-                            ),
-                          ),
-                          child: Center(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(
-                                  Icons.dashboard_rounded,
-                                  size: 100, // Aumentado ainda mais para 100
-                                  color: Colors.white,
-                                ),
-                                const SizedBox(height: AppTheme.spacingS),
-                                Text(
-                                  'Dashboard UI',
-                                  style: TextStyle(
-                                    fontSize: 22, // Aumentado para 22
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        );
-                      },
+          // Logo do sistema - apenas a imagem
+          Padding(
+            padding: const EdgeInsets.all(AppTheme.spacingM),
+            child: SizedBox(
+              height: 160,
+              child: Image.asset(
+                Provider.of<ThemeManager>(context).currentTheme ==
+                        ThemeModeType.dark
+                    ? 'assets/logo_dark.png'
+                    : 'assets/logo_light.png',
+                fit: BoxFit.contain,
+                errorBuilder: (context, error, stackTrace) {
+                  // Fallback simples caso a imagem não seja encontrada
+                  return Container(
+                    height: 160,
+                    decoration: BoxDecoration(
+                      color: isDarkMode
+                          ? AppTheme.neutral700
+                          : Theme.of(context).colorScheme.primary,
+                      borderRadius: BorderRadius.circular(
+                        AppTheme.borderRadiusM,
+                      ),
                     ),
-                  ),
-                ),
+                    child: Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.dashboard_rounded,
+                            size: 64,
+                            color: isDarkMode
+                                ? AppTheme.neutral200
+                                : Colors.white,
+                          ),
+                          const SizedBox(height: AppTheme.spacingS),
+                          Text(
+                            'Dashboard UI',
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              color: isDarkMode
+                                  ? AppTheme.neutral200
+                                  : Colors.white,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
           ),
           // Card de status/informações
           Padding(
@@ -191,14 +151,16 @@ class _ResponsiveDrawerState extends State<ResponsiveDrawer> {
                     width: 40,
                     height: 40,
                     decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.primary,
+                      color: isDarkMode
+                          ? AppTheme.neutral600
+                          : Theme.of(context).colorScheme.primary,
                       borderRadius: BorderRadius.circular(
                         AppTheme.borderRadiusS,
                       ),
                     ),
-                    child: const Icon(
+                    child: Icon(
                       Icons.person_rounded,
-                      color: Colors.white,
+                      color: isDarkMode ? AppTheme.neutral100 : Colors.white,
                       size: 20,
                     ),
                   ),
@@ -437,15 +399,19 @@ class _ResponsiveDrawerState extends State<ResponsiveDrawer> {
                   Container(
                     padding: const EdgeInsets.all(6),
                     decoration: BoxDecoration(
-                      color: Theme.of(
-                        context,
-                      ).colorScheme.primary.withValues(alpha: 0.1),
+                      color: isDarkMode
+                          ? AppTheme.neutral700.withValues(alpha: 0.6)
+                          : Theme.of(
+                              context,
+                            ).colorScheme.primary.withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(6),
                     ),
                     child: Icon(
                       Icons.info_outline,
                       size: 14,
-                      color: Theme.of(context).colorScheme.primary,
+                      color: isDarkMode
+                          ? AppTheme.neutral300
+                          : Theme.of(context).colorScheme.primary,
                     ),
                   ),
                   const SizedBox(width: AppTheme.spacingS),
