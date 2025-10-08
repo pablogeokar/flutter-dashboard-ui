@@ -58,11 +58,24 @@ class _DateInputFieldState extends State<DateInputField> {
       firstDate: DateTime(1900),
       lastDate: DateTime(2101),
       builder: (context, child) {
-        // Para forçar o tema claro no picker, como no original
+        // Usar o tema atual (dark ou light)
+        final isDarkMode = Theme.of(context).brightness == Brightness.dark;
         return Theme(
-          data: ThemeData.light().copyWith(
-            colorScheme: ColorScheme.fromSeed(seedColor: AppTheme.primaryLight),
-          ),
+          data: isDarkMode
+              ? ThemeData.dark().copyWith(
+                  colorScheme: ColorScheme.fromSeed(
+                    seedColor: AppTheme.primaryDark,
+                    brightness: Brightness.dark,
+                  ),
+                  dialogBackgroundColor: AppTheme.drawerBackgroundDark,
+                  cardColor: AppTheme.neutral800,
+                )
+              : ThemeData.light().copyWith(
+                  colorScheme: ColorScheme.fromSeed(
+                    seedColor: AppTheme.primaryLight,
+                    brightness: Brightness.light,
+                  ),
+                ),
           child: child!,
         );
       },
