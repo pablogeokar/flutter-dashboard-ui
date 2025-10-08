@@ -89,15 +89,17 @@ class _DrawerListItemState extends State<DrawerListItem> {
       decoration: BoxDecoration(
         color: widget.isSelected
             ? Theme.of(context).brightness == Brightness.dark
-                  ? AppTheme.neutral700.withValues(alpha: 0.6)
+                  ? AppTheme.primaryDark.withValues(
+                      alpha: 0.15,
+                    ) // Azul sutil da paleta
                   : Theme.of(
                       context,
                     ).colorScheme.primary.withValues(alpha: 0.08)
             : _isHovered
             ? Theme.of(context).brightness == Brightness.dark
-                  ? AppTheme.neutral700.withValues(
-                      alpha: widget.isFooterItem ? 0.3 : 0.4,
-                    )
+                  ? AppTheme.primaryDark.withValues(
+                      alpha: 0.08,
+                    ) // Azul mais sutil para hover
                   : Theme.of(context).colorScheme.primary.withValues(
                       alpha: widget.isFooterItem ? 0.04 : 0.06,
                     )
@@ -110,7 +112,8 @@ class _DrawerListItemState extends State<DrawerListItem> {
             ? Border(
                 left: BorderSide(
                   color: Theme.of(context).brightness == Brightness.dark
-                      ? AppTheme.neutral400
+                      ? AppTheme
+                            .primaryDark // Azul da paleta
                       : Theme.of(context).colorScheme.primary,
                   width: 3,
                 ),
@@ -177,16 +180,21 @@ class _DrawerListItemState extends State<DrawerListItem> {
                   decoration: BoxDecoration(
                     color: widget.isSelected
                         ? Theme.of(context).brightness == Brightness.dark
-                              ? AppTheme.neutral600
+                              ? AppTheme
+                                    .primaryDark // Azul da paleta
                               : Theme.of(context).colorScheme.primary
                         : _isHovered
                         ? Theme.of(context).brightness == Brightness.dark
-                              ? AppTheme.neutral700.withValues(alpha: 0.8)
+                              ? AppTheme.primaryDark.withValues(
+                                  alpha: 0.3,
+                                ) // Azul sutil
                               : Theme.of(
                                   context,
                                 ).colorScheme.primary.withValues(alpha: 0.12)
                         : Theme.of(context).brightness == Brightness.dark
-                        ? AppTheme.neutral800.withValues(alpha: 0.6)
+                        ? AppTheme.neutral800.withValues(
+                            alpha: 0.6,
+                          ) // Neutro para normal
                         : Theme.of(
                             context,
                           ).colorScheme.onSurface.withValues(alpha: 0.05),
@@ -217,12 +225,12 @@ class _DrawerListItemState extends State<DrawerListItem> {
                       widget.item.icon,
                       size: 18,
                       color: widget.isSelected
-                          ? Theme.of(context).brightness == Brightness.dark
-                                ? AppTheme.neutral100
-                                : Colors.white
+                          ? Colors
+                                .white // Branco para contraste com azul
                           : _isHovered
                           ? Theme.of(context).brightness == Brightness.dark
-                                ? AppTheme.neutral200
+                                ? Colors
+                                      .white // Branco para contraste com azul hover
                                 : Theme.of(context).colorScheme.primary
                           : Theme.of(context).brightness == Brightness.dark
                           ? Theme.of(context).colorScheme.onSurface.withValues(
@@ -249,11 +257,15 @@ class _DrawerListItemState extends State<DrawerListItem> {
                       letterSpacing: widget.isSelected ? 0.2 : 0.0,
                       color: widget.isSelected
                           ? Theme.of(context).brightness == Brightness.dark
-                                ? AppTheme.neutral200
+                                ? AppTheme.primaryDark.withValues(
+                                    alpha: 0.9,
+                                  ) // Azul da paleta
                                 : Theme.of(context).colorScheme.primary
                           : _isHovered
                           ? Theme.of(context).brightness == Brightness.dark
-                                ? AppTheme.neutral300
+                                ? AppTheme.primaryDark.withValues(
+                                    alpha: 0.7,
+                                  ) // Azul mais claro
                                 : Theme.of(context).colorScheme.primary
                           : Theme.of(context).colorScheme.onSurface.withValues(
                               alpha: widget.isFooterItem ? 0.8 : 0.95,
