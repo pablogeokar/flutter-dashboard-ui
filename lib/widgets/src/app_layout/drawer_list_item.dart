@@ -87,27 +87,17 @@ class _DrawerListItemState extends State<DrawerListItem> {
         vertical: AppTheme.spacingS,
       ),
       decoration: BoxDecoration(
-        gradient: widget.isSelected
-            ? LinearGradient(
-                begin: Alignment.centerLeft,
-                end: Alignment.centerRight,
-                colors: [
-                  Theme.of(context).colorScheme.primary.withValues(alpha: 0.12),
-                  Theme.of(context).colorScheme.primary.withValues(alpha: 0.08),
-                ],
+        color: widget.isSelected
+            ? Theme.of(context).colorScheme.primary.withValues(
+                alpha: Theme.of(context).brightness == Brightness.dark
+                    ? 0.15
+                    : 0.08,
               )
             : _isHovered
-            ? LinearGradient(
-                begin: Alignment.centerLeft,
-                end: Alignment.centerRight,
-                colors: [
-                  Theme.of(context).colorScheme.primary.withValues(
-                    alpha: widget.isFooterItem ? 0.06 : 0.08,
-                  ),
-                  Theme.of(context).colorScheme.primary.withValues(
-                    alpha: widget.isFooterItem ? 0.03 : 0.04,
-                  ),
-                ],
+            ? Theme.of(context).colorScheme.primary.withValues(
+                alpha: Theme.of(context).brightness == Brightness.dark
+                    ? (widget.isFooterItem ? 0.08 : 0.12)
+                    : (widget.isFooterItem ? 0.04 : 0.06),
               )
             : null,
         // Só aplica borderRadius quando não há borda lateral
@@ -170,31 +160,23 @@ class _DrawerListItemState extends State<DrawerListItem> {
                   width: 32,
                   height: 32,
                   decoration: BoxDecoration(
-                    gradient: widget.isSelected
-                        ? LinearGradient(
-                            begin: Alignment.topLeft,
-                            end: Alignment.bottomRight,
-                            colors: [
-                              Theme.of(context).colorScheme.primary,
-                              Theme.of(
-                                context,
-                              ).colorScheme.primary.withValues(alpha: 0.8),
-                            ],
-                          )
+                    color: widget.isSelected
+                        ? Theme.of(context).colorScheme.primary
                         : _isHovered
-                        ? LinearGradient(
-                            begin: Alignment.topLeft,
-                            end: Alignment.bottomRight,
-                            colors: [
-                              Theme.of(
-                                context,
-                              ).colorScheme.primary.withValues(alpha: 0.15),
-                              Theme.of(
-                                context,
-                              ).colorScheme.primary.withValues(alpha: 0.08),
-                            ],
-                          )
-                        : null,
+                        ? Theme.of(context).brightness == Brightness.dark
+                              ? Theme.of(
+                                  context,
+                                ).colorScheme.primary.withValues(alpha: 0.3)
+                              : Theme.of(
+                                  context,
+                                ).colorScheme.primary.withValues(alpha: 0.12)
+                        : Theme.of(context).brightness == Brightness.dark
+                        ? Theme.of(
+                            context,
+                          ).colorScheme.onSurface.withValues(alpha: 0.08)
+                        : Theme.of(
+                            context,
+                          ).colorScheme.onSurface.withValues(alpha: 0.05),
                     borderRadius: BorderRadius.circular(AppTheme.borderRadiusS),
                     boxShadow: widget.isSelected
                         ? [
@@ -217,9 +199,15 @@ class _DrawerListItemState extends State<DrawerListItem> {
                       color: widget.isSelected
                           ? Colors.white
                           : _isHovered
-                          ? Theme.of(context).colorScheme.primary
+                          ? Theme.of(context).brightness == Brightness.dark
+                                ? Colors.white
+                                : Theme.of(context).colorScheme.primary
+                          : Theme.of(context).brightness == Brightness.dark
+                          ? Theme.of(context).colorScheme.onSurface.withValues(
+                              alpha: widget.isFooterItem ? 0.8 : 0.95,
+                            )
                           : Theme.of(context).colorScheme.onSurface.withValues(
-                              alpha: widget.isFooterItem ? 0.7 : 0.9,
+                              alpha: widget.isFooterItem ? 0.7 : 0.85,
                             ),
                     ),
                   ),

@@ -193,14 +193,7 @@ class _ResponsiveDrawerState extends State<ResponsiveDrawer> {
                     width: 40,
                     height: 40,
                     decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: [
-                          Theme.of(context).colorScheme.primary,
-                          Theme.of(
-                            context,
-                          ).colorScheme.primary.withValues(alpha: 0.7),
-                        ],
-                      ),
+                      color: Theme.of(context).colorScheme.primary,
                       borderRadius: BorderRadius.circular(
                         AppTheme.borderRadiusS,
                       ),
