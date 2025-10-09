@@ -109,24 +109,73 @@ class _DrawerListItemState extends State<DrawerListItem> {
     // Define a decoração baseada nos estados
     BoxDecoration decoration;
     if (widget.isSelected) {
-      decoration = BoxDecoration(
-        color: primaryColor.withValues(alpha: 0.15),
-        border: Border(left: BorderSide(color: primaryColor, width: 3)),
-      );
+      if (widget.isSubItem) {
+        // Estilo destacado para subitens selecionados
+        decoration = BoxDecoration(
+          color: primaryColor.withValues(alpha: 0.1),
+          border: Border(left: BorderSide(color: primaryColor, width: 4)),
+          borderRadius: const BorderRadius.only(
+            topRight: Radius.circular(AppTheme.borderRadiusM),
+            bottomRight: Radius.circular(AppTheme.borderRadiusM),
+          ),
+        );
+      } else {
+        // Estilo normal para itens principais selecionados
+        decoration = BoxDecoration(
+          color: primaryColor.withValues(alpha: 0.15),
+          border: Border(left: BorderSide(color: primaryColor, width: 3)),
+        );
+      }
     } else if (_isHovered) {
-      decoration = BoxDecoration(
-        color: isDarkMode
-            ? const Color(0xFF4A5568).withValues(
-                alpha: 0.6,
-              ) // Cinza azulado mais claro para modo dark
-            : primaryColor.withValues(alpha: 0.08),
-        borderRadius: BorderRadius.circular(AppTheme.borderRadiusM),
-      );
+      if (widget.isSubItem) {
+        // Estilo atrativo para subitens no hover
+        decoration = BoxDecoration(
+          color: isDarkMode
+              ? const Color(0xFF4B5563).withValues(alpha: 0.3)
+              : const Color(0xFFF3F4F6).withValues(alpha: 0.7),
+          border: Border(
+            left: BorderSide(
+              color: isDarkMode
+                  ? const Color(0xFF9CA3AF)
+                  : const Color(0xFF9CA3AF),
+              width: 3,
+            ),
+          ),
+          borderRadius: const BorderRadius.only(
+            topRight: Radius.circular(AppTheme.borderRadiusS),
+            bottomRight: Radius.circular(AppTheme.borderRadiusS),
+          ),
+        );
+      } else {
+        // Estilo normal para itens principais no hover
+        decoration = BoxDecoration(
+          color: isDarkMode
+              ? const Color(0xFF4A5568).withValues(alpha: 0.6)
+              : primaryColor.withValues(alpha: 0.08),
+          borderRadius: BorderRadius.circular(AppTheme.borderRadiusM),
+        );
+      }
     } else {
-      decoration = BoxDecoration(
-        color: Colors.transparent,
-        borderRadius: BorderRadius.circular(AppTheme.borderRadiusM),
-      );
+      if (widget.isSubItem) {
+        // Estilo sutil mas visível para subitens normais
+        decoration = BoxDecoration(
+          color: Colors.transparent,
+          border: Border(
+            left: BorderSide(
+              color: isDarkMode
+                  ? const Color(0xFF6B7280).withValues(alpha: 0.4)
+                  : const Color(0xFFD1D5DB).withValues(alpha: 0.7),
+              width: 2,
+            ),
+          ),
+        );
+      } else {
+        // Estilo normal para itens principais
+        decoration = BoxDecoration(
+          color: Colors.transparent,
+          borderRadius: BorderRadius.circular(AppTheme.borderRadiusM),
+        );
+      }
     }
 
     // Define a decoração do ícone baseada nos estados
@@ -138,46 +187,101 @@ class _DrawerListItemState extends State<DrawerListItem> {
     );
 
     if (widget.isSelected) {
-      iconDecoration = BoxDecoration(
-        color: primaryColor,
-        borderRadius: BorderRadius.circular(AppTheme.borderRadiusS),
-        boxShadow: [
-          BoxShadow(
-            color: primaryColor.withValues(alpha: 0.3),
-            blurRadius: 6,
-            offset: const Offset(0, 2),
-          ),
-        ],
-      );
-      iconColor = Colors.white;
-      titleFontWeight = FontWeight.w700;
-      titleColor = isDarkMode
-          ? const Color(0xFFF5F5F5) // Tom de branco suave para modo dark
-          : primaryColor;
+      if (widget.isSubItem) {
+        // Estilo atrativo para subitens selecionados
+        iconDecoration = BoxDecoration(
+          color: primaryColor,
+          borderRadius: BorderRadius.circular(AppTheme.borderRadiusS),
+          boxShadow: [
+            BoxShadow(
+              color: primaryColor.withValues(alpha: 0.3),
+              blurRadius: 4,
+              offset: const Offset(0, 2),
+            ),
+          ],
+        );
+        iconColor = Colors.white;
+        titleFontWeight = FontWeight.w600;
+        titleColor = isDarkMode
+            ? const Color(0xFFF5F5F5) // Branco suave para subitens selecionados
+            : primaryColor;
+      } else {
+        // Estilo normal para itens principais selecionados
+        iconDecoration = BoxDecoration(
+          color: primaryColor,
+          borderRadius: BorderRadius.circular(AppTheme.borderRadiusS),
+          boxShadow: [
+            BoxShadow(
+              color: primaryColor.withValues(alpha: 0.3),
+              blurRadius: 6,
+              offset: const Offset(0, 2),
+            ),
+          ],
+        );
+        iconColor = Colors.white;
+        titleFontWeight = FontWeight.w700;
+        titleColor = isDarkMode
+            ? const Color(0xFFF5F5F5) // Tom de branco suave para modo dark
+            : primaryColor;
+      }
     } else if (_isHovered) {
-      iconDecoration = BoxDecoration(
-        color: isDarkMode
-            ? const Color(0xFF6B7280).withValues(
-                alpha: 0.3,
-              ) // Cinza neutro para modo dark
-            : primaryColor.withValues(alpha: 0.12),
-        borderRadius: BorderRadius.circular(AppTheme.borderRadiusS),
-      );
-      iconColor = isDarkMode
-          ? const Color(0xFFE5E7EB) // Cinza claro para ícone no modo dark
-          : primaryColor;
-      titleFontWeight = FontWeight.w600;
-      titleColor = isDarkMode
-          ? const Color(0xFFE5E7EB) // Cinza claro para texto no modo dark
-          : primaryColor;
+      if (widget.isSubItem) {
+        // Estilo atrativo para subitens no hover
+        iconDecoration = BoxDecoration(
+          color: isDarkMode
+              ? const Color(0xFF6B7280).withValues(alpha: 0.6)
+              : const Color(0xFF9CA3AF).withValues(alpha: 0.3),
+          borderRadius: BorderRadius.circular(AppTheme.borderRadiusS),
+        );
+        iconColor = isDarkMode
+            ? const Color(0xFFE5E7EB) // Cinza claro para ícone no hover
+            : const Color(0xFF4B5563);
+        titleFontWeight = FontWeight.w500;
+        titleColor = isDarkMode
+            ? const Color(0xFFE5E7EB) // Cinza claro para texto no hover
+            : const Color(0xFF4B5563);
+      } else {
+        // Estilo normal para itens principais no hover
+        iconDecoration = BoxDecoration(
+          color: isDarkMode
+              ? const Color(0xFF6B7280).withValues(alpha: 0.3)
+              : primaryColor.withValues(alpha: 0.12),
+          borderRadius: BorderRadius.circular(AppTheme.borderRadiusS),
+        );
+        iconColor = isDarkMode
+            ? const Color(0xFFE5E7EB) // Cinza claro para ícone no modo dark
+            : primaryColor;
+        titleFontWeight = FontWeight.w600;
+        titleColor = isDarkMode
+            ? const Color(0xFFE5E7EB) // Cinza claro para texto no modo dark
+            : primaryColor;
+      }
     } else {
-      iconDecoration = BoxDecoration(
-        color: onSurfaceColor.withValues(alpha: 0.05),
-        borderRadius: BorderRadius.circular(AppTheme.borderRadiusS),
-      );
-      iconColor = onSurfaceColor.withValues(
-        alpha: widget.isFooterItem ? 0.7 : 0.85,
-      );
+      if (widget.isSubItem) {
+        // Estilo visível e atrativo para subitens normais
+        iconDecoration = BoxDecoration(
+          color: isDarkMode
+              ? const Color(0xFF4B5563).withValues(alpha: 0.4)
+              : const Color(0xFFE5E7EB).withValues(alpha: 0.7),
+          borderRadius: BorderRadius.circular(AppTheme.borderRadiusS),
+        );
+        iconColor = isDarkMode
+            ? const Color(0xFFD1D5DB) // Cinza claro para ícones de subitens
+            : const Color(0xFF6B7280);
+        titleFontWeight = FontWeight.w500; // Peso normal para subitens
+        titleColor = isDarkMode
+            ? const Color(0xFFD1D5DB) // Cinza claro para texto de subitens
+            : const Color(0xFF6B7280);
+      } else {
+        // Estilo normal para itens principais
+        iconDecoration = BoxDecoration(
+          color: onSurfaceColor.withValues(alpha: 0.05),
+          borderRadius: BorderRadius.circular(AppTheme.borderRadiusS),
+        );
+        iconColor = onSurfaceColor.withValues(
+          alpha: widget.isFooterItem ? 0.7 : 0.85,
+        );
+      }
     }
 
     return AnimatedContainer(

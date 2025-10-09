@@ -60,10 +60,5 @@ class SidebarConfigWithContext {
       icon: Icons.settings,
       onDialogTap: DialogCallbacks.configuracoes(context),
     ),
-    DrawerItem(
-      title: 'Perfil',
-      icon: Icons.person,
-      screen: EmConstrucaoPlaceholder(),
-    ),
   ];
 }
