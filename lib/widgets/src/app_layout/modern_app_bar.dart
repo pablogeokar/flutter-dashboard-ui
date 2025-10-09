@@ -103,7 +103,9 @@ class ModernAppBar extends StatelessWidget implements PreferredSizeWidget {
                             Icons.dashboard_rounded,
                             size: 18,
                             color: isDarkMode
-                                ? AppTheme.primaryDark
+                                ? const Color(
+                                    0xFFF5F5F5,
+                                  ) // Branco suave para legibilidade
                                 : Theme.of(context).colorScheme.primary,
                           ),
                           const SizedBox(width: 8),
@@ -113,7 +115,9 @@ class ModernAppBar extends StatelessWidget implements PreferredSizeWidget {
                               fontSize: 14,
                               fontWeight: FontWeight.w600,
                               color: isDarkMode
-                                  ? AppTheme.primaryDark
+                                  ? const Color(
+                                      0xFFF5F5F5,
+                                    ) // Branco suave para legibilidade
                                   : Theme.of(context).colorScheme.primary,
                             ),
                           ),

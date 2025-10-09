@@ -50,11 +50,58 @@ class _ResponsiveDrawerState extends State<ResponsiveDrawer> {
     return flatList;
   }
 
+  /// Calcula altura responsiva da logo baseada na largura e altura da tela
+  double _getResponsiveLogoHeight(double screenWidth, double screenHeight) {
+    // Altura base da logo
+    double baseHeight = 140.0;
+
+    // Ajuste baseado na largura da tela
+    if (screenWidth < AppTheme.breakpointSmall) {
+      baseHeight = 120.0; // Telas pequenas: altura mínima decente
+    } else if (screenWidth < AppTheme.breakpointMedium) {
+      baseHeight = 130.0; // Telas médias: altura intermediária
+    } else if (screenWidth < AppTheme.breakpointLarge) {
+      baseHeight = 140.0; // Telas grandes: altura padrão
+    } else {
+      baseHeight = 150.0; // Telas muito grandes: altura maior
+    }
+
+    // Ajuste adicional baseado na altura da tela (para telas muito baixas)
+    if (screenHeight < 700) {
+      baseHeight = baseHeight * 0.85; // Reduz 15% em telas muito baixas
+    } else if (screenHeight < 800) {
+      baseHeight = baseHeight * 0.95; // Reduz 5% em telas baixas
+    }
+
+    return baseHeight;
+  }
+
   @override
   Widget build(BuildContext context) {
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
-    final screenHeight = MediaQuery.of(context).size.height;
-    final isSmallScreen = screenHeight < 700; // Detecta telas pequenas
+    final screenSize = MediaQuery.of(context).size;
+    final screenWidth = screenSize.width;
+    final screenHeight = screenSize.height;
+
+    // Sistema de responsividade inteligente
+    final responsiveDrawerWidth = AppTheme.getResponsiveDrawerWidth(
+      screenWidth,
+    );
+    final responsiveSpacing = AppTheme.getResponsiveSpacing(
+      screenWidth,
+      AppTheme.spacingM,
+    );
+    final responsiveSpacingS = AppTheme.getResponsiveSpacing(
+      screenWidth,
+      AppTheme.spacingS,
+    );
+    final responsiveSpacingL = AppTheme.getResponsiveSpacing(
+      screenWidth,
+      AppTheme.spacingL,
+    );
+
+    final isSmallScreen =
+        screenHeight < 700; // Detecta telas pequenas em altura
 
     final drawerColor = isDarkMode
         ? AppTheme.drawerBackgroundDark
@@ -80,10 +127,10 @@ class _ResponsiveDrawerState extends State<ResponsiveDrawer> {
           // Logo do sistema - apenas a imagem
           Padding(
             padding: EdgeInsets.all(
-              isSmallScreen ? AppTheme.spacingS : AppTheme.spacingM,
+              isSmallScreen ? responsiveSpacingS : responsiveSpacing,
             ),
             child: SizedBox(
-              height: isSmallScreen ? 120 : 160,
+              height: _getResponsiveLogoHeight(screenWidth, screenHeight),
               child: Image.asset(
                 Provider.of<ThemeManager>(context).currentTheme ==
                         ThemeModeType.dark
@@ -93,7 +140,7 @@ class _ResponsiveDrawerState extends State<ResponsiveDrawer> {
                 errorBuilder: (context, error, stackTrace) {
                   // Fallback simples caso a imagem não seja encontrada
                   return Container(
-                    height: isSmallScreen ? 120 : 160,
+                    height: _getResponsiveLogoHeight(screenWidth, screenHeight),
                     decoration: BoxDecoration(
                       color: isDarkMode
                           ? AppTheme.neutral700
@@ -117,7 +164,10 @@ class _ResponsiveDrawerState extends State<ResponsiveDrawer> {
                           Text(
                             'Dashboard UI',
                             style: TextStyle(
-                              fontSize: 18,
+                              fontSize: AppTheme.getResponsiveFontSize(
+                                screenWidth,
+                                18,
+                              ),
                               fontWeight: FontWeight.bold,
                               color: isDarkMode
                                   ? AppTheme.neutral200
@@ -134,9 +184,9 @@ class _ResponsiveDrawerState extends State<ResponsiveDrawer> {
           ),
           // Card de status/informações
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: AppTheme.spacingM),
+            padding: EdgeInsets.symmetric(horizontal: responsiveSpacing),
             child: Container(
-              padding: const EdgeInsets.all(AppTheme.spacingM),
+              padding: EdgeInsets.all(responsiveSpacing),
               decoration: BoxDecoration(
                 color: isDarkMode
                     ? AppTheme.drawerBackgroundDark.withValues(alpha: 0.7)
@@ -153,8 +203,8 @@ class _ResponsiveDrawerState extends State<ResponsiveDrawer> {
                 children: [
                   // Avatar do usuário
                   Container(
-                    width: 40,
-                    height: 40,
+                    width: AppTheme.getResponsiveIconSize(screenWidth, 40),
+                    height: AppTheme.getResponsiveIconSize(screenWidth, 40),
                     decoration: BoxDecoration(
                       color: isDarkMode
                           ? AppTheme.neutral600
@@ -166,10 +216,10 @@ class _ResponsiveDrawerState extends State<ResponsiveDrawer> {
                     child: Icon(
                       Icons.person_rounded,
                       color: isDarkMode ? AppTheme.neutral100 : Colors.white,
-                      size: 20,
+                      size: AppTheme.getResponsiveIconSize(screenWidth, 20),
                     ),
                   ),
-                  const SizedBox(width: AppTheme.spacingM),
+                  SizedBox(width: responsiveSpacing),
                   // Informações do usuário
                   Expanded(
                     child: Column(
@@ -178,7 +228,10 @@ class _ResponsiveDrawerState extends State<ResponsiveDrawer> {
                         Text(
                           'Bem-vindo!',
                           style: TextStyle(
-                            fontSize: 14,
+                            fontSize: AppTheme.getResponsiveFontSize(
+                              screenWidth,
+                              14,
+                            ),
                             fontWeight: FontWeight.w600,
                             color: Theme.of(context).colorScheme.onSurface,
                           ),
@@ -187,7 +240,10 @@ class _ResponsiveDrawerState extends State<ResponsiveDrawer> {
                         Text(
                           'Usuário Admin',
                           style: TextStyle(
-                            fontSize: 12,
+                            fontSize: AppTheme.getResponsiveFontSize(
+                              screenWidth,
+                              12,
+                            ),
                             color: Theme.of(
                               context,
                             ).colorScheme.onSurface.withValues(alpha: 0.6),
@@ -210,23 +266,24 @@ class _ResponsiveDrawerState extends State<ResponsiveDrawer> {
             ),
           ),
           SizedBox(
-            height: isSmallScreen ? AppTheme.spacingM : AppTheme.spacingL,
+            height: isSmallScreen ? responsiveSpacing : responsiveSpacingL,
           ),
-          Flexible(
+          // Área principal expansível com itens principais
+          Expanded(
             child: SingleChildScrollView(
               padding: EdgeInsets.symmetric(
                 horizontal: isSmallScreen
-                    ? AppTheme.spacingS
-                    : AppTheme.spacingM,
+                    ? responsiveSpacingS
+                    : responsiveSpacing,
               ),
               child: Column(children: _buildItemList(widget.itensPrincipais)),
             ),
           ),
           // Separador elegante
           Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: AppTheme.spacingL,
-              vertical: AppTheme.spacingM,
+            padding: EdgeInsets.symmetric(
+              horizontal: responsiveSpacingL,
+              vertical: responsiveSpacing,
             ),
             child: Container(
               height: 1,
@@ -243,6 +300,7 @@ class _ResponsiveDrawerState extends State<ResponsiveDrawer> {
               ),
             ),
           ),
+          // Footer fixo na parte inferior
           Container(
             decoration: BoxDecoration(
               color: drawerColor,
@@ -259,6 +317,7 @@ class _ResponsiveDrawerState extends State<ResponsiveDrawer> {
               ],
             ),
             child: Column(
+              mainAxisSize: MainAxisSize.min,
               children: [
                 ..._buildItemList(widget.itensInferiores, isFooterList: true),
                 _buildFooter(context),
@@ -272,7 +331,7 @@ class _ResponsiveDrawerState extends State<ResponsiveDrawer> {
     if (widget.isPermanent) {
       return AnimatedContainer(
         duration: const Duration(milliseconds: 300),
-        width: AppTheme.drawerWidth,
+        width: responsiveDrawerWidth,
         decoration: BoxDecoration(
           color: drawerColor,
           borderRadius: const BorderRadius.only(

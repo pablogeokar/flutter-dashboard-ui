@@ -4,22 +4,34 @@ class AppTheme {
   // === PALETA DE CORES V4: Tema Profissional e Acolhedor ===
 
   // Cores Primárias (Azul Acinzentado)
-  static const Color primaryLight = Color(0xFF4A6C8B); // Azul acinzentado profissional
-  static const Color primaryDark = Color(0xFF6C93B8); // Azul acinzentado mais claro para contraste
+  static const Color primaryLight = Color(
+    0xFF4A6C8B,
+  ); // Azul acinzentado profissional
+  static const Color primaryDark = Color(
+    0xFF1565C0,
+  ); // Azul mais intenso e vibrante para o modo dark
 
   // Cores Secundárias
-  static const Color secondaryLight = Color(0xFF212529); // Cinza escuro para texto (mantido)
+  static const Color secondaryLight = Color(
+    0xFF212529,
+  ); // Cinza escuro para texto (mantido)
   static const Color secondaryDark = Color(
     0xFFdee2e6,
   ); // Cinza claro para textos no modo escuro (mantido)
 
   // Cores de Superfície (fundo principal da aplicação)
-  static const Color surfaceLight = Color(0xFFF5F5F5); // Branco suave para conforto visual
+  static const Color surfaceLight = Color(
+    0xFFF5F5F5,
+  ); // Branco suave para conforto visual
   static const Color surfaceDark = Color(0xFF2C2C2C); // Cinza escuro e elegante
 
   // Cores de Fundo da Drawer (barra lateral)
-  static const Color drawerBackgroundLight = Color(0xFFFFFFFF); // Branco puro para contraste sutil
-  static const Color drawerBackgroundDark = Color(0xFF343A40); // Tom de cinza ligeiramente diferente
+  static const Color drawerBackgroundLight = Color(
+    0xFFFFFFFF,
+  ); // Branco puro para contraste sutil
+  static const Color drawerBackgroundDark = Color(
+    0xFF343A40,
+  ); // Tom de cinza ligeiramente diferente
 
   // === CORES SEMÂNTICAS ===
 
@@ -80,24 +92,36 @@ class AppTheme {
   // === CORES ESPECÍFICAS PARA FORMULÁRIOS ===
 
   // Campos de formulário - modo claro
-  static const Color formFieldBackgroundLight = AppTheme.neutral50; // Cinza levíssimo para diferenciar
-  static const Color formFieldBorderLight = AppTheme.neutral300; // Borda mais escura para visibilidade
+  static const Color formFieldBackgroundLight =
+      AppTheme.neutral50; // Cinza levíssimo para diferenciar
+  static const Color formFieldBorderLight =
+      AppTheme.neutral300; // Borda mais escura para visibilidade
   static const Color formFieldHoverLight = AppTheme.neutral100;
   static const Color formFieldFocusLight = Color(
     0xFFf0f7ff,
   ); // Foco azul muito claro (mantido)
 
   // Campos de formulário - modo escuro (Harmonizados com a cor primária)
-  static const Color formFieldBackgroundDark = Color(0xFF2A3A4B); // Fundo azul-acinzentado escuro
-  static const Color formFieldBorderDark = Color(0xFF4A6C8B); // Borda sutil no tom da cor primária
-  static const Color formFieldHoverDark = Color(0xFF33465F); // Fundo um pouco mais claro no hover
-  static const Color formFieldFocusDark = Color(0xFF33465F); // Fundo igual ao hover, destaque vem da borda
+  static const Color formFieldBackgroundDark = Color(
+    0xFF2A3A4B,
+  ); // Fundo azul-acinzentado escuro
+  static const Color formFieldBorderDark = Color(
+    0xFF4A6C8B,
+  ); // Borda sutil no tom da cor primária
+  static const Color formFieldHoverDark = Color(
+    0xFF33465F,
+  ); // Fundo um pouco mais claro no hover
+  static const Color formFieldFocusDark = Color(
+    0xFF33465F,
+  ); // Fundo igual ao hover, destaque vem da borda
 
   // === CORES PARA CARDS E CONTAINERS ===
 
   // Cards e containers - modo claro
-  static const Color cardBackgroundLight = AppTheme.neutral50; // Cinza levíssimo para diferenciar
-  static const Color cardBorderLight = AppTheme.neutral300; // Borda mais escura para visibilidade
+  static const Color cardBackgroundLight =
+      AppTheme.neutral50; // Cinza levíssimo para diferenciar
+  static const Color cardBorderLight =
+      AppTheme.neutral300; // Borda mais escura para visibilidade
   static const Color cardShadowLight = Color(0x08000000); // Sombra muito sutil
 
   // Cards e containers - modo escuro
@@ -125,6 +149,73 @@ class AppTheme {
   static const double avatarSizeSmall = 22.0;
   static const double avatarSizeMedium = 40.0;
   static const double avatarSizeLarge = 60.0;
+
+  // === SISTEMA DE RESPONSIVIDADE INTELIGENTE ===
+
+  // Breakpoints para diferentes tamanhos de tela
+  static const double breakpointSmall = 1366.0; // Laptops pequenos (13-14")
+  static const double breakpointMedium = 1600.0; // Laptops médios (15-16")
+  static const double breakpointLarge = 1920.0; // Monitores grandes (21-24")
+  static const double breakpointXLarge =
+      2560.0; // Monitores muito grandes (27"+)
+
+  // Larguras responsivas da drawer
+  static const double drawerWidthSmall = 240.0; // Telas pequenas
+  static const double drawerWidthMedium = 260.0; // Telas médias
+  static const double drawerWidthLarge = 280.0; // Telas grandes
+  static const double drawerWidthXLarge = 300.0; // Telas muito grandes
+
+  // Função para obter largura responsiva da drawer
+  static double getResponsiveDrawerWidth(double screenWidth) {
+    if (screenWidth < breakpointSmall) {
+      return drawerWidthSmall;
+    } else if (screenWidth < breakpointMedium) {
+      return drawerWidthMedium;
+    } else if (screenWidth < breakpointLarge) {
+      return drawerWidthLarge;
+    } else {
+      return drawerWidthXLarge;
+    }
+  }
+
+  // Função para obter tamanho de fonte responsivo
+  static double getResponsiveFontSize(double screenWidth, double baseFontSize) {
+    if (screenWidth < breakpointSmall) {
+      return baseFontSize * 0.85; // 15% menor em telas pequenas
+    } else if (screenWidth < breakpointMedium) {
+      return baseFontSize * 0.92; // 8% menor em telas médias
+    } else if (screenWidth < breakpointLarge) {
+      return baseFontSize; // Tamanho base em telas grandes
+    } else {
+      return baseFontSize * 1.08; // 8% maior em telas muito grandes
+    }
+  }
+
+  // Função para obter espaçamento responsivo
+  static double getResponsiveSpacing(double screenWidth, double baseSpacing) {
+    if (screenWidth < breakpointSmall) {
+      return baseSpacing * 0.8; // 20% menor em telas pequenas
+    } else if (screenWidth < breakpointMedium) {
+      return baseSpacing * 0.9; // 10% menor em telas médias
+    } else if (screenWidth < breakpointLarge) {
+      return baseSpacing; // Espaçamento base em telas grandes
+    } else {
+      return baseSpacing * 1.1; // 10% maior em telas muito grandes
+    }
+  }
+
+  // Função para obter tamanho de ícone responsivo
+  static double getResponsiveIconSize(double screenWidth, double baseIconSize) {
+    if (screenWidth < breakpointSmall) {
+      return baseIconSize * 0.9; // 10% menor em telas pequenas
+    } else if (screenWidth < breakpointMedium) {
+      return baseIconSize * 0.95; // 5% menor em telas médias
+    } else if (screenWidth < breakpointLarge) {
+      return baseIconSize; // Tamanho base em telas grandes
+    } else {
+      return baseIconSize * 1.05; // 5% maior em telas muito grandes
+    }
+  }
 
   // Tamanhos de ícones
   static const double iconSizeXL = 80.0;

@@ -82,10 +82,29 @@ class _DrawerListItemState extends State<DrawerListItem> {
   }
 
   Widget _buildItemContent() {
-    final Color primaryColor = Theme.of(context).colorScheme.primary;
+    final bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    final Color primaryColor = isDarkMode
+        ? const Color(0xFF1565C0) // Cor específica para modo dark
+        : Theme.of(context).colorScheme.primary;
     final Color onSurfaceColor = Theme.of(context).colorScheme.onSurface;
-    final screenHeight = MediaQuery.of(context).size.height;
+    final screenSize = MediaQuery.of(context).size;
+    final screenWidth = screenSize.width;
+    final screenHeight = screenSize.height;
     final isSmallScreen = screenHeight < 700; // Detecta telas pequenas
+
+    // Sistema de responsividade inteligente
+    final responsiveSpacing = AppTheme.getResponsiveSpacing(
+      screenWidth,
+      AppTheme.spacingM,
+    );
+    final responsiveSpacingS = AppTheme.getResponsiveSpacing(
+      screenWidth,
+      AppTheme.spacingS,
+    );
+    final responsiveSpacingXS = AppTheme.getResponsiveSpacing(
+      screenWidth,
+      AppTheme.spacingXS,
+    );
 
     // Define a decoração baseada nos estados
     BoxDecoration decoration;
@@ -128,7 +147,9 @@ class _DrawerListItemState extends State<DrawerListItem> {
       );
       iconColor = Colors.white;
       titleFontWeight = FontWeight.w700;
-      titleColor = primaryColor;
+      titleColor = isDarkMode
+          ? const Color(0xFFF5F5F5) // Tom de branco suave para modo dark
+          : primaryColor;
     } else if (_isHovered) {
       iconDecoration = BoxDecoration(
         color: primaryColor.withValues(alpha: 0.12),
@@ -151,11 +172,11 @@ class _DrawerListItemState extends State<DrawerListItem> {
       duration: AppAnimations.normal,
       curve: AppAnimations.easeInOut,
       margin: EdgeInsets.symmetric(
-        vertical: isSmallScreen ? 2 : AppTheme.spacingXS / 2,
+        vertical: isSmallScreen ? 2 : responsiveSpacingXS / 2,
       ),
       padding: EdgeInsets.symmetric(
-        horizontal: isSmallScreen ? AppTheme.spacingS : AppTheme.spacingM,
-        vertical: isSmallScreen ? AppTheme.spacingXS : AppTheme.spacingS,
+        horizontal: isSmallScreen ? responsiveSpacingS : responsiveSpacing,
+        vertical: isSmallScreen ? responsiveSpacingXS : responsiveSpacingS,
       ),
       decoration: decoration,
       child: Row(
@@ -164,17 +185,23 @@ class _DrawerListItemState extends State<DrawerListItem> {
           AnimatedContainer(
             duration: AppAnimations.normal,
             curve: AppAnimations.easeOut,
-            width: isSmallScreen ? 28 : 32,
-            height: isSmallScreen ? 28 : 32,
+            width: isSmallScreen
+                ? AppTheme.getResponsiveIconSize(screenWidth, 28)
+                : AppTheme.getResponsiveIconSize(screenWidth, 32),
+            height: isSmallScreen
+                ? AppTheme.getResponsiveIconSize(screenWidth, 28)
+                : AppTheme.getResponsiveIconSize(screenWidth, 32),
             decoration: iconDecoration,
             child: Icon(
               widget.item.icon,
-              size: isSmallScreen ? 16 : 18,
+              size: isSmallScreen
+                  ? AppTheme.getResponsiveIconSize(screenWidth, 16)
+                  : AppTheme.getResponsiveIconSize(screenWidth, 18),
               color: iconColor,
             ),
           ),
           SizedBox(
-            width: isSmallScreen ? AppTheme.spacingS : AppTheme.spacingM,
+            width: isSmallScreen ? responsiveSpacingS : responsiveSpacing,
           ),
           // Título
           Expanded(
@@ -182,7 +209,9 @@ class _DrawerListItemState extends State<DrawerListItem> {
               duration: AppAnimations.fast,
               style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                 fontWeight: titleFontWeight,
-                fontSize: isSmallScreen ? 13 : 14,
+                fontSize: isSmallScreen
+                    ? AppTheme.getResponsiveFontSize(screenWidth, 13)
+                    : AppTheme.getResponsiveFontSize(screenWidth, 14),
                 color: titleColor,
               ),
               child: Text(

@@ -51,10 +51,15 @@ class _ResponsiveScaffoldState extends State<ResponsiveScaffold> {
   }
 
   Widget _buildLargeScreenLayout() {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final responsiveDrawerWidth = AppTheme.getResponsiveDrawerWidth(
+      screenWidth,
+    );
+
     return Row(
       children: [
         SizedBox(
-          width: AppTheme.drawerWidth,
+          width: responsiveDrawerWidth,
           child: ClipRect(child: _buildDrawer(isPermanent: true)),
         ),
         Expanded(
@@ -81,10 +86,15 @@ class _ResponsiveScaffoldState extends State<ResponsiveScaffold> {
 
   /// Layout para telas médias (tablets/desktop pequeno)
   Widget _buildMediumScreenLayout() {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final responsiveDrawerWidth =
+        AppTheme.getResponsiveDrawerWidth(screenWidth) *
+        0.9; // Ligeiramente mais estreito
+
     return Row(
       children: [
         SizedBox(
-          width: AppTheme.drawerWidth * 0.8, // Drawer mais estreito
+          width: responsiveDrawerWidth,
           child: ClipRect(child: _buildDrawer(isPermanent: true)),
         ),
         Expanded(
