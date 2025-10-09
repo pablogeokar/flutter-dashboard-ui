@@ -332,13 +332,19 @@ class _ResponsiveDrawerState extends State<ResponsiveDrawer> {
     final flatIndex = _flatNavigableItems.indexWhere(
       (e) => e.title == item.title,
     );
+
     return DrawerListItem(
       item: item,
       isSubItem: isSubItem,
       isSelected: widget.currentIndex == flatIndex,
       isFooterItem: isFooterItem,
       onTap: () {
-        if (flatIndex != -1) {
+        // Se tem callback de dialog, executa o dialog
+        if (item.onDialogTap != null) {
+          item.onDialogTap!();
+        }
+        // Caso contrário, navega normalmente
+        else if (flatIndex != -1) {
           widget.onTap(flatIndex);
         }
       },

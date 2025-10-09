@@ -4,6 +4,7 @@ import 'drawer_item.dart';
 import 'responsive_scaffold.dart';
 import '../../../utils/keyboard_shortcuts.dart';
 import '../../../theme/theme_manager.dart';
+import '../../../config/sidebar_config_with_context.dart';
 
 /// O widget `AppShell` é o "invólucro" principal da aplicação.
 ///
@@ -11,14 +12,7 @@ import '../../../theme/theme_manager.dart';
 /// selecionada) e passar essa informação para o `ResponsiveScaffold` construir
 /// a interface.
 class AppShell extends StatefulWidget {
-  final List<DrawerItem> itensPrincipais;
-  final List<DrawerItem> itensInferiores;
-
-  const AppShell({
-    super.key,
-    required this.itensPrincipais,
-    required this.itensInferiores,
-  });
+  const AppShell({super.key});
 
   @override
   State<AppShell> createState() => _AppShellState();
@@ -51,7 +45,9 @@ class _AppShellState extends State<AppShell> {
       }
     }
 
-    processItems([...widget.itensPrincipais, ...widget.itensInferiores]);
+    final itensPrincipais = SidebarConfigWithContext.itensPrincipais(context);
+    final itensInferiores = SidebarConfigWithContext.itensInferiores(context);
+    processItems([...itensPrincipais, ...itensInferiores]);
     return flatList;
   }
 
@@ -92,8 +88,8 @@ class _AppShellState extends State<AppShell> {
         child: Focus(
           autofocus: true,
           child: ResponsiveScaffold(
-            itensPrincipais: widget.itensPrincipais,
-            itensInferiores: widget.itensInferiores,
+            itensPrincipais: SidebarConfigWithContext.itensPrincipais(context),
+            itensInferiores: SidebarConfigWithContext.itensInferiores(context),
             screenBuilder: _buildScreen,
             currentIndex: _selectedIndex,
             onNavigation: _navigateToIndex,
