@@ -1,14 +1,14 @@
-import 'package:dashboard_ui/screens/form_test_screen.dart';
 import 'package:dashboard_ui/screens/exemplo_form_dialog_screen.dart';
 import 'package:flutter/material.dart';
 import '../screens/em_construcao_screen.dart';
 import '../screens/teste_screen.dart';
 import '../widgets/app_layout.dart';
+import '../widgets/form_layout.dart';
 
 // Classe para organizar a configuração dos itens da barra de navegação
 class SidebarConfig {
   // Lista de itens principais do menu
-  static const List<DrawerItem> itensPrincipais = [
+  static List<DrawerItem> get itensPrincipais => [
     DrawerItem(
       title: 'Painel Principal',
       icon: Icons.dashboard,
@@ -26,7 +26,12 @@ class SidebarConfig {
         DrawerItem(
           title: 'Fornecedores',
           icon: Icons.business,
-          screen: EmConstrucaoPlaceholder(),
+          screen: DialogTriggers.cadastroFornecedor(
+            onConfirmar: () {
+              // Lógica de confirmação do fornecedor
+              print('Fornecedor cadastrado!');
+            },
+          ),
         ),
         DrawerItem(
           title: 'Produtos',
@@ -54,11 +59,16 @@ class SidebarConfig {
   ];
 
   // Lista de itens inferiores (rodapé) do menu
-  static const List<DrawerItem> itensInferiores = [
+  static List<DrawerItem> get itensInferiores => [
     DrawerItem(
       title: 'Configurações',
       icon: Icons.settings,
-      screen: EmConstrucaoPlaceholder(),
+      screen: DialogTriggers.configuracoes(
+        onConfirmar: () {
+          // Lógica de confirmação das configurações
+          print('Configurações salvas!');
+        },
+      ),
     ),
     DrawerItem(
       title: 'Perfil',
