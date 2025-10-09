@@ -31,16 +31,22 @@ Garantir consistência linguística e de codificação em todo o projeto, propor
 ```
 lib/
 ├── config/
-│   └── sidebar_config.dart
+│   └── sidebar_config_with_context.dart
 ├── screens/
+│   ├── exemplo_dialog_customizado_screen.dart
+│   ├── exemplo_form_dialog_screen.dart
+│   ├── form_test_screen.dart
+│   └── em_construcao_screen.dart
 ├── theme/
 │   ├── dark.dart
 │   ├── light.dart
 │   ├── theme.dart
-│   └── theme_manager.dart
+│   ├── theme_manager.dart
+│   └── animations.dart
 ├── widgets/
 │   ├── app_layout.dart
 │   ├── form_layout.dart
+│   ├── dialog.dart
 │   └── src/
 │       ├── app_layout/
 │       │   ├── app_shell.dart
@@ -50,24 +56,52 @@ lib/
 │       │   ├── modern_app_bar.dart
 │       │   ├── responsive_scaffold.dart
 │       │   └── responsive_drawer.dart
-│       └── form_layout/
-│           ├── currency_pt_br_input_formatter.dart
-│           ├── custom_button.dart
-│           ├── date_input_field.dart
+│       ├── form_layout/
+│       │   ├── currency_pt_br_input_formatter.dart
+│       │   ├── custom_button.dart
+│       │   ├── date_input_field.dart
+│       │   ├── monetary_input_field.dart
+│       │   ├── select_input_field.dart
+│       │   ├── text_input_field.dart
+│       │   └── textarea_field.dart
+│       └── dialog/
 │           ├── form_dialog.dart
 │           ├── form_dialog_button.dart
 │           ├── form_dialog_service.dart
-│           ├── monetary_input_field.dart
-│           ├── select_input_field.dart
-│           ├── text_input_field.dart
-│           └── textarea_field.dart
+│           ├── dialog_trigger_widget.dart
+│           ├── dialog_callbacks.dart
+│           └── README_DIALOG_DRAWER.md
 └── main.dart
 ```
 
-### Componentes Principais (Continuação)
+### Componentes Principais
 
-- **theme/animations.dart**: Centraliza todas as constantes de animação, durações, curvas e transições personalizadas da aplicação.
-- **widgets/src/app_layout/drawer_list_item.dart**: Widget individual para itens do menu lateral com animações de hover e estados visuais aprimorados.
+#### **Sistema de Layout**
+- **app_shell.dart**: Gerenciador principal da aplicação, controla navegação e estado
+- **responsive_scaffold.dart**: Layout responsivo que adapta-se a diferentes tamanhos de tela
+- **responsive_drawer.dart**: Sidebar responsiva com suporte a telas pequenas (< 700px)
+- **drawer_item.dart**: Modelo de dados para itens do menu com suporte a callbacks de dialog
+- **drawer_list_item.dart**: Widget individual para itens do menu com animações de hover
+
+#### **Sistema de Formulários (form_layout)**
+- **text_input_field.dart**: Campo de entrada de texto com validação
+- **date_input_field.dart**: Campo de seleção de data com calendário
+- **monetary_input_field.dart**: Campo monetário com formatação brasileira
+- **select_input_field.dart**: Campo de seleção com dropdown
+- **textarea_field.dart**: Campo de texto multilinhas
+- **custom_button.dart**: Botão customizado com variantes e tamanhos
+
+#### **Sistema de Dialogs (dialog)**
+- **form_dialog.dart**: Widget principal para exibir formulários em dialogs
+- **form_dialog_service.dart**: Serviço com métodos estáticos para diferentes tipos de dialogs
+- **form_dialog_button.dart**: Botão que abre automaticamente um FormDialog
+- **dialog_trigger_widget.dart**: Widget que abre dialog automaticamente quando exibido
+- **dialog_callbacks.dart**: Callbacks pré-configurados para usar na drawer
+
+#### **Sistema de Temas**
+- **theme.dart**: Cores, espaçamentos e constantes de design
+- **animations.dart**: Animações, durações e curvas personalizadas
+- **theme_manager.dart**: Gerenciador de temas claro/escuro
 
 ## Diretrizes de Codificação (Continuação)
 
@@ -117,6 +151,156 @@ lib/
    - Cache de telas inicializado uma única vez no `initState()`
    - Métodos separados para construção de telas e navegação
    - Performance melhorada com lazy loading de componentes
+
+### ✅ v3.0 - Sistema de Dialogs Reutilizáveis
+
+1. **Sistema de Dialogs Completo**
+   - **FormDialog:** Widget principal para exibir formulários em dialogs
+   - **FormDialogService:** Serviço com métodos estáticos para diferentes tipos de dialogs
+   - **FormDialogButton:** Botão que abre automaticamente um FormDialog
+   - **DialogTriggerWidget:** Widget que abre dialog automaticamente quando exibido
+   - **DialogCallbacks:** Callbacks pré-configurados para usar na drawer
+
+2. **Integração com Drawer**
+   - Dialogs abrem diretamente pela sidebar sem navegação
+   - Suporte a callbacks para cadastros e configurações
+   - Feedback visual com SnackBars informativos
+   - Experiência fluida sem substituição de conteúdo
+
+### ✅ v3.1 - Reorganização da Arquitetura
+
+1. **Separação de Responsabilidades**
+   - **form_layout/:** Apenas componentes de formulário
+   - **dialog/:** Apenas componentes de dialog
+   - **app_layout/:** Apenas componentes de layout
+   - Estrutura semântica e intuitiva
+
+2. **Arquivos Barril Específicos**
+   - `lib/widgets/form_layout.dart` - Exporta apenas campos de formulário
+   - `lib/widgets/dialog.dart` - Exporta apenas componentes de dialog
+   - `lib/widgets/app_layout.dart` - Exporta apenas componentes de layout
+   - Imports mais limpos e organizados
+
+3. **Melhorias na Manutenibilidade**
+   - Desenvolvedores sabem exatamente onde encontrar cada componente
+   - Mudanças em dialogs não afetam formulários
+   - Estrutura escalável para futuras funcionalidades
+
+## Como Usar os Sistemas
+
+### 🎯 **Sistema de Dialogs**
+
+#### **1. Dialog Simples**
+```dart
+import 'package:dashboard_ui/widgets/dialog.dart';
+
+// Abrir dialog de confirmação
+FormDialogService.mostrarConfirmacao(
+  context: context,
+  titulo: 'Confirmar Exclusão',
+  mensagem: 'Tem certeza que deseja excluir?',
+  onConfirmar: () => print('Confirmado!'),
+);
+```
+
+#### **2. Dialog com Formulário**
+```dart
+// Abrir dialog de cadastro
+FormDialogService.mostrarCadastroCliente(
+  context: context,
+  onConfirmar: () => print('Cliente cadastrado!'),
+);
+```
+
+#### **3. Dialog na Drawer**
+```dart
+// Na configuração da sidebar
+DrawerItem(
+  title: 'Clientes',
+  icon: Icons.people,
+  onDialogTap: DialogCallbacks.cadastroCliente(context),
+)
+```
+
+### 🎯 **Sistema de Formulários**
+
+#### **1. Campos Básicos**
+```dart
+import 'package:dashboard_ui/widgets/form_layout.dart';
+
+TextInputField(
+  labelText: 'Nome',
+  hintText: 'Digite seu nome',
+  controller: _nomeController,
+)
+
+DateInputField(
+  label: 'Data de Nascimento',
+  initialValue: DateTime.now(),
+)
+
+MonetaryInputField(
+  label: 'Salário',
+  controller: _salarioController,
+)
+```
+
+#### **2. Campos Avançados**
+```dart
+SelectInputField<String>(
+  labelText: 'Cargo',
+  options: [
+    SelectOption(value: 'gerente', label: 'Gerente'),
+    SelectOption(value: 'analista', label: 'Analista'),
+  ],
+  onChanged: (value) {},
+)
+
+TextAreaField(
+  labelText: 'Observações',
+  maxLength: 500,
+  onChanged: (value) {},
+)
+```
+
+### 🎯 **Sistema de Layout**
+
+#### **1. AppShell Simplificado**
+```dart
+// main.dart
+home: const AppShell(), // Não precisa mais passar parâmetros
+```
+
+#### **2. Configuração da Sidebar**
+```dart
+// sidebar_config_with_context.dart
+static List<DrawerItem> itensPrincipais(BuildContext context) => [
+  DrawerItem(
+    title: 'Clientes',
+    icon: Icons.people,
+    onDialogTap: DialogCallbacks.cadastroCliente(context),
+  ),
+];
+```
+
+### ✅ v3.2 - Melhorias de Responsividade
+
+1. **Suporte a Telas Pequenas**
+   - Detecção automática de telas < 700px de altura
+   - Ajustes dinâmicos de espaçamento e tamanhos
+   - Logo reduzido (160px → 120px) em telas pequenas
+   - Padding otimizado para melhor aproveitamento do espaço
+
+2. **Drawer Inteligente**
+   - `ExpansionTile` com `maintainState: true` para preservar estado
+   - `SingleChildScrollView` para melhor scroll em telas pequenas
+   - `childrenPadding: EdgeInsets.zero` para remover padding desnecessário
+   - Ícones e textos redimensionados automaticamente
+
+3. **Correções de Navegação**
+   - Problema de "retângulo escuro" em telas pequenas resolvido
+   - Dialogs abrem corretamente por cima do conteúdo
+   - Navegação fluida sem substituição de conteúdo
 
 ### ✅ Animações e Micro-interações
 
@@ -362,3 +546,70 @@ lib/
 - **Hierarquia:** Clara diferenciação entre estados
 - **Consistência:** Mesma linguagem visual em toda aplicação
 - **Performance:** Priorizar fluidez e responsividade
+
+## Status Atual do Projeto
+
+### ✅ **Funcionalidades Implementadas**
+
+#### **Sistema de Layout**
+- ✅ AppShell com navegação inteligente
+- ✅ Sidebar responsiva com suporte a telas pequenas
+- ✅ AppBar moderna com transparência
+- ✅ Scaffold responsivo com breakpoints
+
+#### **Sistema de Formulários**
+- ✅ Campos de texto com validação
+- ✅ Campo de data com calendário
+- ✅ Campo monetário com formatação brasileira
+- ✅ Campo de seleção com dropdown
+- ✅ Campo de texto multilinhas
+- ✅ Botões customizados com variantes
+
+#### **Sistema de Dialogs**
+- ✅ FormDialog reutilizável com animações
+- ✅ FormDialogService com métodos pré-configurados
+- ✅ Integração direta com drawer via callbacks
+- ✅ Dialogs de confirmação, cadastro e configuração
+- ✅ Feedback visual com SnackBars
+
+#### **Sistema de Temas**
+- ✅ Tema claro e escuro completos
+- ✅ Cores semânticas e consistentes
+- ✅ Animações centralizadas
+- ✅ Gerenciador de temas com persistência
+
+### 🎯 **Qualidade do Código**
+
+- ✅ **0 erros** no `flutter analyze`
+- ✅ **0 warnings** no `flutter analyze`
+- ✅ **Estrutura organizada** e semântica
+- ✅ **Imports limpos** e específicos
+- ✅ **Documentação completa** com exemplos
+
+### 🚀 **Próximas Melhorias Sugeridas**
+
+1. **Funcionalidades Avançadas**
+   - Validação de formulários com regras customizadas
+   - Upload de arquivos com preview
+   - Tabelas de dados com paginação
+   - Gráficos e dashboards interativos
+
+2. **Integração e Performance**
+   - Cache inteligente de dados
+   - Lazy loading de componentes pesados
+   - Integração com APIs REST
+   - Notificações push
+
+3. **Acessibilidade**
+   - Suporte a leitores de tela
+   - Navegação por teclado completa
+   - Alto contraste para usuários com deficiência visual
+   - Textos alternativos para imagens
+
+### 📊 **Métricas do Projeto**
+
+- **Arquivos de código:** 25+ arquivos organizados
+- **Componentes reutilizáveis:** 15+ widgets
+- **Sistemas modulares:** 3 sistemas principais
+- **Cobertura de temas:** 100% (claro e escuro)
+- **Responsividade:** Suporte a todas as telas
