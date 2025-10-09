@@ -115,7 +115,11 @@ class _DrawerListItemState extends State<DrawerListItem> {
       );
     } else if (_isHovered) {
       decoration = BoxDecoration(
-        color: primaryColor.withValues(alpha: 0.08),
+        color: isDarkMode
+            ? const Color(0xFF4A5568).withValues(
+                alpha: 0.6,
+              ) // Cinza azulado mais claro para modo dark
+            : primaryColor.withValues(alpha: 0.08),
         borderRadius: BorderRadius.circular(AppTheme.borderRadiusM),
       );
     } else {
@@ -152,12 +156,20 @@ class _DrawerListItemState extends State<DrawerListItem> {
           : primaryColor;
     } else if (_isHovered) {
       iconDecoration = BoxDecoration(
-        color: primaryColor.withValues(alpha: 0.12),
+        color: isDarkMode
+            ? const Color(0xFF6B7280).withValues(
+                alpha: 0.3,
+              ) // Cinza neutro para modo dark
+            : primaryColor.withValues(alpha: 0.12),
         borderRadius: BorderRadius.circular(AppTheme.borderRadiusS),
       );
-      iconColor = primaryColor;
+      iconColor = isDarkMode
+          ? const Color(0xFFE5E7EB) // Cinza claro para ícone no modo dark
+          : primaryColor;
       titleFontWeight = FontWeight.w600;
-      titleColor = primaryColor;
+      titleColor = isDarkMode
+          ? const Color(0xFFE5E7EB) // Cinza claro para texto no modo dark
+          : primaryColor;
     } else {
       iconDecoration = BoxDecoration(
         color: onSurfaceColor.withValues(alpha: 0.05),
