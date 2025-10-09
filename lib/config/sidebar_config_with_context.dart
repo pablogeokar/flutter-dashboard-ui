@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../screens/em_construcao_screen.dart';
 import '../screens/teste_screen.dart';
 import '../widgets/app_layout.dart';
-import '../widgets/form_layout.dart';
+import '../widgets/dialog.dart';
 
 /// Classe para organizar a configuração dos itens da barra de navegação
 /// Esta versão usa callbacks para dialogs, evitando navegação desnecessária

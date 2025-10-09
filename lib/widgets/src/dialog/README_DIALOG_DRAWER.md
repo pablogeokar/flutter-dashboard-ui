@@ -11,7 +11,7 @@ Este guia mostra como configurar itens da drawer que abrem dialogs diretamente, 
 O `DialogTriggerWidget` é um widget especial que chama um dialog automaticamente quando é exibido.
 
 ```dart
-import 'package:dashboard_ui/widgets/form_layout.dart';
+import 'package:dashboard_ui/widgets/dialog.dart';
 
 // Na configuração da sidebar
 DrawerItem(
@@ -35,46 +35,40 @@ DrawerItem(
 )
 ```
 
-### **2. Usando DialogTriggers (Pré-configurados)**
+### **2. Usando DialogCallbacks (Pré-configurados)**
 
-Para casos comuns, use os widgets pré-configurados:
+Para casos comuns, use os callbacks pré-configurados:
 
 ```dart
 // Cadastro de cliente
 DrawerItem(
   title: 'Clientes',
   icon: Icons.people,
-  screen: DialogTriggers.cadastroCliente(
-    onConfirmar: () => print('Cliente cadastrado!'),
-  ),
+  onDialogTap: DialogCallbacks.cadastroCliente(context),
 )
 
 // Cadastro de fornecedor
 DrawerItem(
   title: 'Fornecedores',
   icon: Icons.business,
-  screen: DialogTriggers.cadastroFornecedor(
-    onConfirmar: () => print('Fornecedor cadastrado!'),
-  ),
+  onDialogTap: DialogCallbacks.cadastroFornecedor(context),
 )
 
 // Configurações
 DrawerItem(
   title: 'Configurações',
   icon: Icons.settings,
-  screen: DialogTriggers.configuracoes(
-    onConfirmar: () => print('Configurações salvas!'),
-  ),
+  onDialogTap: DialogCallbacks.configuracoes(context),
 )
 
 // Busca customizada
 DrawerItem(
   title: 'Buscar',
   icon: Icons.search,
-  screen: DialogTriggers.busca(
+  onDialogTap: DialogCallbacks.busca(
+    context,
     titulo: 'Buscar Produtos',
     formularioBusca: MeuFormularioBusca(),
-    onConfirmar: () => print('Busca realizada!'),
   ),
 )
 ```
@@ -133,10 +127,10 @@ DrawerItem(
 
 ```dart
 // lib/config/sidebar_config.dart
-import 'package:dashboard_ui/widgets/form_layout.dart';
+import 'package:dashboard_ui/widgets/dialog.dart';
 
 class SidebarConfig {
-  static const List<DrawerItem> itensPrincipais = [
+  static List<DrawerItem> itensPrincipais(BuildContext context) => [
     DrawerItem(
       title: 'Painel Principal',
       icon: Icons.dashboard,
@@ -150,23 +144,13 @@ class SidebarConfig {
         DrawerItem(
           title: 'Clientes',
           icon: Icons.people,
-          screen: DialogTriggers.cadastroCliente(
-            onConfirmar: () {
-              // Lógica de confirmação
-              print('Cliente cadastrado!');
-            },
-          ),
+          onDialogTap: DialogCallbacks.cadastroCliente(context),
         ),
         // Dialog direto para fornecedores
         DrawerItem(
           title: 'Fornecedores',
           icon: Icons.business,
-          screen: DialogTriggers.cadastroFornecedor(
-            onConfirmar: () {
-              // Lógica de confirmação
-              print('Fornecedor cadastrado!');
-            },
-          ),
+          onDialogTap: DialogCallbacks.cadastroFornecedor(context),
         ),
         // Dialog customizado para produtos
         DrawerItem(
@@ -188,17 +172,12 @@ class SidebarConfig {
     ),
   ];
 
-  static const List<DrawerItem> itensInferiores = [
+  static List<DrawerItem> itensInferiores(BuildContext context) => [
     // Dialog direto para configurações
     DrawerItem(
       title: 'Configurações',
       icon: Icons.settings,
-      screen: DialogTriggers.configuracoes(
-        onConfirmar: () {
-          // Lógica de confirmação
-          print('Configurações salvas!');
-        },
-      ),
+      onDialogTap: DialogCallbacks.configuracoes(context),
     ),
   ];
 }
@@ -308,6 +287,6 @@ DialogTriggerWidget(
 
 ## 📚 **Recursos Relacionados**
 
-- [FormDialog - Documentação Completa](README_FORM_DIALOG.md)
+- [FormDialog - Documentação Completa](form_dialog.dart)
 - [FormDialogService - Métodos Disponíveis](form_dialog_service.dart)
 - [FormDialogButton - Botões que Abrem Dialogs](form_dialog_button.dart)

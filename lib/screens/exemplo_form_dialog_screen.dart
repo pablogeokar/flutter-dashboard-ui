@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../widgets/form_layout.dart';
+import '../widgets/dialog.dart';
 import '../theme/theme.dart';
 
 /// Tela de exemplo mostrando como usar o FormDialog
@@ -109,7 +110,6 @@ class _ExemploFormDialogScreenState extends State<ExemploFormDialogScreen> {
           ),
         );
       },
-      formulario: _buildFormularioConfirmacao(),
     );
   }
 
@@ -172,23 +172,6 @@ class _ExemploFormDialogScreenState extends State<ExemploFormDialogScreen> {
             SelectOption(value: 'todos', label: 'Todos'),
           ],
           onChanged: (value) {},
-        ),
-      ],
-    );
-  }
-
-  Widget _buildFormularioConfirmacao() {
-    return const Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          'Esta ação não pode ser desfeita. O item será permanentemente removido do sistema.',
-          style: TextStyle(fontSize: 14),
-        ),
-        SizedBox(height: 16),
-        Text(
-          'Digite "CONFIRMAR" para prosseguir:',
-          style: TextStyle(fontWeight: FontWeight.w600),
         ),
       ],
     );

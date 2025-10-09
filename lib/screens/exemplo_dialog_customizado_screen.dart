@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../widgets/form_layout.dart';
+import '../widgets/dialog.dart';
 import '../theme/theme.dart';
 
 /// Exemplo de como criar um dialog customizado para usar na drawer
