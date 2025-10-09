@@ -1,4 +1,5 @@
 import 'package:dashboard_ui/screens/form_test_screen.dart';
+import 'package:dashboard_ui/screens/exemplo_form_dialog_screen.dart';
 import 'package:flutter/material.dart';
 import '../screens/em_construcao_screen.dart';
 import '../screens/teste_screen.dart';
@@ -20,7 +21,7 @@ class SidebarConfig {
         DrawerItem(
           title: 'Clientes',
           icon: Icons.people,
-          screen: FormTestScreen(), // Widget diretamente
+          screen: ExemploFormDialogScreen(), // Tela com exemplos de FormDialog
         ),
         DrawerItem(
           title: 'Fornecedores',

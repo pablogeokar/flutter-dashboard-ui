@@ -53,6 +53,9 @@ class _ResponsiveDrawerState extends State<ResponsiveDrawer> {
   @override
   Widget build(BuildContext context) {
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    final screenHeight = MediaQuery.of(context).size.height;
+    final isSmallScreen = screenHeight < 700; // Detecta telas pequenas
+
     final drawerColor = isDarkMode
         ? AppTheme.drawerBackgroundDark
         : AppTheme.cardBackgroundLight; // Usar cor de card para mais elegância
@@ -76,9 +79,11 @@ class _ResponsiveDrawerState extends State<ResponsiveDrawer> {
         children: [
           // Logo do sistema - apenas a imagem
           Padding(
-            padding: const EdgeInsets.all(AppTheme.spacingM),
+            padding: EdgeInsets.all(
+              isSmallScreen ? AppTheme.spacingS : AppTheme.spacingM,
+            ),
             child: SizedBox(
-              height: 160,
+              height: isSmallScreen ? 120 : 160,
               child: Image.asset(
                 Provider.of<ThemeManager>(context).currentTheme ==
                         ThemeModeType.dark
@@ -88,7 +93,7 @@ class _ResponsiveDrawerState extends State<ResponsiveDrawer> {
                 errorBuilder: (context, error, stackTrace) {
                   // Fallback simples caso a imagem não seja encontrada
                   return Container(
-                    height: 160,
+                    height: isSmallScreen ? 120 : 160,
                     decoration: BoxDecoration(
                       color: isDarkMode
                           ? AppTheme.neutral700
@@ -204,13 +209,17 @@ class _ResponsiveDrawerState extends State<ResponsiveDrawer> {
               ),
             ),
           ),
-          const SizedBox(height: AppTheme.spacingL),
-          Expanded(
-            child: ListView(
-              padding: const EdgeInsets.symmetric(
-                horizontal: AppTheme.spacingM,
+          SizedBox(
+            height: isSmallScreen ? AppTheme.spacingM : AppTheme.spacingL,
+          ),
+          Flexible(
+            child: SingleChildScrollView(
+              padding: EdgeInsets.symmetric(
+                horizontal: isSmallScreen
+                    ? AppTheme.spacingS
+                    : AppTheme.spacingM,
               ),
-              children: _buildItemList(widget.itensPrincipais),
+              child: Column(children: _buildItemList(widget.itensPrincipais)),
             ),
           ),
           // Separador elegante
@@ -351,6 +360,8 @@ class _ResponsiveDrawerState extends State<ResponsiveDrawer> {
         key: PageStorageKey(item.title), // Persists expanded state
         initiallyExpanded: isGroupSelected,
         tilePadding: EdgeInsets.zero,
+        maintainState: true, // Mantém o estado de expansão
+        childrenPadding: EdgeInsets.zero, // Remove padding extra dos filhos
         title: DrawerListItem(
           item: item,
           isSelected: isGroupSelected,

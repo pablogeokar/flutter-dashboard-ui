@@ -30,6 +30,8 @@ class _DrawerListItemState extends State<DrawerListItem> {
   Widget build(BuildContext context) {
     // Detecta se é um item com subitens (grupo)
     final bool hasSubItems = widget.item.subItems?.isNotEmpty ?? false;
+    final screenHeight = MediaQuery.of(context).size.height;
+    final isSmallScreen = screenHeight < 700; // Detecta telas pequenas
 
     Widget content = MouseRegion(
       onEnter: (_) => setState(() => _isHovered = true),
@@ -69,7 +71,9 @@ class _DrawerListItemState extends State<DrawerListItem> {
 
     if (widget.isSubItem) {
       return Padding(
-        padding: const EdgeInsets.only(left: AppTheme.spacingM),
+        padding: EdgeInsets.only(
+          left: isSmallScreen ? AppTheme.spacingS : AppTheme.spacingM,
+        ),
         child: content,
       );
     }
@@ -80,6 +84,8 @@ class _DrawerListItemState extends State<DrawerListItem> {
   Widget _buildItemContent() {
     final Color primaryColor = Theme.of(context).colorScheme.primary;
     final Color onSurfaceColor = Theme.of(context).colorScheme.onSurface;
+    final screenHeight = MediaQuery.of(context).size.height;
+    final isSmallScreen = screenHeight < 700; // Detecta telas pequenas
 
     // Define a decoração baseada nos estados
     BoxDecoration decoration;
@@ -144,10 +150,12 @@ class _DrawerListItemState extends State<DrawerListItem> {
     return AnimatedContainer(
       duration: AppAnimations.normal,
       curve: AppAnimations.easeInOut,
-      margin: const EdgeInsets.symmetric(vertical: AppTheme.spacingXS / 2),
-      padding: const EdgeInsets.symmetric(
-        horizontal: AppTheme.spacingM,
-        vertical: AppTheme.spacingS,
+      margin: EdgeInsets.symmetric(
+        vertical: isSmallScreen ? 2 : AppTheme.spacingXS / 2,
+      ),
+      padding: EdgeInsets.symmetric(
+        horizontal: isSmallScreen ? AppTheme.spacingS : AppTheme.spacingM,
+        vertical: isSmallScreen ? AppTheme.spacingXS : AppTheme.spacingS,
       ),
       decoration: decoration,
       child: Row(
@@ -156,19 +164,25 @@ class _DrawerListItemState extends State<DrawerListItem> {
           AnimatedContainer(
             duration: AppAnimations.normal,
             curve: AppAnimations.easeOut,
-            width: 32,
-            height: 32,
+            width: isSmallScreen ? 28 : 32,
+            height: isSmallScreen ? 28 : 32,
             decoration: iconDecoration,
-            child: Icon(widget.item.icon, size: 18, color: iconColor),
+            child: Icon(
+              widget.item.icon,
+              size: isSmallScreen ? 16 : 18,
+              color: iconColor,
+            ),
           ),
-          const SizedBox(width: AppTheme.spacingM),
+          SizedBox(
+            width: isSmallScreen ? AppTheme.spacingS : AppTheme.spacingM,
+          ),
           // Título
           Expanded(
             child: AnimatedDefaultTextStyle(
               duration: AppAnimations.fast,
               style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                 fontWeight: titleFontWeight,
-                fontSize: 14,
+                fontSize: isSmallScreen ? 13 : 14,
                 color: titleColor,
               ),
               child: Text(

@@ -40,28 +40,34 @@ lib/
 │   └── theme_manager.dart
 ├── widgets/
 │   ├── app_layout.dart
-│   ├── form_fields.dart
+│   ├── form_layout.dart
 │   └── src/
 │       ├── app_layout/
 │       │   ├── app_shell.dart
+│       │   ├── desktop_status_bar.dart
 │       │   ├── drawer_item.dart
 │       │   ├── drawer_list_item.dart
 │       │   ├── modern_app_bar.dart
 │       │   ├── responsive_scaffold.dart
 │       │   └── responsive_drawer.dart
-│       └── form_fields/
+│       └── form_layout/
 │           ├── currency_pt_br_input_formatter.dart
 │           ├── custom_button.dart
 │           ├── date_input_field.dart
+│           ├── form_dialog.dart
+│           ├── form_dialog_button.dart
+│           ├── form_dialog_service.dart
 │           ├── monetary_input_field.dart
-│           └── text_input_field.dart
+│           ├── select_input_field.dart
+│           ├── text_input_field.dart
+│           └── textarea_field.dart
 └── main.dart
 ```
 
 ### Componentes Principais (Continuação)
 
 - **theme/animations.dart**: Centraliza todas as constantes de animação, durações, curvas e transições personalizadas da aplicação.
-- **widgets/src/layout/drawer_list_item.dart**: Widget individual para itens do menu lateral com animações de hover e estados visuais aprimorados.
+- **widgets/src/app_layout/drawer_list_item.dart**: Widget individual para itens do menu lateral com animações de hover e estados visuais aprimorados.
 
 ## Diretrizes de Codificação (Continuação)
 
@@ -224,6 +230,14 @@ lib/
 - **Estados Visuais:** Normal, Hover, Focus, Error com transições suaves
 - **Calendário Temático:** DatePicker adaptado automaticamente ao tema atual
 - **Validação Elegante:** Feedback visual sutil e profissional
+
+**Sistema de Dialogs Reutilizáveis:**
+
+- **FormDialog:** Widget principal para exibir formulários em dialogs
+- **FormDialogService:** Serviço com métodos estáticos para diferentes tipos de dialogs
+- **FormDialogButton:** Botão que abre automaticamente um FormDialog
+- **Responsivo:** Adapta-se automaticamente a diferentes tamanhos de tela
+- **Temas:** Suporte completo aos temas claro e escuro
 
 ### ✅ Sidebar Premium com Acentuação Elegante
 
