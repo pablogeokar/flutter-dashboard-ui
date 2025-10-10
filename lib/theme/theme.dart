@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 
 class AppTheme {
-  // === PALETA DE CORES V4: Tema Profissional e Acolhedor ===
+  // === PALETA DE CORES DOMANI FISCAL: Identidade Visual Própria ===
 
-  // Cores Primárias (Azul Acinzentado)
+  // Cores Primárias (Azul Domani - Confiança e Profissionalismo)
   static const Color primaryLight = Color(
-    0xFF4A6C8B,
-  ); // Azul acinzentado profissional
+    0xFF2563EB,
+  ); // Azul vibrante e moderno para modo claro
   static const Color primaryDark = Color(
-    0xFF1565C0,
-  ); // Azul mais intenso e vibrante para o modo dark
+    0xFF3B82F6,
+  ); // Azul mais claro e acessível para modo dark
 
   // Cores Secundárias
   static const Color secondaryLight = Color(
@@ -30,8 +30,8 @@ class AppTheme {
     0xFFFFFFFF,
   ); // Branco puro para contraste sutil
   static const Color drawerBackgroundDark = Color(
-    0xFF343A40,
-  ); // Tom de cinza ligeiramente diferente
+    0xFF2A3441,
+  ); // Tom mais suave, menos escuro que #2d3748
 
   // === CORES SEMÂNTICAS ===
 
@@ -240,19 +240,55 @@ class AppTheme {
 
   // Configurações de cursor para desktop (removidas - usar diretamente do Flutter)
 
-  // Definição da escala de texto personalizada
+  // Definição da escala de texto com hierarquia clara
   static const TextTheme textTheme = TextTheme(
-    headlineLarge: TextStyle(fontSize: 30.0, fontWeight: FontWeight.bold),
-    headlineMedium: TextStyle(fontSize: 26.0, fontWeight: FontWeight.bold),
-    headlineSmall: TextStyle(fontSize: 22.0, fontWeight: FontWeight.bold),
-    titleLarge: TextStyle(fontSize: 20.0, fontWeight: FontWeight.w600),
-    titleMedium: TextStyle(fontSize: 15.0, fontWeight: FontWeight.w600),
-    titleSmall: TextStyle(fontSize: 13.0, fontWeight: FontWeight.w600),
-    bodyLarge: TextStyle(fontSize: 15.0),
-    bodyMedium: TextStyle(fontSize: 13.0),
-    bodySmall: TextStyle(fontSize: 11.0),
-    labelLarge: TextStyle(fontSize: 13.0, fontWeight: FontWeight.w600),
-    labelMedium: TextStyle(fontSize: 11.0),
-    labelSmall: TextStyle(fontSize: 10.0),
+    headlineLarge: TextStyle(
+      fontSize: 32.0,
+      fontWeight: FontWeight.w800,
+    ), // Extra bold para títulos principais
+    headlineMedium: TextStyle(
+      fontSize: 28.0,
+      fontWeight: FontWeight.w700,
+    ), // Bold para subtítulos
+    headlineSmall: TextStyle(
+      fontSize: 24.0,
+      fontWeight: FontWeight.w600,
+    ), // Semi-bold para seções
+    titleLarge: TextStyle(
+      fontSize: 20.0,
+      fontWeight: FontWeight.w600,
+    ), // Semi-bold para títulos de cards
+    titleMedium: TextStyle(
+      fontSize: 16.0,
+      fontWeight: FontWeight.w500,
+    ), // Medium para labels importantes
+    titleSmall: TextStyle(
+      fontSize: 14.0,
+      fontWeight: FontWeight.w500,
+    ), // Medium para labels menores
+    bodyLarge: TextStyle(
+      fontSize: 16.0,
+      fontWeight: FontWeight.w400,
+    ), // Regular para texto principal (aumentado)
+    bodyMedium: TextStyle(
+      fontSize: 14.0,
+      fontWeight: FontWeight.w400,
+    ), // Regular para texto secundário
+    bodySmall: TextStyle(
+      fontSize: 12.0,
+      fontWeight: FontWeight.w400,
+    ), // Regular para texto pequeno
+    labelLarge: TextStyle(
+      fontSize: 14.0,
+      fontWeight: FontWeight.w500,
+    ), // Medium para labels
+    labelMedium: TextStyle(
+      fontSize: 12.0,
+      fontWeight: FontWeight.w400,
+    ), // Regular para labels menores
+    labelSmall: TextStyle(
+      fontSize: 10.0,
+      fontWeight: FontWeight.w400,
+    ), // Regular para micro-labels
   );
 }

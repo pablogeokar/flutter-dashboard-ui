@@ -110,7 +110,7 @@ class ModernAppBar extends StatelessWidget implements PreferredSizeWidget {
                           ),
                           const SizedBox(width: 8),
                           Text(
-                            'Dashboard Corporativo',
+                            'Domani Fiscal',
                             style: TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.w600,
@@ -475,7 +475,7 @@ class _PremiumSearchButtonState extends State<_PremiumSearchButton> {
               const SizedBox(width: 8),
               Expanded(
                 child: Text(
-                  'Buscar...',
+                  'Buscar clientes, produtos, relatórios...',
                   style: TextStyle(
                     fontSize: 13,
                     color: Theme.of(

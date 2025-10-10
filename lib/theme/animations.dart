@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 /// Constantes para animações e transições da aplicação
 class AppAnimations {
   // === DURAÇÕES ===
-  static const Duration fast = Duration(milliseconds: 150);
+  static const Duration ultraFast = Duration(milliseconds: 100);
+  static const Duration fast = Duration(milliseconds: 200);
   static const Duration normal = Duration(milliseconds: 300);
   static const Duration slow = Duration(milliseconds: 500);
   static const Duration verySlow = Duration(milliseconds: 800);
@@ -14,6 +15,28 @@ class AppAnimations {
   static const Curve easeIn = Curves.easeIn;
   static const Curve bounceOut = Curves.bounceOut;
   static const Curve elasticOut = Curves.elasticOut;
+  static const Curve backOut = Curves.easeOutBack;
+  static const Curve cubicOut = Curves.easeOutCubic;
+
+  // === TRANSFORMAÇÕES MICRO-INTERATIVAS ===
+
+  /// Escala sutil para hover
+  static Matrix4 get hoverScale => Matrix4.identity()..scale(1.03);
+
+  /// Escala mais dramática para botões
+  static Matrix4 get buttonHoverScale => Matrix4.identity()..scale(1.08);
+
+  /// Movimento lateral sutil
+  static Matrix4 get slideRight => Matrix4.identity()..translate(4.0, 0.0, 0.0);
+
+  /// Rotação sutil para ícones
+  static Matrix4 get iconRotation => Matrix4.identity()..rotateZ(0.05);
+
+  /// Combinação de escala + rotação + movimento
+  static Matrix4 get dramaticHover => Matrix4.identity()
+    ..scale(1.03)
+    ..rotateZ(0.02)
+    ..translate(2.0, 0.0, 0.0);
 
   // === TRANSIÇÕES PERSONALIZADAS ===
 

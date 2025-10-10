@@ -5,14 +5,13 @@ import '../widgets/app_layout.dart';
 import '../widgets/dialog.dart';
 
 /// Classe para organizar a configuração dos itens da barra de navegação
-/// Esta versão usa callbacks para dialogs, evitando navegação desnecessária
 class SidebarConfigWithContext {
   /// Cria a lista de itens principais do menu
   static List<DrawerItem> itensPrincipais(BuildContext context) => [
     DrawerItem(
       title: 'Painel Principal',
       icon: Icons.dashboard,
-      screen: EmConstrucaoPlaceholder(),
+      screen: const EmConstrucaoPlaceholder(),
     ),
     DrawerItem(
       title: 'Cadastros',
@@ -31,25 +30,29 @@ class SidebarConfigWithContext {
         DrawerItem(
           title: 'Produtos',
           icon: Icons.inventory,
-          screen: EmConstrucaoPlaceholder(),
+          screen: const EmConstrucaoPlaceholder(),
         ),
       ],
     ),
     DrawerItem(
       title: 'Análises',
       icon: Icons.analytics,
-      screen: EmConstrucaoPlaceholder(),
+      screen: const EmConstrucaoPlaceholder(),
     ),
     DrawerItem(
       title: 'Relatórios',
       icon: Icons.insert_drive_file,
-      screen: EmConstrucaoPlaceholder(),
+      screen: const EmConstrucaoPlaceholder(),
     ),
-    DrawerItem(title: 'Projetos', icon: Icons.folder, screen: TesteScreen()),
+    DrawerItem(
+      title: 'Projetos',
+      icon: Icons.folder,
+      screen: const TesteScreen(),
+    ),
     DrawerItem(
       title: 'Calendário',
       icon: Icons.calendar_today,
-      screen: EmConstrucaoPlaceholder(),
+      screen: const EmConstrucaoPlaceholder(),
     ),
   ];
 

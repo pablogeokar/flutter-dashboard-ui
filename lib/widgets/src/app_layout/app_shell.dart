@@ -4,7 +4,7 @@ import 'drawer_item.dart';
 import 'responsive_scaffold.dart';
 import '../../../utils/keyboard_shortcuts.dart';
 import '../../../theme/theme_manager.dart';
-import '../../../config/sidebar_config_with_context.dart';
+import '../../../config/sidebar_config.dart';
 
 /// O widget `AppShell` é o "invólucro" principal da aplicação.
 ///
@@ -21,52 +21,55 @@ class AppShell extends StatefulWidget {
 class _AppShellState extends State<AppShell> {
   int _selectedIndex = 0;
 
-  // Cache otimizado para telas - inicializado uma vez
-  late final List<DrawerItem> _flatNavigableItems;
-  final Map<int, Widget> _screenCache = {};
+  // Lista simples sem cache
+  List<DrawerItem>? _flatNavigableItems;
 
   @override
   void initState() {
     super.initState();
-    _flatNavigableItems = _buildFlatNavigableItems();
+    // Removido a inicialização aqui para evitar problemas com context
   }
 
-  /// Constrói a lista plana de itens navegáveis uma única vez
-  List<DrawerItem> _buildFlatNavigableItems() {
-    final List<DrawerItem> flatList = [];
+  /// Constrói a lista plana de itens navegáveis (lazy initialization)
+  List<DrawerItem> _getFlatNavigableItems() {
+    if (_flatNavigableItems == null) {
+      final List<DrawerItem> flatList = [];
 
-    void processItems(List<DrawerItem> items) {
-      for (final item in items) {
-        if (item.subItems?.isNotEmpty ?? false) {
-          processItems(item.subItems!);
-        } else if (item.screen != null) {
-          flatList.add(item);
+      void processItems(List<DrawerItem> items) {
+        for (final item in items) {
+          if (item.subItems?.isNotEmpty ?? false) {
+            processItems(item.subItems!);
+          } else if (item.screen != null) {
+            flatList.add(item);
+          }
         }
       }
-    }
 
-    final itensPrincipais = SidebarConfigWithContext.itensPrincipais(context);
-    final itensInferiores = SidebarConfigWithContext.itensInferiores(context);
-    processItems([...itensPrincipais, ...itensInferiores]);
-    return flatList;
+      final itensPrincipais = SidebarConfigWithContext.itensPrincipais(context);
+      final itensInferiores = SidebarConfigWithContext.itensInferiores(context);
+      processItems([...itensPrincipais, ...itensInferiores]);
+      _flatNavigableItems = flatList;
+    }
+    return _flatNavigableItems!;
   }
 
-  /// Constrói a tela para o índice especificado com cache otimizado
+  /// Constrói a tela para o índice especificado
   Widget _buildScreen(int index) {
-    if (index < 0 || index >= _flatNavigableItems.length) {
+    final flatItems = _getFlatNavigableItems();
+
+    if (index < 0 || index >= flatItems.length) {
       return const Center(child: Text('Tela não encontrada'));
     }
 
-    // Cache otimizado - cria apenas quando necessário
-    return _screenCache.putIfAbsent(
-      index,
-      () => _flatNavigableItems[index].screen!,
-    );
+    return flatItems[index].screen ??
+        const Center(child: Text('Tela não configurada'));
   }
 
-  /// Navega para o índice especificado com animação suave
+  /// Navega para o índice especificado
   void _navigateToIndex(int index) {
-    if (index != _selectedIndex) {
+    final flatItems = _getFlatNavigableItems();
+
+    if (index >= 0 && index < flatItems.length && index != _selectedIndex) {
       setState(() {
         _selectedIndex = index;
       });
@@ -99,3 +102,5 @@ class _AppShellState extends State<AppShell> {
     );
   }
 }
+
+/// Wrapper de segurança para capturar erros de renderização das telas

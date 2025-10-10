@@ -36,12 +36,7 @@ class _DrawerListItemState extends State<DrawerListItem> {
     Widget content = MouseRegion(
       onEnter: (_) => setState(() => _isHovered = true),
       onExit: (_) => setState(() => _isHovered = false),
-      child: AnimatedContainer(
-        duration: AppAnimations.fast,
-        curve: AppAnimations.easeOut,
-        transform: _isHovered && !widget.isSelected
-            ? Matrix4.diagonal3Values(1.02, 1.02, 1.0)
-            : Matrix4.identity(),
+      child: Container(
         child: ClipRRect(
           borderRadius: BorderRadius.circular(AppTheme.borderRadiusM),
           child: Material(
@@ -55,13 +50,16 @@ class _DrawerListItemState extends State<DrawerListItem> {
                     onTap: widget.onTap,
                     hoverColor:
                         Colors.transparent, // Controlamos o hover manualmente
-                    focusColor: Theme.of(context).colorScheme.primary
-                        .withValues(alpha: widget.isFooterItem ? 0.08 : 0.12),
+                    focusColor: Theme.of(
+                      context,
+                    ).colorScheme.primary.withValues(alpha: 0.15),
                     highlightColor: Theme.of(context).colorScheme.primary
-                        .withValues(alpha: widget.isFooterItem ? 0.1 : 0.16),
+                        .withValues(alpha: 0.2), // Mais visível
                     splashColor: Theme.of(context).colorScheme.primary
-                        .withValues(alpha: widget.isFooterItem ? 0.07 : 0.1),
+                        .withValues(alpha: 0.3), // Muito mais visível
                     borderRadius: BorderRadius.circular(AppTheme.borderRadiusM),
+                    splashFactory:
+                        InkRipple.splashFactory, // Ripple mais dramático
                     child: _buildItemContent(),
                   ),
           ),
@@ -284,23 +282,24 @@ class _DrawerListItemState extends State<DrawerListItem> {
       }
     }
 
-    return AnimatedContainer(
-      duration: AppAnimations.normal,
-      curve: AppAnimations.easeInOut,
-      margin: EdgeInsets.symmetric(
-        vertical: isSmallScreen ? 2 : responsiveSpacingXS / 2,
-      ),
+    return Container(
+      margin: EdgeInsets.symmetric(vertical: isSmallScreen ? 2 : 4),
       padding: EdgeInsets.symmetric(
-        horizontal: isSmallScreen ? responsiveSpacingS : responsiveSpacing,
-        vertical: isSmallScreen ? responsiveSpacingXS : responsiveSpacingS,
+        horizontal: AppTheme.getResponsiveSpacing(
+          screenWidth,
+          20,
+        ), // 20px horizontal padronizado
+        vertical: AppTheme.getResponsiveSpacing(
+          screenWidth,
+          16,
+        ), // 16px vertical padronizado
       ),
       decoration: decoration,
       child: Row(
+        mainAxisSize: MainAxisSize.min,
         children: [
-          // Ícone
-          AnimatedContainer(
-            duration: AppAnimations.normal,
-            curve: AppAnimations.easeOut,
+          // Ícone simples
+          Container(
             width: isSmallScreen
                 ? AppTheme.getResponsiveIconSize(screenWidth, 28)
                 : AppTheme.getResponsiveIconSize(screenWidth, 32),
@@ -319,21 +318,18 @@ class _DrawerListItemState extends State<DrawerListItem> {
           SizedBox(
             width: isSmallScreen ? responsiveSpacingS : responsiveSpacing,
           ),
-          // Título
+          // Título simples
           Expanded(
-            child: AnimatedDefaultTextStyle(
-              duration: AppAnimations.fast,
+            child: Text(
+              widget.item.title,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
               style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                 fontWeight: titleFontWeight,
                 fontSize: isSmallScreen
                     ? AppTheme.getResponsiveFontSize(screenWidth, 13)
                     : AppTheme.getResponsiveFontSize(screenWidth, 14),
                 color: titleColor,
-              ),
-              child: Text(
-                widget.item.title,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
               ),
             ),
           ),

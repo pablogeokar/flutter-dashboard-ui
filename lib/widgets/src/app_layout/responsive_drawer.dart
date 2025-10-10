@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '/theme/theme_manager.dart';
 import 'drawer_item.dart';
-import 'drawer_list_item.dart';
+import 'drawer_list_item_simple.dart';
 import '/theme/theme.dart';
 
 class ResponsiveDrawer extends StatefulWidget {
@@ -52,25 +52,25 @@ class _ResponsiveDrawerState extends State<ResponsiveDrawer> {
 
   /// Calcula altura responsiva da logo baseada na largura e altura da tela
   double _getResponsiveLogoHeight(double screenWidth, double screenHeight) {
-    // Altura base da logo
-    double baseHeight = 140.0;
+    // Altura base da logo - AUMENTADA para mais destaque
+    double baseHeight = 160.0;
 
     // Ajuste baseado na largura da tela
     if (screenWidth < AppTheme.breakpointSmall) {
-      baseHeight = 120.0; // Telas pequenas: altura mínima decente
+      baseHeight = 140.0; // Telas pequenas: altura maior que antes
     } else if (screenWidth < AppTheme.breakpointMedium) {
-      baseHeight = 130.0; // Telas médias: altura intermediária
+      baseHeight = 150.0; // Telas médias: altura maior
     } else if (screenWidth < AppTheme.breakpointLarge) {
-      baseHeight = 140.0; // Telas grandes: altura padrão
+      baseHeight = 160.0; // Telas grandes: altura aumentada
     } else {
-      baseHeight = 150.0; // Telas muito grandes: altura maior
+      baseHeight = 170.0; // Telas muito grandes: altura ainda maior
     }
 
-    // Ajuste adicional baseado na altura da tela (para telas muito baixas)
+    // Ajuste mais conservador para telas baixas
     if (screenHeight < 700) {
-      baseHeight = baseHeight * 0.85; // Reduz 15% em telas muito baixas
+      baseHeight = baseHeight * 0.9; // Reduz apenas 10% em telas muito baixas
     } else if (screenHeight < 800) {
-      baseHeight = baseHeight * 0.95; // Reduz 5% em telas baixas
+      baseHeight = baseHeight * 0.97; // Reduz apenas 3% em telas baixas
     }
 
     return baseHeight;
@@ -226,27 +226,26 @@ class _ResponsiveDrawerState extends State<ResponsiveDrawer> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Bem-vindo!',
+                          'Olá, Admin! 👋',
                           style: TextStyle(
                             fontSize: AppTheme.getResponsiveFontSize(
                               screenWidth,
-                              14,
+                              15,
                             ),
-                            fontWeight: FontWeight.w600,
+                            fontWeight: FontWeight.w700,
                             color: Theme.of(context).colorScheme.onSurface,
                           ),
                         ),
-                        const SizedBox(height: 2),
+                        const SizedBox(height: 4),
                         Text(
-                          'Usuário Admin',
+                          'Domani Fiscal',
                           style: TextStyle(
                             fontSize: AppTheme.getResponsiveFontSize(
                               screenWidth,
-                              12,
+                              13,
                             ),
-                            color: Theme.of(
-                              context,
-                            ).colorScheme.onSurface.withValues(alpha: 0.6),
+                            fontWeight: FontWeight.w500,
+                            color: Theme.of(context).colorScheme.primary,
                           ),
                         ),
                       ],
@@ -392,7 +391,7 @@ class _ResponsiveDrawerState extends State<ResponsiveDrawer> {
       (e) => e.title == item.title,
     );
 
-    return DrawerListItem(
+    return DrawerListItemSimple(
       item: item,
       isSubItem: isSubItem,
       isSelected: widget.currentIndex == flatIndex,
@@ -427,7 +426,7 @@ class _ResponsiveDrawerState extends State<ResponsiveDrawer> {
         tilePadding: EdgeInsets.zero,
         maintainState: true, // Mantém o estado de expansão
         childrenPadding: EdgeInsets.zero, // Remove padding extra dos filhos
-        title: DrawerListItem(
+        title: DrawerListItemSimple(
           item: item,
           isSelected: isGroupSelected,
           isFooterItem: isFooterList,
