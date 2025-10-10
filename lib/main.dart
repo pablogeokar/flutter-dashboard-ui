@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import 'theme/dark.dart';
 import 'theme/light.dart';
 import 'theme/theme_manager.dart';
-import 'widgets/app_layout.dart';
+import 'widgets/app_initializer.dart';
 
 void main() {
   runApp(const MainApp());
@@ -20,7 +20,7 @@ class MainApp extends StatelessWidget {
       child: Consumer<ThemeManager>(
         builder: (context, themeManager, child) {
           return MaterialApp(
-            title: 'Dashboard UI',
+            title: 'Domani Fiscal',
             theme: lightTheme,
             darkTheme: darkTheme,
             themeMode: themeManager.currentTheme == ThemeModeType.dark
@@ -32,7 +32,7 @@ class MainApp extends StatelessWidget {
               GlobalCupertinoLocalizations.delegate,
             ],
             supportedLocales: const [Locale('pt')],
-            home: const AppShell(),
+            home: const AppInitializer(),
           );
         },
       ),

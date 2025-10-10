@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import '../../../theme/theme.dart';
-import '../../../theme/animations.dart';
 import 'drawer_item.dart';
 
 class DrawerListItem extends StatefulWidget {
@@ -36,33 +35,33 @@ class _DrawerListItemState extends State<DrawerListItem> {
     Widget content = MouseRegion(
       onEnter: (_) => setState(() => _isHovered = true),
       onExit: (_) => setState(() => _isHovered = false),
-      child: Container(
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(AppTheme.borderRadiusM),
-          child: Material(
-            color: Colors.transparent,
-            child: hasSubItems
-                ? Container(
-                    // Para itens com subitens, não usamos InkWell pois o ExpansionTile gerencia o toque
-                    child: _buildItemContent(),
-                  )
-                : InkWell(
-                    onTap: widget.onTap,
-                    hoverColor:
-                        Colors.transparent, // Controlamos o hover manualmente
-                    focusColor: Theme.of(
-                      context,
-                    ).colorScheme.primary.withValues(alpha: 0.15),
-                    highlightColor: Theme.of(context).colorScheme.primary
-                        .withValues(alpha: 0.2), // Mais visível
-                    splashColor: Theme.of(context).colorScheme.primary
-                        .withValues(alpha: 0.3), // Muito mais visível
-                    borderRadius: BorderRadius.circular(AppTheme.borderRadiusM),
-                    splashFactory:
-                        InkRipple.splashFactory, // Ripple mais dramático
-                    child: _buildItemContent(),
-                  ),
-          ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(AppTheme.borderRadiusM),
+        child: Material(
+          color: Colors.transparent,
+          child: hasSubItems
+              ? Container(
+                  // Para itens com subitens, não usamos InkWell pois o ExpansionTile gerencia o toque
+                  child: _buildItemContent(),
+                )
+              : InkWell(
+                  onTap: widget.onTap,
+                  hoverColor:
+                      Colors.transparent, // Controlamos o hover manualmente
+                  focusColor: Theme.of(
+                    context,
+                  ).colorScheme.primary.withValues(alpha: 0.15),
+                  highlightColor: Theme.of(
+                    context,
+                  ).colorScheme.primary.withValues(alpha: 0.2), // Mais visível
+                  splashColor: Theme.of(context).colorScheme.primary.withValues(
+                    alpha: 0.3,
+                  ), // Muito mais visível
+                  borderRadius: BorderRadius.circular(AppTheme.borderRadiusM),
+                  splashFactory:
+                      InkRipple.splashFactory, // Ripple mais dramático
+                  child: _buildItemContent(),
+                ),
         ),
       ),
     );
@@ -98,10 +97,6 @@ class _DrawerListItemState extends State<DrawerListItem> {
     final responsiveSpacingS = AppTheme.getResponsiveSpacing(
       screenWidth,
       AppTheme.spacingS,
-    );
-    final responsiveSpacingXS = AppTheme.getResponsiveSpacing(
-      screenWidth,
-      AppTheme.spacingXS,
     );
 
     // Define a decoração baseada nos estados

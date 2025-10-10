@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../../../theme/theme.dart';
 import 'drawer_item.dart';
 
 class DrawerListItemSimple extends StatefulWidget {
@@ -41,9 +40,13 @@ class _DrawerListItemSimpleState extends State<DrawerListItemSimple> {
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         decoration: BoxDecoration(
           color: widget.isSelected
-              ? primaryColor.withValues(alpha: 0.1)
+              ? primaryColor.withValues(alpha: 0.15)
               : _isHovered
-              ? primaryColor.withValues(alpha: 0.05)
+              ? (isDarkMode
+                    ? const Color(0xFF4A5568).withValues(
+                        alpha: 0.4,
+                      ) // Cinza azulado para modo dark
+                    : primaryColor.withValues(alpha: 0.08))
               : Colors.transparent,
           borderRadius: BorderRadius.circular(8),
           border: widget.isSelected
@@ -82,8 +85,12 @@ class _DrawerListItemSimpleState extends State<DrawerListItemSimple> {
       textColor = isDarkMode ? Colors.white : primaryColor;
       fontWeight = FontWeight.w600;
     } else if (_isHovered) {
-      iconColor = primaryColor;
-      textColor = primaryColor;
+      iconColor = isDarkMode
+          ? const Color(0xFFE5E7EB) // Cinza claro para ícone no modo dark
+          : primaryColor;
+      textColor = isDarkMode
+          ? const Color(0xFFE5E7EB) // Cinza claro para texto no modo dark
+          : primaryColor;
       fontWeight = FontWeight.w500;
     } else {
       iconColor = Theme.of(
@@ -102,7 +109,11 @@ class _DrawerListItemSimpleState extends State<DrawerListItemSimple> {
             color: widget.isSelected
                 ? primaryColor
                 : _isHovered
-                ? primaryColor.withValues(alpha: 0.1)
+                ? (isDarkMode
+                      ? const Color(0xFF6B7280).withValues(
+                          alpha: 0.3,
+                        ) // Cinza neutro para modo dark
+                      : primaryColor.withValues(alpha: 0.1))
                 : Colors.transparent,
             borderRadius: BorderRadius.circular(8),
           ),
