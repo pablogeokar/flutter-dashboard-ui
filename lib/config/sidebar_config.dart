@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../screens/em_construcao_screen.dart';
+import '../screens/dashboard_screen.dart';
 import '../widgets/app_layout.dart';
 import '../widgets/dialog.dart';
 
@@ -11,19 +12,7 @@ class SidebarConfig {
     DrawerItem(
       title: 'Dashboard',
       icon: Icons.dashboard_rounded,
-      screen: const EmConstrucaoPlaceholder(
-        titulo: 'Dashboard Fiscal',
-        descricao:
-            'Visão geral completa da situação fiscal da empresa com métricas em tempo real.',
-        funcionalidades: [
-          'Resumo fiscal com indicadores principais',
-          'Gráficos de receitas vs despesas',
-          'Alertas de vencimentos e pendências',
-          'Calendário fiscal integrado',
-          'Score de compliance fiscal',
-          'Quick actions para tarefas frequentes',
-        ],
-      ),
+      screen: const DashboardScreen(),
     ),
 
     // Cadastros básicos
