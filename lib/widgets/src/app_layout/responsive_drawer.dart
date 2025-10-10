@@ -226,7 +226,7 @@ class _ResponsiveDrawerState extends State<ResponsiveDrawer> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Olá, Admin! 👋',
+                          'Olá, Admin!',
                           style: TextStyle(
                             fontSize: AppTheme.getResponsiveFontSize(
                               screenWidth,
@@ -539,7 +539,7 @@ class _ResponsiveDrawerState extends State<ResponsiveDrawer> {
           const SizedBox(height: AppTheme.spacingS),
           // Informações adicionais
           Text(
-            '© 2024 Domani Fiscal',
+            '© 2025 Domani Fiscal',
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
               color: Theme.of(
                 context,
