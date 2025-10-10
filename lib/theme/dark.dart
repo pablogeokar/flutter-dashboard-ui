@@ -20,11 +20,18 @@ final darkTheme = ThemeData(
         error: AppTheme.errorDark,
         errorContainer: AppTheme.errorSurfaceDark,
       ).copyWith(
-        // Extensões personalizadas usando as novas cores
+        // Extensões personalizadas usando as novas cores dark refinadas
+        surfaceContainerLow: Color(
+          0xFF1E293B,
+        ), // Slate 800 para área de conteúdo
         surfaceContainerHighest: AppTheme.neutral800,
         surfaceContainerHigh: AppTheme.neutral900,
         outline: AppTheme.neutral600,
         outlineVariant: AppTheme.neutral700,
+        // Cores específicas para status fiscal dark
+        onPrimary: Colors.white,
+        onSecondary: AppTheme.neutral900,
+        onError: Colors.white,
       ),
   appBarTheme: const AppBarTheme(
     backgroundColor: Colors.transparent,

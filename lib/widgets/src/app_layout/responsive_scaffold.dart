@@ -3,6 +3,7 @@ import 'drawer_item.dart';
 import 'responsive_drawer.dart';
 import 'modern_app_bar.dart';
 import 'desktop_status_bar.dart';
+import 'breadcrumb.dart';
 import '/theme/theme.dart';
 
 /// O `ResponsiveScaffold` é um widget presentacional (ou "burro").
@@ -16,6 +17,7 @@ class ResponsiveScaffold extends StatefulWidget {
   final Function(int) onNavigation;
   final List<DrawerItem> itensPrincipais;
   final List<DrawerItem> itensInferiores;
+  final List<BreadcrumbItem>? breadcrumbItems;
 
   const ResponsiveScaffold({
     super.key,
@@ -24,6 +26,7 @@ class ResponsiveScaffold extends StatefulWidget {
     required this.onNavigation,
     required this.itensPrincipais,
     required this.itensInferiores,
+    this.breadcrumbItems,
   });
 
   @override
@@ -150,28 +153,57 @@ class _ResponsiveScaffoldState extends State<ResponsiveScaffold> {
   }
 
   Widget _buildMainContent({required bool isLargeScreen}) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+
     return AnimatedContainer(
       duration: const Duration(milliseconds: 300),
       margin: EdgeInsets.all(
-        isLargeScreen ? AppTheme.spacingM : AppTheme.spacingS,
-      ),
-      padding: EdgeInsets.all(
-        isLargeScreen ? AppTheme.spacingM : AppTheme.spacingS,
+        isLargeScreen ? AppTheme.spacingXL : AppTheme.spacingM,
       ),
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surfaceContainerLow,
-        borderRadius: BorderRadius.circular(AppTheme.borderRadiusXL),
+        color: isDarkMode
+            ? AppTheme.surfaceDark.withValues(
+                alpha: 0.7,
+              ) // Slate 900 com transparência
+            : Colors.white, // Branco puro para modo claro
+        borderRadius: BorderRadius.circular(AppTheme.borderRadiusL),
+        border: Border.all(
+          color: isDarkMode
+              ? AppTheme.neutral700.withValues(alpha: 0.3)
+              : AppTheme.neutral200.withValues(alpha: 0.5),
+          width: 1,
+        ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.08),
-            blurRadius: 16,
-            offset: const Offset(0, 8),
+            color: isDarkMode
+                ? Colors.black.withValues(alpha: 0.2)
+                : Colors.black.withValues(alpha: 0.04),
+            blurRadius: isDarkMode ? 20 : 12,
+            offset: const Offset(0, 4),
+            spreadRadius: isDarkMode ? 2 : 0,
           ),
         ],
       ),
       child: ClipRRect(
-        borderRadius: BorderRadius.circular(AppTheme.borderRadiusXL),
-        child: widget.screenBuilder(widget.currentIndex),
+        borderRadius: BorderRadius.circular(AppTheme.borderRadiusL),
+        child: Column(
+          children: [
+            // Breadcrumb navigation
+            if (widget.breadcrumbItems != null &&
+                widget.breadcrumbItems!.isNotEmpty)
+              Breadcrumb(items: widget.breadcrumbItems!),
+
+            // Conteúdo principal
+            Expanded(
+              child: Container(
+                padding: EdgeInsets.all(
+                  isLargeScreen ? AppTheme.spacingXL : AppTheme.spacingL,
+                ),
+                child: widget.screenBuilder(widget.currentIndex),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -20,12 +20,16 @@ final lightTheme = ThemeData(
         error: AppTheme.errorLight,
         errorContainer: AppTheme.errorSurfaceLight,
       ).copyWith(
-        // Extensões personalizadas usando as novas cores
-        surfaceContainerLow: Colors.white, // Define o fundo da área de conteúdo como branco
+        // Extensões personalizadas usando as novas cores profissionais
+        surfaceContainerLow: Colors.white, // Área de conteúdo branca
         surfaceContainerHighest: AppTheme.neutral100,
         surfaceContainerHigh: AppTheme.neutral50,
         outline: AppTheme.neutral300,
         outlineVariant: AppTheme.neutral200,
+        // Cores específicas para status fiscal
+        onPrimary: Colors.white,
+        onSecondary: Colors.white,
+        onError: Colors.white,
       ),
   appBarTheme: const AppBarTheme(
     backgroundColor: Colors.transparent,

@@ -129,15 +129,13 @@ class ModernAppBar extends StatelessWidget implements PreferredSizeWidget {
               )
             : null,
         actions: [
-          _PremiumSearchButton(),
-          const SizedBox(width: 8),
-          _AnimatedIconButton(
-            icon: Icons.notifications_none_rounded,
-            onPressed: () {},
-            tooltip: 'Notificações',
-            showBadge: true,
-          ),
-          const SizedBox(width: 8),
+          // Busca global inteligente
+          if (isLargeScreen) ...[
+            _GlobalSearchField(),
+            const SizedBox(width: AppTheme.spacingM),
+          ],
+
+          // Toggle de tema
           Consumer<ThemeManager>(
             builder: (context, themeManager, child) {
               return _AnimatedIconButton(
@@ -151,9 +149,13 @@ class ModernAppBar extends StatelessWidget implements PreferredSizeWidget {
               );
             },
           ),
-          const SizedBox(width: 12),
-          const _PremiumAvatar(),
-          const SizedBox(width: 16),
+
+          const SizedBox(width: AppTheme.spacingM),
+
+          // Avatar simplificado
+          _SimpleAvatar(),
+
+          const SizedBox(width: AppTheme.spacingL),
         ],
       ),
     );
@@ -168,13 +170,11 @@ class _AnimatedIconButton extends StatefulWidget {
   final IconData icon;
   final VoidCallback onPressed;
   final String tooltip;
-  final bool showBadge;
 
   const _AnimatedIconButton({
     required this.icon,
     required this.onPressed,
     required this.tooltip,
-    this.showBadge = false,
   });
 
   @override
@@ -237,49 +237,23 @@ class _AnimatedIconButtonState extends State<_AnimatedIconButton> {
                   ]
                 : null,
           ),
-          child: Stack(
-            children: [
-              Center(
-                child: IconButton(
-                  icon: Icon(
-                    widget.icon,
-                    color: _isHovered
-                        ? isDarkMode
-                              ? AppTheme.primaryDark
-                              : Theme.of(context).colorScheme.primary
-                        : Theme.of(
-                            context,
-                          ).colorScheme.onSurface.withValues(alpha: 0.8),
-                  ),
-                  onPressed: widget.onPressed,
-                  iconSize: 20.0,
-                  tooltip: widget.tooltip,
-                  padding: EdgeInsets.zero,
-                ),
+          child: Center(
+            child: IconButton(
+              icon: Icon(
+                widget.icon,
+                color: _isHovered
+                    ? isDarkMode
+                          ? AppTheme.primaryDark
+                          : Theme.of(context).colorScheme.primary
+                    : Theme.of(
+                        context,
+                      ).colorScheme.onSurface.withValues(alpha: 0.8),
               ),
-              if (widget.showBadge)
-                Positioned(
-                  right: 8,
-                  top: 8,
-                  child: Container(
-                    width: 8,
-                    height: 8,
-                    decoration: BoxDecoration(
-                      color: const Color(
-                        0xFFEF4444,
-                      ), // Vermelho para notificação
-                      shape: BoxShape.circle,
-                      boxShadow: [
-                        BoxShadow(
-                          color: const Color(0xFFEF4444).withValues(alpha: 0.3),
-                          blurRadius: 4,
-                          offset: const Offset(0, 2),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-            ],
+              onPressed: widget.onPressed,
+              iconSize: 20.0,
+              tooltip: widget.tooltip,
+              padding: EdgeInsets.zero,
+            ),
           ),
         ),
       ),
@@ -287,87 +261,60 @@ class _AnimatedIconButtonState extends State<_AnimatedIconButton> {
   }
 }
 
-/// Avatar premium para a AppBar
-class _PremiumAvatar extends StatefulWidget {
-  const _PremiumAvatar();
-
+/// Avatar simplificado para a AppBar
+class _SimpleAvatar extends StatefulWidget {
   @override
-  State<_PremiumAvatar> createState() => _PremiumAvatarState();
+  State<_SimpleAvatar> createState() => _SimpleAvatarState();
 }
 
-class _PremiumAvatarState extends State<_PremiumAvatar> {
+class _SimpleAvatarState extends State<_SimpleAvatar> {
   bool _isHovered = false;
 
   @override
   Widget build(BuildContext context) {
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
 
-    return MouseRegion(
-      onEnter: (_) => setState(() => _isHovered = true),
-      onExit: (_) => setState(() => _isHovered = false),
-      child: AnimatedContainer(
-        duration: AppAnimations.fast,
-        curve: AppAnimations.easeOut,
-        transform: _isHovered
-            ? Matrix4.diagonal3Values(1.05, 1.05, 1.0)
-            : Matrix4.identity(),
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+    return PopupMenuButton<String>(
+      offset: const Offset(0, 50),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(AppTheme.borderRadiusM),
+      ),
+      child: MouseRegion(
+        onEnter: (_) => setState(() => _isHovered = true),
+        onExit: (_) => setState(() => _isHovered = false),
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 200),
+          padding: EdgeInsets.all(AppTheme.spacingS),
           decoration: BoxDecoration(
             color: _isHovered
                 ? isDarkMode
-                      ? AppTheme.primaryDark.withValues(alpha: 0.15)
-                      : Theme.of(
-                          context,
-                        ).colorScheme.primary.withValues(alpha: 0.08)
-                : isDarkMode
-                ? AppTheme.neutral800.withValues(alpha: 0.3)
-                : AppTheme.neutral100,
-            borderRadius: BorderRadius.circular(12),
-            border: Border.all(
-              color: _isHovered
-                  ? isDarkMode
-                        ? AppTheme.primaryDark.withValues(alpha: 0.3)
-                        : Theme.of(
-                            context,
-                          ).colorScheme.primary.withValues(alpha: 0.2)
-                  : isDarkMode
-                  ? AppTheme.neutral700.withValues(alpha: 0.3)
-                  : AppTheme.neutral200.withValues(alpha: 0.5),
-              width: 1,
-            ),
-            boxShadow: _isHovered
-                ? [
-                    BoxShadow(
-                      color: isDarkMode
-                          ? AppTheme.primaryDark.withValues(alpha: 0.2)
-                          : Theme.of(
-                              context,
-                            ).colorScheme.primary.withValues(alpha: 0.1),
-                      blurRadius: 8,
-                      offset: const Offset(0, 4),
-                    ),
-                  ]
+                      ? AppTheme.hoverDark.withValues(alpha: 0.3)
+                      : AppTheme.hoverLight
+                : Colors.transparent,
+            borderRadius: BorderRadius.circular(AppTheme.borderRadiusM),
+            border: _isHovered
+                ? Border.all(
+                    color: Theme.of(
+                      context,
+                    ).colorScheme.primary.withValues(alpha: 0.2),
+                    width: 1,
+                  )
                 : null,
           ),
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
               Container(
-                width: 28,
-                height: 28,
+                width: 32,
+                height: 32,
                 decoration: BoxDecoration(
-                  color: isDarkMode
-                      ? AppTheme.primaryDark
-                      : Theme.of(context).colorScheme.primary,
+                  color: Theme.of(context).colorScheme.primary,
                   shape: BoxShape.circle,
                   boxShadow: [
                     BoxShadow(
-                      color: isDarkMode
-                          ? AppTheme.primaryDark.withValues(alpha: 0.3)
-                          : Theme.of(
-                              context,
-                            ).colorScheme.primary.withValues(alpha: 0.3),
+                      color: Theme.of(
+                        context,
+                      ).colorScheme.primary.withValues(alpha: 0.2),
                       blurRadius: 4,
                       offset: const Offset(0, 2),
                     ),
@@ -375,35 +322,11 @@ class _PremiumAvatarState extends State<_PremiumAvatar> {
                 ),
                 child: const Icon(
                   Icons.person_rounded,
-                  size: 16,
+                  size: 18,
                   color: Colors.white,
                 ),
               ),
-              const SizedBox(width: 8),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    'Admin',
-                    style: TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w600,
-                      color: Theme.of(context).colorScheme.onSurface,
-                    ),
-                  ),
-                  Text(
-                    'Corporativo',
-                    style: TextStyle(
-                      fontSize: 10,
-                      color: Theme.of(
-                        context,
-                      ).colorScheme.onSurface.withValues(alpha: 0.6),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(width: 4),
+              SizedBox(width: AppTheme.spacingS),
               Icon(
                 Icons.keyboard_arrow_down_rounded,
                 size: 16,
@@ -415,98 +338,250 @@ class _PremiumAvatarState extends State<_PremiumAvatar> {
           ),
         ),
       ),
+      itemBuilder: (context) => [
+        PopupMenuItem<String>(
+          value: 'profile',
+          child: Row(
+            children: [
+              Icon(
+                Icons.person_outline_rounded,
+                size: 18,
+                color: Theme.of(context).colorScheme.onSurface,
+              ),
+              SizedBox(width: AppTheme.spacingS),
+              Text('Perfil'),
+            ],
+          ),
+        ),
+        PopupMenuItem<String>(
+          value: 'settings',
+          child: Row(
+            children: [
+              Icon(
+                Icons.settings_outlined,
+                size: 18,
+                color: Theme.of(context).colorScheme.onSurface,
+              ),
+              SizedBox(width: AppTheme.spacingS),
+              Text('Configurações'),
+            ],
+          ),
+        ),
+        const PopupMenuDivider(),
+        PopupMenuItem<String>(
+          value: 'logout',
+          child: Row(
+            children: [
+              Icon(Icons.logout_rounded, size: 18, color: AppTheme.errorLight),
+              SizedBox(width: AppTheme.spacingS),
+              Text('Sair', style: TextStyle(color: AppTheme.errorLight)),
+            ],
+          ),
+        ),
+      ],
+      onSelected: (value) {
+        switch (value) {
+          case 'profile':
+            // Implementar navegação para perfil
+            break;
+          case 'settings':
+            // Implementar navegação para configurações
+            break;
+          case 'logout':
+            // Implementar logout
+            _showLogoutDialog();
+            break;
+        }
+      },
+    );
+  }
+
+  void _showLogoutDialog() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text('Confirmar Saída'),
+        content: Text('Tem certeza que deseja sair do sistema?'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: Text('Cancelar'),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+              // Implementar lógica de logout
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: AppTheme.errorLight,
+              foregroundColor: Colors.white,
+            ),
+            child: Text('Sair'),
+          ),
+        ],
+      ),
     );
   }
 }
 
-/// Botão de busca premium
-class _PremiumSearchButton extends StatefulWidget {
+/// Campo de busca global inteligente
+class _GlobalSearchField extends StatefulWidget {
   @override
-  State<_PremiumSearchButton> createState() => _PremiumSearchButtonState();
+  State<_GlobalSearchField> createState() => _GlobalSearchFieldState();
 }
 
-class _PremiumSearchButtonState extends State<_PremiumSearchButton> {
+class _GlobalSearchFieldState extends State<_GlobalSearchField> {
   bool _isHovered = false;
+  bool _isFocused = false;
+  final TextEditingController _controller = TextEditingController();
+  final FocusNode _focusNode = FocusNode();
+
+  @override
+  void initState() {
+    super.initState();
+    _focusNode.addListener(() {
+      setState(() {
+        _isFocused = _focusNode.hasFocus;
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    _focusNode.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    final isActive = _isHovered || _isFocused;
 
     return MouseRegion(
       onEnter: (_) => setState(() => _isHovered = true),
       onExit: (_) => setState(() => _isHovered = false),
       child: AnimatedContainer(
-        duration: AppAnimations.fast,
-        curve: AppAnimations.easeOut,
-        transform: _isHovered
-            ? Matrix4.diagonal3Values(1.02, 1.02, 1.0)
-            : Matrix4.identity(),
-        child: Container(
-          width: 200,
-          height: 36,
-          decoration: BoxDecoration(
-            color: isDarkMode
-                ? AppTheme.neutral800.withValues(alpha: 0.5)
-                : AppTheme.neutral50,
-            borderRadius: BorderRadius.circular(10),
-            border: Border.all(
-              color: _isHovered
-                  ? isDarkMode
-                        ? AppTheme.primaryDark.withValues(alpha: 0.3)
-                        : Theme.of(
-                            context,
-                          ).colorScheme.primary.withValues(alpha: 0.2)
-                  : isDarkMode
-                  ? AppTheme.neutral700.withValues(alpha: 0.3)
-                  : AppTheme.neutral200.withValues(alpha: 0.5),
-              width: 1,
-            ),
+        duration: const Duration(milliseconds: 200),
+        width: isActive ? 280 : 240,
+        height: 36,
+        decoration: BoxDecoration(
+          color: isDarkMode
+              ? AppTheme.formFieldBackgroundDark
+              : AppTheme.formFieldBackgroundLight,
+          borderRadius: BorderRadius.circular(AppTheme.borderRadiusM),
+          border: Border.all(
+            color: isActive
+                ? Theme.of(context).colorScheme.primary
+                : isDarkMode
+                ? AppTheme.formFieldBorderDark
+                : AppTheme.formFieldBorderLight,
+            width: isActive ? 1.5 : 1,
           ),
-          child: Row(
-            children: [
-              const SizedBox(width: 12),
-              Icon(
-                Icons.search_rounded,
-                size: 18,
-                color: Theme.of(
-                  context,
-                ).colorScheme.onSurface.withValues(alpha: 0.5),
-              ),
-              const SizedBox(width: 8),
-              Expanded(
-                child: Text(
-                  'Buscar clientes, produtos, relatórios...',
-                  style: TextStyle(
-                    fontSize: 13,
+          boxShadow: isActive
+              ? [
+                  BoxShadow(
                     color: Theme.of(
+                      context,
+                    ).colorScheme.primary.withValues(alpha: 0.1),
+                    blurRadius: 8,
+                    offset: const Offset(0, 2),
+                  ),
+                ]
+              : null,
+        ),
+        child: TextField(
+          controller: _controller,
+          focusNode: _focusNode,
+          style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontSize: 13),
+          decoration: InputDecoration(
+            hintText: 'Buscar clientes, produtos, relatórios...',
+            hintStyle: TextStyle(
+              fontSize: 13,
+              color: Theme.of(
+                context,
+              ).colorScheme.onSurface.withValues(alpha: 0.5),
+            ),
+            prefixIcon: Icon(
+              Icons.search_rounded,
+              size: 18,
+              color: isActive
+                  ? Theme.of(context).colorScheme.primary
+                  : Theme.of(
                       context,
                     ).colorScheme.onSurface.withValues(alpha: 0.5),
+            ),
+            suffixIcon: _controller.text.isNotEmpty
+                ? IconButton(
+                    icon: Icon(
+                      Icons.clear_rounded,
+                      size: 16,
+                      color: Theme.of(
+                        context,
+                      ).colorScheme.onSurface.withValues(alpha: 0.5),
+                    ),
+                    onPressed: () {
+                      _controller.clear();
+                      setState(() {});
+                    },
+                  )
+                : Container(
+                    margin: const EdgeInsets.only(right: 8),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 6,
+                      vertical: 2,
+                    ),
+                    decoration: BoxDecoration(
+                      color: isDarkMode
+                          ? AppTheme.neutral700.withValues(alpha: 0.5)
+                          : AppTheme.neutral200.withValues(alpha: 0.7),
+                      borderRadius: BorderRadius.circular(4),
+                    ),
+                    child: Text(
+                      'Ctrl+K',
+                      style: TextStyle(
+                        fontSize: 10,
+                        fontWeight: FontWeight.w500,
+                        color: Theme.of(
+                          context,
+                        ).colorScheme.onSurface.withValues(alpha: 0.6),
+                      ),
+                    ),
                   ),
-                ),
-              ),
-              Container(
-                margin: const EdgeInsets.only(right: 8),
-                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                decoration: BoxDecoration(
-                  color: isDarkMode
-                      ? AppTheme.neutral700.withValues(alpha: 0.5)
-                      : AppTheme.neutral200.withValues(alpha: 0.7),
-                  borderRadius: BorderRadius.circular(4),
-                ),
-                child: Text(
-                  '⌘K',
-                  style: TextStyle(
-                    fontSize: 10,
-                    fontWeight: FontWeight.w500,
-                    color: Theme.of(
-                      context,
-                    ).colorScheme.onSurface.withValues(alpha: 0.6),
-                  ),
-                ),
-              ),
-            ],
+            border: InputBorder.none,
+            contentPadding: const EdgeInsets.symmetric(
+              horizontal: 12,
+              vertical: 8,
+            ),
           ),
+          onChanged: (value) {
+            setState(() {});
+            // Implementar lógica de busca aqui
+          },
+          onSubmitted: (value) {
+            // Implementar ação de busca aqui
+            _showSearchResults(value);
+          },
         ),
+      ),
+    );
+  }
+
+  void _showSearchResults(String query) {
+    if (query.trim().isEmpty) return;
+
+    // Implementar modal de resultados de busca
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text('Resultados da busca'),
+        content: Text('Buscando por: "$query"'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: Text('Fechar'),
+          ),
+        ],
       ),
     );
   }

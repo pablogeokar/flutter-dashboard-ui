@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
 class AppTheme {
-  // === PALETA DE CORES DOMANI FISCAL: Identidade Visual Própria ===
+  // === PALETA DE CORES DOMANI FISCAL: Identidade Visual Profissional ===
 
-  // Cores Primárias (Azul Domani - Confiança e Profissionalismo)
+  // Cores Primárias (Azul Confiança Fiscal)
   static const Color primaryLight = Color(
-    0xFF2563EB,
-  ); // Azul vibrante e moderno para modo claro
+    0xFF1E40AF,
+  ); // Azul confiança profissional para modo claro
   static const Color primaryDark = Color(
     0xFF3B82F6,
   ); // Azul mais claro e acessível para modo dark
@@ -21,35 +21,37 @@ class AppTheme {
 
   // Cores de Superfície (fundo principal da aplicação)
   static const Color surfaceLight = Color(
-    0xFFF5F5F5,
-  ); // Branco suave para conforto visual
-  static const Color surfaceDark = Color(0xFF2C2C2C); // Cinza escuro e elegante
+    0xFFF8FAFC,
+  ); // Slate 50 - fundo profissional
+  static const Color surfaceDark = Color(
+    0xFF0F172A,
+  ); // Slate 900 - fundo dark refinado
 
   // Cores de Fundo da Drawer (barra lateral)
   static const Color drawerBackgroundLight = Color(
-    0xFFFFFFFF,
-  ); // Branco puro para contraste sutil
+    0xFFF1F5F9,
+  ); // Slate 100 - sidebar profissional
   static const Color drawerBackgroundDark = Color(
-    0xFF2A3441,
-  ); // Tom mais suave, menos escuro que #2d3748
+    0xFF334155,
+  ); // Slate 700 - sidebar dark refinada
 
   // === CORES SEMÂNTICAS ===
 
-  // Estados de Sucesso
-  static const Color successLight = Color(0xFF10b981); // Verde esmeralda
-  static const Color successDark = Color(0xFF34d399);
+  // Estados de Sucesso (Verde Aprovação Fiscal)
+  static const Color successLight = Color(0xFF059669); // Verde aprovação
+  static const Color successDark = Color(0xFF10b981);
   static const Color successSurfaceLight = Color(0xFFecfdf5);
   static const Color successSurfaceDark = Color(0xFF064e3b);
 
-  // Estados de Erro
-  static const Color errorLight = Color(0xFFef4444); // Vermelho moderno
-  static const Color errorDark = Color(0xFFf87171);
+  // Estados de Erro (Vermelho Crítico Fiscal)
+  static const Color errorLight = Color(0xFFDC2626); // Vermelho crítico
+  static const Color errorDark = Color(0xFFef4444);
   static const Color errorSurfaceLight = Color(0xFFfef2f2);
   static const Color errorSurfaceDark = Color(0xFF7f1d1d);
 
-  // Estados de Aviso
-  static const Color warningLight = Color(0xFFf59e0b); // Âmbar
-  static const Color warningDark = Color(0xFFfbbf24);
+  // Estados de Aviso (Laranja Atenção Fiscal)
+  static const Color warningLight = Color(0xFFD97706); // Laranja atenção
+  static const Color warningDark = Color(0xFFf59e0b);
   static const Color warningSurfaceLight = Color(0xFffffbeb);
   static const Color warningSurfaceDark = Color(0xFF78350f);
 
@@ -137,15 +139,19 @@ class AppTheme {
   static const double borderRadiusL = 16.0;
   static const double borderRadiusXL = 20.0;
 
-  // Espaçamentos padronizados (valores de referência para uso nos widgets)
-  static const double spacingXS = 4.0;
-  static const double spacingS = 8.0;
-  static const double spacingM = 16.0;
-  static const double spacingL = 24.0;
+  // === GRID SYSTEM 8PX - ESPAÇAMENTOS PADRONIZADOS ===
+  static const double spacingXS = 4.0; // 0.5 * 8px
+  static const double spacingS = 8.0; // 1 * 8px
+  static const double spacingM = 16.0; // 2 * 8px
+  static const double spacingL = 24.0; // 3 * 8px
+  static const double spacingXL = 32.0; // 4 * 8px
+  static const double spacingXXL = 40.0; // 5 * 8px
+  static const double spacingXXXL = 48.0; // 6 * 8px
+  static const double spacingHuge = 64.0; // 8 * 8px
 
   // Dimensões específicas para layout (valores de referência para uso nos widgets)
   static const double appBarHeight = 60.0;
-  static const double drawerWidth = 280.0;
+  static const double drawerWidth = 300.0; // Largura padrão aumentada
   static const double avatarSizeSmall = 22.0;
   static const double avatarSizeMedium = 40.0;
   static const double avatarSizeLarge = 60.0;
@@ -159,11 +165,11 @@ class AppTheme {
   static const double breakpointXLarge =
       2560.0; // Monitores muito grandes (27"+)
 
-  // Larguras responsivas da drawer
-  static const double drawerWidthSmall = 240.0; // Telas pequenas
-  static const double drawerWidthMedium = 260.0; // Telas médias
-  static const double drawerWidthLarge = 280.0; // Telas grandes
-  static const double drawerWidthXLarge = 300.0; // Telas muito grandes
+  // Larguras responsivas da drawer (otimizadas para densidade fiscal)
+  static const double drawerWidthSmall = 260.0; // Telas pequenas
+  static const double drawerWidthMedium = 280.0; // Telas médias
+  static const double drawerWidthLarge = 300.0; // Telas grandes
+  static const double drawerWidthXLarge = 320.0; // Telas muito grandes
 
   // Função para obter largura responsiva da drawer
   static double getResponsiveDrawerWidth(double screenWidth) {
@@ -220,55 +226,79 @@ class AppTheme {
   // Tamanhos de ícones utilizados
   static const double iconSizeXL = 80.0;
 
-  // Definição da escala de texto com hierarquia clara
+  // === HIERARQUIA TIPOGRÁFICA PROFISSIONAL ===
   static const TextTheme textTheme = TextTheme(
+    // H1 - Títulos principais
     headlineLarge: TextStyle(
-      fontSize: 32.0,
-      fontWeight: FontWeight.w800,
-    ), // Extra bold para títulos principais
-    headlineMedium: TextStyle(
       fontSize: 28.0,
       fontWeight: FontWeight.w700,
-    ), // Bold para subtítulos
-    headlineSmall: TextStyle(
-      fontSize: 24.0,
-      fontWeight: FontWeight.w600,
-    ), // Semi-bold para seções
-    titleLarge: TextStyle(
+      height: 1.2,
+    ),
+    // H2 - Seções
+    headlineMedium: TextStyle(
       fontSize: 20.0,
       fontWeight: FontWeight.w600,
-    ), // Semi-bold para títulos de cards
+      height: 1.3,
+    ),
+    // H3 - Subseções
+    headlineSmall: TextStyle(
+      fontSize: 16.0,
+      fontWeight: FontWeight.w600,
+      height: 1.4,
+    ),
+    // Títulos de cards
+    titleLarge: TextStyle(
+      fontSize: 16.0,
+      fontWeight: FontWeight.w600,
+      height: 1.4,
+    ),
+    // Labels importantes
     titleMedium: TextStyle(
-      fontSize: 16.0,
+      fontSize: 14.0,
       fontWeight: FontWeight.w500,
-    ), // Medium para labels importantes
+      height: 1.4,
+    ),
+    // Labels menores
     titleSmall: TextStyle(
-      fontSize: 14.0,
+      fontSize: 12.0,
       fontWeight: FontWeight.w500,
-    ), // Medium para labels menores
+      height: 1.3,
+    ),
+    // Body - Texto principal
     bodyLarge: TextStyle(
-      fontSize: 16.0,
-      fontWeight: FontWeight.w400,
-    ), // Regular para texto principal (aumentado)
-    bodyMedium: TextStyle(
       fontSize: 14.0,
       fontWeight: FontWeight.w400,
-    ), // Regular para texto secundário
+      height: 1.5,
+    ),
+    // Body - Texto secundário
+    bodyMedium: TextStyle(
+      fontSize: 13.0,
+      fontWeight: FontWeight.w400,
+      height: 1.5,
+    ),
+    // Caption - Metadados
     bodySmall: TextStyle(
       fontSize: 12.0,
-      fontWeight: FontWeight.w400,
-    ), // Regular para texto pequeno
-    labelLarge: TextStyle(
-      fontSize: 14.0,
       fontWeight: FontWeight.w500,
-    ), // Medium para labels
-    labelMedium: TextStyle(
+      height: 1.4,
+    ),
+    // Labels
+    labelLarge: TextStyle(
       fontSize: 12.0,
-      fontWeight: FontWeight.w400,
-    ), // Regular para labels menores
+      fontWeight: FontWeight.w500,
+      height: 1.4,
+    ),
+    // Labels pequenos
+    labelMedium: TextStyle(
+      fontSize: 11.0,
+      fontWeight: FontWeight.w500,
+      height: 1.3,
+    ),
+    // Small - Labels micro
     labelSmall: TextStyle(
       fontSize: 10.0,
-      fontWeight: FontWeight.w400,
-    ), // Regular para micro-labels
+      fontWeight: FontWeight.w500,
+      height: 1.3,
+    ),
   );
 }

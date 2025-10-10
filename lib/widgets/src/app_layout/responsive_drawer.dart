@@ -419,17 +419,32 @@ class _ResponsiveDrawerState extends State<ResponsiveDrawer> {
     });
 
     return Theme(
-      data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
+      data: Theme.of(context).copyWith(
+        dividerColor: Colors.transparent,
+        // Customizar a cor da seta do ExpansionTile
+        colorScheme: Theme.of(context).colorScheme.copyWith(
+          onSurface: Theme.of(
+            context,
+          ).colorScheme.onSurface.withValues(alpha: 0.6),
+        ),
+      ),
       child: ExpansionTile(
         key: PageStorageKey(item.title), // Persists expanded state
         initiallyExpanded: isGroupSelected,
         tilePadding: EdgeInsets.zero,
         maintainState: true, // Mantém o estado de expansão
         childrenPadding: EdgeInsets.zero, // Remove padding extra dos filhos
+        // Customizar a seta do ExpansionTile
+        iconColor: Theme.of(context).colorScheme.primary,
+        collapsedIconColor: Theme.of(
+          context,
+        ).colorScheme.onSurface.withValues(alpha: 0.6),
         title: DrawerListItem(
           item: item,
           isSelected: isGroupSelected,
           isFooterItem: isFooterList,
+          isExpansionTitle:
+              true, // Nova propriedade para indicar que não deve mostrar seta
           onTap: () {}, // The tile itself handles expansion
         ),
         children: item.subItems!

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'drawer_item.dart';
 import 'responsive_scaffold.dart';
+import 'breadcrumb.dart';
 import '../../../utils/keyboard_shortcuts.dart';
 import '../../../theme/theme_manager.dart';
 import '../../../config/sidebar_config.dart';
@@ -76,6 +77,191 @@ class _AppShellState extends State<AppShell> {
     }
   }
 
+  /// Gera os itens do breadcrumb baseado no item selecionado
+  List<BreadcrumbItem> _getBreadcrumbItems() {
+    final flatItems = _getFlatNavigableItems();
+
+    if (_selectedIndex < 0 || _selectedIndex >= flatItems.length) {
+      return [];
+    }
+
+    final currentItem = flatItems[_selectedIndex];
+    final title = currentItem.title;
+
+    // Mapear títulos para breadcrumbs específicos
+    switch (title) {
+      case 'Dashboard':
+        return [
+          BreadcrumbItem(
+            label: 'Dashboard',
+            icon: Icons.dashboard_rounded,
+            isActive: true,
+          ),
+        ];
+
+      case 'Clientes':
+        return [
+          BreadcrumbItem(
+            label: 'Cadastros',
+            icon: Icons.edit_document,
+            onTap: () {
+              // Navegar para seção de cadastros se existir
+            },
+          ),
+          BreadcrumbItem(
+            label: 'Clientes',
+            icon: Icons.people_rounded,
+            isActive: true,
+          ),
+        ];
+
+      case 'Fornecedores':
+        return [
+          BreadcrumbItem(
+            label: 'Cadastros',
+            icon: Icons.edit_document,
+            onTap: () {
+              // Navegar para seção de cadastros se existir
+            },
+          ),
+          BreadcrumbItem(
+            label: 'Fornecedores',
+            icon: Icons.business_rounded,
+            isActive: true,
+          ),
+        ];
+
+      case 'Produtos/Serviços':
+        return [
+          BreadcrumbItem(
+            label: 'Cadastros',
+            icon: Icons.edit_document,
+            onTap: () {},
+          ),
+          BreadcrumbItem(
+            label: 'Produtos/Serviços',
+            icon: Icons.inventory_2_rounded,
+            isActive: true,
+          ),
+        ];
+
+      case 'Plano de Contas':
+        return [
+          BreadcrumbItem(
+            label: 'Cadastros',
+            icon: Icons.edit_document,
+            onTap: () {},
+          ),
+          BreadcrumbItem(
+            label: 'Plano de Contas',
+            icon: Icons.account_tree_rounded,
+            isActive: true,
+          ),
+        ];
+
+      case 'Apuração ICMS':
+        return [
+          BreadcrumbItem(
+            label: 'Fiscal',
+            icon: Icons.gavel_rounded,
+            onTap: () {},
+          ),
+          BreadcrumbItem(
+            label: 'Apuração ICMS',
+            icon: Icons.calculate_rounded,
+            isActive: true,
+          ),
+        ];
+
+      case 'SPED Fiscal':
+        return [
+          BreadcrumbItem(
+            label: 'Fiscal',
+            icon: Icons.gavel_rounded,
+            onTap: () {},
+          ),
+          BreadcrumbItem(
+            label: 'SPED Fiscal',
+            icon: Icons.description_rounded,
+            isActive: true,
+          ),
+        ];
+
+      case 'Declarações':
+        return [
+          BreadcrumbItem(
+            label: 'Fiscal',
+            icon: Icons.gavel_rounded,
+            onTap: () {},
+          ),
+          BreadcrumbItem(
+            label: 'Declarações',
+            icon: Icons.assignment_rounded,
+            isActive: true,
+          ),
+        ];
+
+      case 'Calendário Fiscal':
+        return [
+          BreadcrumbItem(
+            label: 'Fiscal',
+            icon: Icons.gavel_rounded,
+            onTap: () {},
+          ),
+          BreadcrumbItem(
+            label: 'Calendário Fiscal',
+            icon: Icons.event_rounded,
+            isActive: true,
+          ),
+        ];
+
+      case 'Balancetes':
+        return [
+          BreadcrumbItem(
+            label: 'Relatórios',
+            icon: Icons.analytics_rounded,
+            onTap: () {},
+          ),
+          BreadcrumbItem(
+            label: 'Balancetes',
+            icon: Icons.balance_rounded,
+            isActive: true,
+          ),
+        ];
+
+      case 'DRE':
+        return [
+          BreadcrumbItem(
+            label: 'Relatórios',
+            icon: Icons.analytics_rounded,
+            onTap: () {},
+          ),
+          BreadcrumbItem(
+            label: 'DRE',
+            icon: Icons.trending_up_rounded,
+            isActive: true,
+          ),
+        ];
+
+      case 'Fluxo de Caixa':
+        return [
+          BreadcrumbItem(
+            label: 'Relatórios',
+            icon: Icons.analytics_rounded,
+            onTap: () {},
+          ),
+          BreadcrumbItem(
+            label: 'Fluxo de Caixa',
+            icon: Icons.account_balance_wallet_rounded,
+            isActive: true,
+          ),
+        ];
+
+      default:
+        return [BreadcrumbItem(label: title, isActive: true)];
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final themeManager = Provider.of<ThemeManager>(context, listen: false);
@@ -96,6 +282,7 @@ class _AppShellState extends State<AppShell> {
             screenBuilder: _buildScreen,
             currentIndex: _selectedIndex,
             onNavigation: _navigateToIndex,
+            breadcrumbItems: _getBreadcrumbItems(),
           ),
         ),
       ),
