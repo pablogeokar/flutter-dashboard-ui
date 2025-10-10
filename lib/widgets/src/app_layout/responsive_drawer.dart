@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '/theme/theme_manager.dart';
+import '../../../theme/theme_manager.dart';
+import '../../../theme/theme.dart';
 import 'drawer_item.dart';
-import 'drawer_list_item_simple.dart';
-import '/theme/theme.dart';
+import 'drawer_list_item.dart';
 
 class ResponsiveDrawer extends StatefulWidget {
   final int currentIndex;
@@ -162,7 +162,7 @@ class _ResponsiveDrawerState extends State<ResponsiveDrawer> {
                           ),
                           const SizedBox(height: AppTheme.spacingS),
                           Text(
-                            'Dashboard UI',
+                            'Domani Fiscal',
                             style: TextStyle(
                               fontSize: AppTheme.getResponsiveFontSize(
                                 screenWidth,
@@ -391,7 +391,7 @@ class _ResponsiveDrawerState extends State<ResponsiveDrawer> {
       (e) => e.title == item.title,
     );
 
-    return DrawerListItemSimple(
+    return DrawerListItem(
       item: item,
       isSubItem: isSubItem,
       isSelected: widget.currentIndex == flatIndex,
@@ -426,7 +426,7 @@ class _ResponsiveDrawerState extends State<ResponsiveDrawer> {
         tilePadding: EdgeInsets.zero,
         maintainState: true, // Mantém o estado de expansão
         childrenPadding: EdgeInsets.zero, // Remove padding extra dos filhos
-        title: DrawerListItemSimple(
+        title: DrawerListItem(
           item: item,
           isSelected: isGroupSelected,
           isFooterItem: isFooterList,
@@ -539,7 +539,7 @@ class _ResponsiveDrawerState extends State<ResponsiveDrawer> {
           const SizedBox(height: AppTheme.spacingS),
           // Informações adicionais
           Text(
-            '© 2024 Dashboard UI',
+            '© 2024 Domani Fiscal',
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
               color: Theme.of(
                 context,

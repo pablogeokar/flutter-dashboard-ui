@@ -45,8 +45,8 @@ class _AppShellState extends State<AppShell> {
         }
       }
 
-      final itensPrincipais = SidebarConfigWithContext.itensPrincipais(context);
-      final itensInferiores = SidebarConfigWithContext.itensInferiores(context);
+      final itensPrincipais = SidebarConfig.getMainItems(context);
+      final itensInferiores = SidebarConfig.getFooterItems(context);
       processItems([...itensPrincipais, ...itensInferiores]);
       _flatNavigableItems = flatList;
     }
@@ -91,8 +91,8 @@ class _AppShellState extends State<AppShell> {
         child: Focus(
           autofocus: true,
           child: ResponsiveScaffold(
-            itensPrincipais: SidebarConfigWithContext.itensPrincipais(context),
-            itensInferiores: SidebarConfigWithContext.itensInferiores(context),
+            itensPrincipais: SidebarConfig.getMainItems(context),
+            itensInferiores: SidebarConfig.getFooterItems(context),
             screenBuilder: _buildScreen,
             currentIndex: _selectedIndex,
             onNavigation: _navigateToIndex,

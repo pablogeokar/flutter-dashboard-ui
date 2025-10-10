@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import '../screens/em_construcao_screen.dart';
 import '../screens/teste_screen.dart';
+
 import '../widgets/app_layout.dart';
 import '../widgets/dialog.dart';
 
-/// Classe para organizar a configuração dos itens da barra de navegação
-class SidebarConfigWithContext {
+/// Configuração dos itens da barra de navegação lateral
+class SidebarConfig {
   /// Cria a lista de itens principais do menu
-  static List<DrawerItem> itensPrincipais(BuildContext context) => [
+  static List<DrawerItem> getMainItems(BuildContext context) => [
     DrawerItem(
       title: 'Painel Principal',
       icon: Icons.dashboard,
@@ -57,7 +58,7 @@ class SidebarConfigWithContext {
   ];
 
   /// Cria a lista de itens inferiores (rodapé) do menu
-  static List<DrawerItem> itensInferiores(BuildContext context) => [
+  static List<DrawerItem> getFooterItems(BuildContext context) => [
     DrawerItem(
       title: 'Configurações',
       icon: Icons.settings,

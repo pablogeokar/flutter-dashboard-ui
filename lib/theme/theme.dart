@@ -217,28 +217,8 @@ class AppTheme {
     }
   }
 
-  // Tamanhos de ícones
+  // Tamanhos de ícones utilizados
   static const double iconSizeXL = 80.0;
-
-  // Efeitos visuais
-  static const double appBarBlur = 8.0;
-  static const double appBarOpacity = 0.85;
-
-  // === CONFIGURAÇÕES ESPECÍFICAS PARA WINDOWS DESKTOP ===
-
-  // Tamanhos de janela recomendados
-  static const double minWindowWidth = 800.0;
-  static const double minWindowHeight = 600.0;
-  static const double defaultWindowWidth = 1200.0;
-  static const double defaultWindowHeight = 800.0;
-
-  // Configurações de scroll para desktop
-  static const double desktopScrollSpeed = 120.0;
-
-  // Configurações de densidade para desktop
-  static const VisualDensity desktopDensity = VisualDensity.comfortable;
-
-  // Configurações de cursor para desktop (removidas - usar diretamente do Flutter)
 
   // Definição da escala de texto com hierarquia clara
   static const TextTheme textTheme = TextTheme(
