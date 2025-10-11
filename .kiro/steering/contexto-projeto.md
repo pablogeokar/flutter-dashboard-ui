@@ -24,13 +24,15 @@ lib/
 ├── theme/
 │   ├── theme.dart (paleta completa), theme_manager.dart
 │   ├── animations.dart, dark.dart, light.dart
+├── services/
+│   └── dialog/ (form_dialog_service.dart - SERVIÇOS de dialog)
 ├── widgets/
 │   ├── README.md (documentação completa)
 │   ├── app_initializer.dart, app_layout.dart, dialog.dart
 │   └── src/
 │       ├── app_layout/ (app_shell.dart, responsive_drawer.dart, drawer_list_item.dart)
-│       ├── dialog/ (form_dialog.dart, form_dialog_service.dart, README.md)
-│       └── forms/ (form_components.dart, form_row.dart, README.md)
+│       ├── dialog/ (form_dialog.dart, dialog_callbacks.dart, README.md)
+│       └── forms/ (form_components.dart, form_row.dart, form_validators.dart, README.md)
 ├── assets/ (logo_light.png, logo_dark.png)
 └── DESIGN_IMPROVEMENTS.md (histórico completo de melhorias)
 ```
@@ -205,3 +207,37 @@ FormDialogService.mostrarFormulario(
 **Última atualização:** Dezembro 2024  
 **Status:** Produção - Sistema estável e documentado  
 **Próxima revisão:** Após implementação de tabelas e gráficos
+
+## Arquitetura Reorganizada (Dezembro 2024)
+
+### 🏗️ Separação de Responsabilidades
+
+- **lib/services/** - SERVIÇOS (lógica de negócio, APIs, utilitários)
+- **lib/widgets/** - WIDGETS (componentes visuais reutilizáveis)
+- **lib/screens/** - TELAS (páginas da aplicação)
+
+### 📁 Estrutura de Serviços
+
+```
+lib/services/
+└── dialog/
+    └── form_dialog_service.dart  # Serviços de dialog (não é widget!)
+```
+
+### 🎯 Import Correto para FormDialogService
+
+```dart
+// CORRETO - serviço está em lib/services/
+import '../../services/dialog/form_dialog_service.dart';
+
+// INCORRETO - não está mais em widgets
+import '../widgets/src/dialog/form_dialog_service.dart';
+```
+
+### ✅ Benefícios da Nova Arquitetura
+
+- **Widgets desacoplados** - Não dependem de serviços específicos
+- **Serviços organizados** - Lógica de negócio centralizada
+- **Manutenibilidade** - Mudanças em serviços não afetam widgets
+- **Escalabilidade** - Fácil adicionar novos serviços
+- **Testabilidade** - Serviços podem ser testados independentemente

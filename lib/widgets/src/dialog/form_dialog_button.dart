@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'form_dialog_service.dart';
+import '../../../services/dialog/form_dialog_service.dart';
 import '../../form_layout.dart';
 
 /// Botão que abre um FormDialog quando pressionado

@@ -139,43 +139,39 @@ class EmConstrucaoPlaceholder extends StatelessWidget {
                     SizedBox(height: AppTheme.spacingM),
 
                     // Lista de funcionalidades
-                    ...(funcionalidades ?? _getFuncionalidadesPadrao())
-                        .map(
-                          (funcionalidade) => Padding(
-                            padding: EdgeInsets.only(bottom: AppTheme.spacingS),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Container(
-                                  margin: const EdgeInsets.only(top: 6),
-                                  width: 6,
-                                  height: 6,
-                                  decoration: BoxDecoration(
-                                    color: AppTheme.successLight,
-                                    borderRadius: BorderRadius.circular(3),
-                                  ),
-                                ),
-                                SizedBox(width: AppTheme.spacingM),
-                                Expanded(
-                                  child: Text(
-                                    funcionalidade,
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodyMedium
-                                        ?.copyWith(
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .onSurface
-                                              .withValues(alpha: 0.8),
-                                          height: 1.4,
-                                        ),
-                                  ),
-                                ),
-                              ],
+                    ...(funcionalidades ?? _getFuncionalidadesPadrao()).map(
+                      (funcionalidade) => Padding(
+                        padding: EdgeInsets.only(bottom: AppTheme.spacingS),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              margin: const EdgeInsets.only(top: 6),
+                              width: 6,
+                              height: 6,
+                              decoration: BoxDecoration(
+                                color: AppTheme.successLight,
+                                borderRadius: BorderRadius.circular(3),
+                              ),
                             ),
-                          ),
-                        )
-                        .toList(),
+                            SizedBox(width: AppTheme.spacingM),
+                            Expanded(
+                              child: Text(
+                                funcionalidade,
+                                style: Theme.of(context).textTheme.bodyMedium
+                                    ?.copyWith(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onSurface
+                                          .withValues(alpha: 0.8),
+                                      height: 1.4,
+                                    ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -183,7 +179,7 @@ class EmConstrucaoPlaceholder extends StatelessWidget {
               SizedBox(height: AppTheme.spacingXL),
 
               // Botão de notificação
-              Container(
+              SizedBox(
                 width: double.infinity,
                 child: OutlinedButton.icon(
                   onPressed: () {

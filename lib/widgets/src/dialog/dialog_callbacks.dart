@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'form_dialog_service.dart';
+import '../../../services/dialog/form_dialog_service.dart';
 
 /// Classe com callbacks pré-configurados para usar nos itens da drawer
 class DialogCallbacks {

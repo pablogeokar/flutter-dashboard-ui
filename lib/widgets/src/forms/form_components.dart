@@ -2,6 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../../../theme/theme.dart';
 
+// ═══════════════════════════════════════════════════════════════════════════════════════════════
+// EXPORTAÇÕES DE WIDGETS E UTILITÁRIOS DE FORMULÁRIO
+// ═══════════════════════════════════════════════════════════════════════════════════════════════
+
+// Exportar widgets e utilitários de formulário
+export 'form_row.dart';
+export 'form_validators.dart';
+
 /// Campo de texto padronizado do sistema
 class DomaniTextField extends StatefulWidget {
   final String? label;
@@ -374,7 +382,7 @@ class _DomaniDropdownState<T> extends State<DomaniDropdown<T>> {
                 : null,
           ),
           child: DropdownButtonFormField<T>(
-            value: widget.value,
+            initialValue: widget.value,
             items: widget.items,
             onChanged: widget.enabled ? widget.onChanged : null,
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(

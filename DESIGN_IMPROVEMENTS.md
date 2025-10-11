@@ -841,3 +841,172 @@ Todos os exemplos são testados e funcionais, não apenas ilustrativos.
 ---
 
 **Documentação**: Dezembro 2024 - Sistema completo implementado ✅
+
+## 🔍 **Sistema de Validação e Formatação Inteligente**
+
+### Necessidade Identificada
+
+Os formulários precisavam de validação robusta e formatação automática para garantir qualidade dos dados e melhor experiência do usuário.
+
+### Solução Implementada
+
+#### 1. **Sistema de Validadores Inteligentes**
+
+Criado `FormValidators` com validadores específicos para dados brasileiros:
+
+```dart
+// Validação combinada
+DomaniTextField(
+  label: 'CPF',
+  validator: FormValidators.combine([
+    FormValidators.required('CPF é obrigatório'),
+    FormValidators.cpf('Digite um CPF válido'),
+  ]),
+)
+
+// Validadores disponíveis
+FormValidators.required()    // Campo obrigatório
+FormValidators.email()       // Email válido
+FormValidators.cpf()         // CPF com algoritmo
+FormValidators.cnpj()        // CNPJ com algoritmo
+FormValidators.telefone()    // Telefone brasileiro
+FormValidators.cep()         // CEP brasileiro
+FormValidators.minLength()   // Tamanho mínimo
+```
+
+#### 2. **Sistema de Formatadores Automáticos**
+
+Criado `FormFormatters` com formatação em tempo real:
+
+```dart
+// Formatação automática
+DomaniTextField(
+  label: 'CPF',
+  inputFormatters: [FormFormatters.cpf()], // 000.000.000-00
+)
+
+// Formatadores disponíveis
+FormFormatters.cpf()         // 000.000.000-00
+FormFormatters.cnpj()        // 00.000.000/0000-00
+FormFormatters.telefone()    // (00) 00000-0000
+FormFormatters.cep()         // 00000-000
+FormFormatters.currency()    // R$ 0.000,00
+```
+
+#### 3. **Validação Robusta**
+
+- **Algoritmos corretos**: CPF e CNPJ validados com algoritmo oficial
+- **Mensagens em português**: Feedback claro para o usuário
+- **Validação inteligente**: Aceita campos vazios quando não obrigatórios
+- **Combinação de validadores**: Múltiplas validações em um campo
+
+#### 4. **Formatação Inteligente**
+
+- **Tempo real**: Formata conforme o usuário digita
+- **Remoção automática**: Remove formatação ao apagar
+- **Padrões brasileiros**: Formatos familiares aos usuários
+- **Performance otimizada**: Formatação eficiente sem travamentos
+
+### Características Técnicas
+
+#### Validadores Implementados
+
+- **required()** - Campo obrigatório com mensagem customizável
+- **email()** - Regex robusto para emails válidos
+- **cpf()** - Algoritmo oficial do CPF brasileiro
+- **cnpj()** - Algoritmo oficial do CNPJ brasileiro
+- **telefone()** - Celular (11 dígitos) e fixo (10 dígitos)
+- **cep()** - CEP brasileiro (8 dígitos)
+- **minLength()** - Tamanho mínimo de caracteres
+- **combine()** - Combina múltiplos validadores
+
+#### Formatadores Implementados
+
+- **cpf()** - Máscara 000.000.000-00
+- **cnpj()** - Máscara 00.000.000/0000-00
+- **telefone()** - Máscara (00) 00000-0000 ou (00) 0000-0000
+- **cep()** - Máscara 00000-000
+- **currency()** - Máscara R$ 0.000,00
+
+### Integração nos Formulários
+
+#### Formulário de Cliente Atualizado
+
+```dart
+// Nome com validação obrigatória e tamanho mínimo
+DomaniTextField(
+  label: 'Nome Completo',
+  validator: FormValidators.combine([
+    FormValidators.required('Nome é obrigatório'),
+    FormValidators.minLength(2, 'Nome deve ter pelo menos 2 caracteres'),
+  ]),
+)
+
+// CPF com formatação e validação
+DomaniTextField(
+  label: 'CPF/CNPJ',
+  inputFormatters: [FormFormatters.cpf()],
+  validator: FormValidators.combine([
+    FormValidators.required('CPF/CNPJ é obrigatório'),
+    FormValidators.cpf('Digite um CPF válido'),
+  ]),
+)
+
+// Email com validação opcional
+DomaniTextField(
+  label: 'Email',
+  validator: FormValidators.email('Digite um email válido'),
+)
+
+// Telefone com formatação e validação
+DomaniTextField(
+  label: 'Telefone',
+  inputFormatters: [FormFormatters.telefone()],
+  validator: FormValidators.telefone('Digite um telefone válido'),
+)
+
+// CEP com formatação e validação
+DomaniTextField(
+  label: 'CEP',
+  inputFormatters: [FormFormatters.cep()],
+  validator: FormValidators.cep('Digite um CEP válido'),
+)
+```
+
+### Benefícios Alcançados
+
+#### 1. **Qualidade dos Dados**
+
+- ✅ **Validação robusta** - Algoritmos oficiais para CPF/CNPJ
+- ✅ **Dados consistentes** - Formatação padronizada
+- ✅ **Menos erros** - Validação em tempo real
+- ✅ **Feedback claro** - Mensagens em português
+
+#### 2. **Experiência do Usuário**
+
+- ✅ **Formatação automática** - Usuário não precisa se preocupar
+- ✅ **Validação inteligente** - Só valida quando necessário
+- ✅ **Mensagens claras** - Feedback específico para cada erro
+- ✅ **Padrões familiares** - Formatos brasileiros conhecidos
+
+#### 3. **Manutenibilidade**
+
+- ✅ **Código centralizado** - Validadores reutilizáveis
+- ✅ **Fácil extensão** - Novos validadores facilmente adicionados
+- ✅ **Testabilidade** - Validadores isolados e testáveis
+- ✅ **Documentação completa** - Exemplos e casos de uso
+
+### Próximas Extensões
+
+- **Validadores adicionais**: RG, PIS, título de eleitor
+- **Formatadores monetários**: Valores com diferentes moedas
+- **Validação assíncrona**: Consulta de CEP, CNPJ em APIs
+- **Máscaras customizáveis**: Formatadores configuráveis
+
+### Arquivo Criado
+
+- `lib/widgets/src/forms/form_validators.dart` - Sistema completo
+
+---
+
+**Sistema de Validação**: Dezembro 2024 - Validação e formatação inteligente ✅
