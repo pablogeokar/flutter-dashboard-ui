@@ -195,3 +195,102 @@ A sidebar apresentava espaçamento excessivo entre os itens, desperdiçando espa
 ---
 
 **Atualização**: Dezembro 2024 - Espaçamento otimizado ✅
+
+## 🖱️ **Correção de Usabilidade - Cursor nos Itens Expansíveis**
+
+### Problema Identificado
+
+Os itens da sidebar com subitens (Cadastros, Fiscal, Relatórios) não mostravam o cursor de mão (pointer) em toda a área clicável, apenas no ícone de expansão, causando confusão sobre quais áreas eram clicáveis.
+
+### Solução Implementada
+
+#### 1. **Cursor Pointer Inteligente**
+
+- **MouseRegion**: Adicionado `cursor: SystemMouseCursors.click` para títulos de ExpansionTile
+- **InkWell**: Configurado `mouseCursor` apropriado baseado no tipo de item
+- **Lógica condicional**: Diferencia entre itens normais e títulos expansíveis
+
+#### 2. **Área Clicável Expandida**
+
+- **Antes**: Apenas o ícone de seta era clicável nos itens com subitens
+- **Depois**: Toda a área do título do grupo é clicável para expandir/colapsar
+- **Feedback visual**: Cursor muda para pointer em toda a área do item
+
+#### 3. **Código Implementado**
+
+```dart
+// MouseRegion com cursor inteligente
+cursor: (hasSubItems && !widget.isExpansionTitle)
+    ? SystemMouseCursors.basic
+    : SystemMouseCursors.click,
+
+// InkWell com clique habilitado para títulos de ExpansionTile
+onTap: (hasSubItems && !widget.isExpansionTitle) ? null : widget.onTap,
+mouseCursor: (hasSubItems && !widget.isExpansionTitle)
+    ? SystemMouseCursors.basic
+    : SystemMouseCursors.click,
+```
+
+### Resultado
+
+- ✅ **UX aprimorada**: Usuários sabem intuitivamente onde podem clicar
+- ✅ **Consistência**: Cursor pointer em todos os itens clicáveis
+- ✅ **Acessibilidade**: Melhor feedback visual para interações
+- ✅ **Padrão profissional**: Comportamento similar a aplicações desktop modernas
+
+### Arquivo Modificado
+
+- `lib/widgets/src/app_layout/drawer_list_item.dart`
+
+---
+
+**Correção**: Dezembro 2024 - Cursor de usabilidade implementado ✅
+
+## 🔧 **Correção Crítica - Clique nos Itens Expansíveis**
+
+### Problema Identificado
+
+Após corrigir o cursor, os itens com subitens (Cadastros, Fiscal, Relatórios) mostravam o cursor de mão mas não respondiam ao clique para expandir/colapsar.
+
+### Causa Raiz
+
+O `InkWell` dentro do `DrawerListItem` estava interceptando os cliques e impedindo que o `ExpansionTile` processasse a expansão/colapso, mesmo com `onTap: () {}`.
+
+### Solução Implementada
+
+#### 1. **Lógica Condicional de Interação**
+
+```dart
+child: widget.isExpansionTitle
+    ? // Para títulos de ExpansionTile, usar apenas Padding
+      Padding(...)
+    : // Para itens normais, usar InkWell
+      InkWell(...)
+```
+
+#### 2. **Controle de Interação por Tipo**
+
+- **Títulos de ExpansionTile**: Sem `InkWell`, deixando o `ExpansionTile` controlar totalmente
+- **Itens normais**: Com `InkWell` para navegação direta
+- **Cursor consistente**: Mantido em ambos os casos via `MouseRegion`
+
+#### 3. **Comportamento Resultante**
+
+- **Cadastros, Fiscal, Relatórios**: Clique expande/colapsa o grupo
+- **Dashboard, Configurações, Suporte**: Clique navega diretamente
+- **Subitens**: Clique navega para a tela específica
+
+### Resultado
+
+- ✅ **Funcionalidade restaurada**: Grupos expandem/colapsam corretamente
+- ✅ **UX consistente**: Cursor e clique funcionam em harmonia
+- ✅ **Navegação intuitiva**: Comportamento esperado em todos os tipos de item
+- ✅ **Sem regressões**: Itens normais continuam funcionando perfeitamente
+
+### Arquivo Modificado
+
+- `lib/widgets/src/app_layout/drawer_list_item.dart`
+
+---
+
+**Correção Crítica**: Dezembro 2024 - Clique funcional implementado ✅

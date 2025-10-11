@@ -71,6 +71,10 @@ class _DrawerListItemState extends State<DrawerListItem>
         return MouseRegion(
           onEnter: (_) => _onHoverEnter(),
           onExit: (_) => _onHoverExit(),
+          // Cursor pointer para itens clicáveis (incluindo títulos de ExpansionTile)
+          cursor: (hasSubItems && !widget.isExpansionTitle)
+              ? SystemMouseCursors.basic
+              : SystemMouseCursors.click,
           child: Stack(
             children: [
               // Indicador de item ativo (linha vertical de 4px na borda esquerda)
@@ -102,21 +106,40 @@ class _DrawerListItemState extends State<DrawerListItem>
                 ),
                 child: Material(
                   color: Colors.transparent,
-                  child: InkWell(
-                    onTap: hasSubItems ? null : widget.onTap,
-                    borderRadius: BorderRadius.circular(AppTheme.borderRadiusM),
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: widget.isSelected && !widget.isSubItem
-                            ? AppTheme.spacingM +
-                                  8 // Espaço extra para o indicador
-                            : AppTheme.spacingM,
-                        vertical:
-                            AppTheme.spacingS, // Padding vertical compacto
-                      ),
-                      child: _buildItemContent(isDarkMode, primaryColor),
-                    ),
-                  ),
+                  child: widget.isExpansionTitle
+                      ? // Para títulos de ExpansionTile, não usar InkWell (deixar o ExpansionTile controlar)
+                        Padding(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: widget.isSelected && !widget.isSubItem
+                                ? AppTheme.spacingM +
+                                      8 // Espaço extra para o indicador
+                                : AppTheme.spacingM,
+                            vertical:
+                                AppTheme.spacingS, // Padding vertical compacto
+                          ),
+                          child: _buildItemContent(isDarkMode, primaryColor),
+                        )
+                      : InkWell(
+                          // Para itens normais, usar InkWell
+                          onTap: hasSubItems ? null : widget.onTap,
+                          borderRadius: BorderRadius.circular(
+                            AppTheme.borderRadiusM,
+                          ),
+                          mouseCursor: hasSubItems
+                              ? SystemMouseCursors.basic
+                              : SystemMouseCursors.click,
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: widget.isSelected && !widget.isSubItem
+                                  ? AppTheme.spacingM +
+                                        8 // Espaço extra para o indicador
+                                  : AppTheme.spacingM,
+                              vertical: AppTheme
+                                  .spacingS, // Padding vertical compacto
+                            ),
+                            child: _buildItemContent(isDarkMode, primaryColor),
+                          ),
+                        ),
                 ),
               ),
             ],
