@@ -297,13 +297,28 @@ class DomaniDropdown<T> extends StatefulWidget {
 }
 
 class _DomaniDropdownState<T> extends State<DomaniDropdown<T>> {
+  late FocusNode _focusNode;
   bool _isFocused = false;
   bool _hasError = false;
 
   @override
   void initState() {
     super.initState();
+    _focusNode = FocusNode();
+    _focusNode.addListener(_onFocusChange);
     _hasError = widget.errorText != null;
+  }
+
+  void _onFocusChange() {
+    setState(() {
+      _isFocused = _focusNode.hasFocus;
+    });
+  }
+
+  @override
+  void dispose() {
+    _focusNode.dispose();
+    super.dispose();
   }
 
   @override
@@ -382,6 +397,7 @@ class _DomaniDropdownState<T> extends State<DomaniDropdown<T>> {
                 : null,
           ),
           child: DropdownButtonFormField<T>(
+            focusNode: _focusNode,
             initialValue: widget.value,
             items: widget.items,
             onChanged: widget.enabled ? widget.onChanged : null,
@@ -418,7 +434,7 @@ class _DomaniDropdownState<T> extends State<DomaniDropdown<T>> {
                 ? AppTheme.formFieldBackgroundDark
                 : AppTheme.formFieldBackgroundLight,
             borderRadius: BorderRadius.circular(AppTheme.borderRadiusM),
-            onTap: () => setState(() => _isFocused = true),
+            isExpanded: true, // Importante para evitar overflow
           ),
         ),
 

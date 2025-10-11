@@ -194,6 +194,9 @@ class FormDialogService {
                 label: 'Tipo',
                 hint: 'Selecione',
                 required: true,
+                onChanged: (value) {
+                  // Callback para mudança de valor - Tipo selecionado
+                },
                 items: const [
                   DropdownMenuItem(value: 'PF', child: Text('Pessoa Fisica')),
                   DropdownMenuItem(value: 'PJ', child: Text('Pessoa Juridica')),
@@ -253,6 +256,9 @@ class FormDialogService {
               child: DomaniDropdown<String>(
                 label: 'UF',
                 hint: 'SP',
+                onChanged: (value) {
+                  // Callback para mudança de valor - UF selecionada
+                },
                 items: const [
                   DropdownMenuItem(value: 'SP', child: Text('SP')),
                   DropdownMenuItem(value: 'RJ', child: Text('RJ')),
@@ -321,6 +327,9 @@ class FormDialogService {
           hint: 'Selecione o regime',
           prefixIcon: Icons.gavel_outlined,
           required: true,
+          onChanged: (value) {
+            // Callback para mudança de valor - Regime tributario do fornecedor
+          },
           items: const [
             DropdownMenuItem(value: 'simples', child: Text('Simples Nacional')),
             DropdownMenuItem(
@@ -378,6 +387,9 @@ class FormDialogService {
           label: 'Tema da Aplicacao',
           hint: 'Selecione o tema',
           prefixIcon: Icons.palette_outlined,
+          onChanged: (value) {
+            // Callback para mudança de valor - Tema selecionado
+          },
           items: const [
             DropdownMenuItem(value: 'light', child: Text('Claro')),
             DropdownMenuItem(value: 'dark', child: Text('Escuro')),
@@ -391,6 +403,9 @@ class FormDialogService {
           hint: 'Selecione o regime',
           prefixIcon: Icons.gavel_outlined,
           required: true,
+          onChanged: (value) {
+            // Callback para mudança de valor - Regime tributario da empresa
+          },
           items: const [
             DropdownMenuItem(value: 'simples', child: Text('Simples Nacional')),
             DropdownMenuItem(
