@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../theme/theme.dart';
-import '../widgets/src/forms/form_components.dart';
+import '../widgets/src/forms/button.dart';
 
 /// Tela principal do dashboard com métricas fiscais
 class DashboardScreen extends StatefulWidget {
@@ -597,28 +597,28 @@ class _DashboardScreenState extends State<DashboardScreen> {
             spacing: AppTheme.spacingM,
             runSpacing: AppTheme.spacingM,
             children: [
-              DomaniButton(
+              FormButton(
                 text: 'Lançar Nota Fiscal',
                 icon: Icons.receipt_rounded,
-                type: DomaniButtonType.primary,
+                variant: ButtonVariant.primary,
                 onPressed: () {},
               ),
-              DomaniButton(
+              FormButton(
                 text: 'Gerar Relatório DRE',
                 icon: Icons.trending_up_rounded,
-                type: DomaniButtonType.secondary,
+                variant: ButtonVariant.secondary,
                 onPressed: () {},
               ),
-              DomaniButton(
+              FormButton(
                 text: 'Consultar SPED',
                 icon: Icons.description_rounded,
-                type: DomaniButtonType.outline,
+                variant: ButtonVariant.outline,
                 onPressed: () {},
               ),
-              DomaniButton(
+              FormButton(
                 text: 'Agendar Backup',
                 icon: Icons.backup_rounded,
-                type: DomaniButtonType.outline,
+                variant: ButtonVariant.outline,
                 onPressed: () {},
               ),
             ],

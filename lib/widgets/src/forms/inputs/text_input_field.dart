@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '../../../theme/theme.dart';
-import '../../../theme/animations.dart';
+import '/theme/theme.dart';
+import '/theme/animations.dart';
 
 class TextInputField extends StatefulWidget {
   final String hintText;

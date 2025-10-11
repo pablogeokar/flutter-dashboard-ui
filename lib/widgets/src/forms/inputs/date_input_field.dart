@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import '../../../theme/theme.dart';
-import '../../../theme/animations.dart';
+import '/theme/theme.dart';
+import '/theme/animations.dart';
 
 /// Widget personalizado para entrada de data.
 class DateInputField extends StatefulWidget {

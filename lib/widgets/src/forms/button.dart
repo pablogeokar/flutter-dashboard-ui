@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import '../../../theme/theme.dart';
 import '../../../theme/animations.dart';
 
-/// Widget de botão personalizado.
+/// Widget de botão padronizado para formulários e ações.
 ///
 /// Este botão oferece um estilo consistente com a identidade visual do dashboard,
 /// incluindo bordas arredondadas, sombras sutis e suporte a temas claro/escuro.
-class CustomButton extends StatefulWidget {
+class FormButton extends StatefulWidget {
   final String text;
   final VoidCallback? onPressed;
   final bool isLoading;
@@ -22,7 +22,7 @@ class CustomButton extends StatefulWidget {
   final ButtonVariant variant;
   final ButtonSize size;
 
-  const CustomButton({
+  const FormButton({
     super.key,
     required this.text,
     required this.onPressed,
@@ -41,14 +41,14 @@ class CustomButton extends StatefulWidget {
   });
 
   @override
-  State<CustomButton> createState() => _CustomButtonState();
+  State<FormButton> createState() => _FormButtonState();
 }
 
 enum ButtonVariant { primary, secondary, outline, ghost, success, error }
 
 enum ButtonSize { small, medium, large }
 
-class _CustomButtonState extends State<CustomButton> {
+class _FormButtonState extends State<FormButton> {
   bool _isHovered = false;
   bool _isPressed = false;
 

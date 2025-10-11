@@ -79,7 +79,7 @@ class FormDialogButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CustomButton(
+    return FormButton(
       onPressed: desabilitado ? null : () => _abrirDialog(context),
       text: texto,
       icon: icone,

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '../../../theme/theme.dart';
-import '../../../theme/animations.dart';
+import '/theme/theme.dart';
+import '/theme/animations.dart';
 
 /// Widget de área de texto (textarea) personalizado
 class TextAreaField extends StatefulWidget {

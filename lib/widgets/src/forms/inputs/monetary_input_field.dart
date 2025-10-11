@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import '../../../theme/theme.dart';
-import '../../../theme/animations.dart';
-import 'currency_pt_br_input_formatter.dart';
+import '/theme/theme.dart';
+import '/theme/animations.dart';
+import '/widgets/src/forms/formatters/currency_input_formatter.dart';
 
 /// Widget personalizado para entrada de valores monetários.
 ///
