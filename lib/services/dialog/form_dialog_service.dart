@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../widgets/src/dialog/form_dialog.dart';
-import '../../widgets/form_layout.dart';
+import '../../widgets/form.dart';
 import '../../widgets/src/forms/layout/form_row.dart';
 import '../../widgets/src/forms/validators/form_validators.dart';
 

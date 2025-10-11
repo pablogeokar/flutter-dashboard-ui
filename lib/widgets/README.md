@@ -10,7 +10,7 @@ widgets/
 ├── app_initializer.dart        # Inicializador da aplicação
 ├── app_layout.dart            # Layout principal da aplicação
 ├── dialog.dart                # Exportações de dialogs
-├── form_layout.dart           # Layouts para formulários
+├── form.dart           # Layouts para formulários
 │
 ├── src/                       # Código fonte dos widgets
 │   ├── app_layout/           # Widgets de layout da aplicação
@@ -29,7 +29,7 @@ widgets/
 │       ├── README.md         # Documentação específica
 │       ├── form_components.dart # Componentes básicos
 │       ├── form_row.dart     # Sistema de alinhamento
-│       └── form_layout.dart  # Layouts para formulários
+│       └── form.dart  # Layouts para formulários
 ```
 
 ## 🎯 Sistemas Principais

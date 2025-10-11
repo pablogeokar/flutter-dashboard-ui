@@ -13,7 +13,7 @@ Sistema de Gestão Fiscal desenvolvido em Flutter para a **Domani Fiscal**. Inte
   - **Modo Light:** Destaque `#007BFF`, Fundo `#F5F7FA`, Cards `#FFFFFF`
   - **Modo Dark:** Destaque `#5B9CF8`, Fundo `#121212`, Cards `#1E1E1E`
 
-## Arquitetura Atual (Refatorada - Dezembro 2024)
+## Arquitetura Atual (Refatorada - Outubro 2025)
 
 ### 🏗️ Separação de Responsabilidades
 
@@ -22,15 +22,15 @@ lib/
 ├── services/                           # 🔧 ESPECÍFICOS DO PROJETO
 │   ├── README.md                       # Documentação da arquitetura
 │   └── dialog/
-│       ├── form_dialog_service.dart    # Serviços específicos Domani
-│       └── domani_dialog_callbacks.dart # Callbacks específicos Domani
-├── widgets/                            # 🎨 GENÉRICOS E REUTILIZÁVEIS
+│       ├── form_dialog_service.dart    # Serviços específicos do projeto
+│       └── domani_dialog_callbacks.dart # Callbacks específicos do projeto
+├── widgets/                            # 🎨 GENÉRICOS E REUTILIZÁVEIS PARA QUALQUER PROJETO NOVO
 │   ├── README.md (documentação completa)
 │   ├── app_initializer.dart, app_layout.dart, dialog.dart
 │   └── src/
 │       ├── app_layout/ (app_shell.dart, responsive_drawer.dart, drawer_list_item.dart)
 │       ├── dialog/ (form_dialog.dart, dialog_service.dart, dialog_callbacks.dart)
-│       └── forms/ (form_components.dart, form_row.dart, form_validators.dart)
+│       └── forms/ (inputs/, layout/, validators/, formatters/)
 ├── config/sidebar_config.dart          # Usa DomaniDialogCallbacks
 ├── screens/
 │   ├── splash_screen.dart, dashboard_screen.dart
@@ -61,8 +61,8 @@ lib/
 
 #### 🎯 **Widgets Padronizados (ÚNICOS):**
 
-- **Campos de Texto:** SEMPRE usar `TextInputField` (lib/widgets/form_layout.dart)
-- **Dropdowns:** SEMPRE usar `SelectInputField` (lib/widgets/form_layout.dart)
+- **Campos de Texto:** SEMPRE usar `TextInputField` (lib/widgets/src/forms/inputs/text_input_field.dart)
+- **Dropdowns:** SEMPRE usar `SelectInputField` (lib/widgets/src/forms/inputs/select_input_field.dart)
 
 #### 📐 **Layout e Organização:**
 
@@ -76,15 +76,14 @@ lib/
 #### 🔧 Para Funcionalidades Específicas do Projeto:
 
 - **Serviços:** Use `FormDialogService.mostrar*()` (lib/services/dialog/)
-- **Callbacks:** Use `DomaniDialogCallbacks.*()` (lib/services/dialog/)
-- **Widgets:** Use `TextInputField` e `SelectInputField` (lib/widgets/form_layout.dart)
+- **Widgets:** Use `TextInputField` e `SelectInputField` (importados via `lib/widgets/form.dart`)
 - **Import:** `import '../../services/dialog/form_dialog_service.dart';`
 
 #### 🎨 Para Widgets Genéricos (Reutilizáveis):
 
 - **Serviços:** Use `DialogService.show*()` (lib/widgets/src/dialog/)
 - **Callbacks:** Use `DialogCallbacks.show*()` (lib/widgets/src/dialog/)
-- **Widgets:** Use `TextInputField` e `SelectInputField` (lib/widgets/form_layout.dart)
+- **Widgets:** Use `TextInputField` e `SelectInputField` (lib/widgets/form.dart)
 - **Import:** `import 'widgets/src/dialog/dialog_service.dart';`
 
 - **Tamanhos:** Pequeno=400px, Médio=600px, Grande=700px, XL=800px+
@@ -108,12 +107,6 @@ lib/
 - **Responsividade:** Breakpoints inteligentes para diferentes telas
 - **Acessibilidade:** Cursor apropriado, feedback visual, navegação por teclado
 - **UX:** Animações suaves (200ms), estados de hover, indicadores visuais
-
-### 🚧 Em Desenvolvimento
-
-- Telas específicas (usam EmConstrucaoPlaceholder com preview de funcionalidades)
-- Integrações com APIs fiscais
-- Relatórios avançados com gráficos
 
 ## Widgets Essenciais do Sistema
 
@@ -354,7 +347,7 @@ import '../widgets/src/dialog/form_dialog_service.dart';
 
 - **`TextInputField`** - Para todos os campos de texto
 - **`SelectInputField`** - Para todos os dropdowns
-- **Localização:** `lib/widgets/form_layout.dart` (barril principal)
+- **Localização:** `lib/widgets/form.dart` (barril principal)
 
 #### 🔄 **Mudanças na API:**
 
@@ -379,34 +372,6 @@ A maior refatoração do projeto foi concluída com sucesso, separando completam
 - **Status:** Copy-paste ready - funcionam imediatamente em novos projetos
 - **Documentação:** README.md + EXAMPLE_USAGE.md com exemplos completos
 
-#### 🔧 **lib/services/** - Específicos do Domani Fiscal
-
-- **Objetivo:** Lógica de negócio e funcionalidades específicas do projeto
-- **Características:** Formulários personalizados, validações específicas
-- **Status:** Integração perfeita com widgets genéricos
-- **Documentação:** README.md com arquitetura completa
-
-### 🔄 **Migração de Imports Realizada**
-
-#### ❌ **Imports Antigos (Removidos)**
-
-```dart
-// INCORRETO - não funciona mais
-import '../widgets/src/dialog/form_dialog_service.dart';
-```
-
-#### ✅ **Imports Corretos (Atuais)**
-
-```dart
-// Para funcionalidades específicas do projeto
-import '../../services/dialog/form_dialog_service.dart';
-import '../../services/dialog/domani_dialog_callbacks.dart';
-
-// Para widgets genéricos reutilizáveis
-import 'widgets/src/dialog/dialog_service.dart';
-import 'widgets/src/dialog/dialog_callbacks.dart';
-```
-
 ### 📋 **Checklist de Uso**
 
 #### Para Desenvolvedores do Domani Fiscal:
@@ -422,105 +387,17 @@ import 'widgets/src/dialog/dialog_callbacks.dart';
 - ✅ Consulte `EXAMPLE_USAGE.md` para exemplos práticos
 - ✅ Customize conforme necessário sem quebrar funcionalidade
 
-### 🎯 **Vantagens Alcançadas**
-
-1. **🔄 Reutilização Total:** Widgets funcionam em qualquer projeto Flutter
-2. **🏗️ Arquitetura Limpa:** Separação clara entre genérico e específico
-3. **📖 Documentação Completa:** Exemplos práticos e guias detalhados
-4. **🚀 Produtividade:** Desenvolvimento mais rápido em novos projetos
-5. **🔧 Manutenibilidade:** Mudanças isoladas não afetam outros módulos
-6. **✅ Qualidade:** Zero problemas no flutter analyze
-
-### 📚 **Documentação Criada**
-
-1. **lib/services/README.md** - Arquitetura de serviços
-2. **lib/widgets/src/dialog/README.md** - Widgets genéricos
-3. **lib/widgets/src/dialog/EXAMPLE_USAGE.md** - Exemplo completo de uso
-4. **Contexto atualizado** - Este arquivo com todas as mudanças
-
 ---
 
 **Refatoração concluída:** Dezembro 2024  
 **Status:** ✅ Implementado e testado  
 **Próximo passo:** Aplicar mesmo padrão para forms, layouts e outros widgets
 
-## 🎯 Migração Completa de Widgets (Dezembro 2024)
-
-### ✅ **Status: 100% Concluída**
-
-A migração completa dos widgets de formulário foi finalizada com **zero duplicação** e **máxima padronização**.
-
-#### 📊 **Resultado da Migração:**
-
-**ANTES (Duplicação):**
-
-```
-lib/widgets/src/forms/form_components.dart
-├── DomaniTextField (300+ linhas) ❌ DUPLICADO
-├── DomaniDropdown (200+ linhas) ❌ DUPLICADO
-└── DomaniButton ✅
-
-lib/widgets/src/form_layout/
-├── TextInputField ✅ ORIGINAL
-├── SelectInputField ✅ ORIGINAL
-```
-
-**DEPOIS (Padronizado):**
-
-```
-lib/widgets/src/forms/form_components.dart
-├── Exportações (10 linhas) ✅
-└── DomaniButton ✅ ÚNICO
-
-lib/widgets/src/form_layout/
-├── TextInputField ✅ ÚNICO E PADRÃO
-├── SelectInputField ✅ ÚNICO E PADRÃO
-```
-
-#### 🔧 **Imports Corretos:**
-
-```dart
-// ✅ CORRETO - Import do barril principal
-import '../../widgets/form_layout.dart';
-
-// ✅ CORRETO - Imports específicos
-import '../../widgets/src/forms/form_row.dart';
-import '../../widgets/src/forms/form_validators.dart';
-
-// ❌ INCORRETO - Não existem mais
-import 'DomaniTextField'; // REMOVIDO
-import 'DomaniDropdown';  // REMOVIDO
-```
-
 #### 📋 **Checklist de Desenvolvimento:**
 
 **Para Novos Formulários:**
 
-- [ ] ✅ Usar `TextInputField` para campos de texto
-- [ ] ✅ Usar `SelectInputField` para dropdowns
-- [ ] ✅ Usar `FormRow.top()` para alinhamento
-- [ ] ✅ Usar `FormValidators` para validação
-- [ ] ❌ **NUNCA** usar `DomaniTextField` ou `DomaniDropdown`
-
-**Para Manutenção:**
-
-- [ ] ✅ Verificar se usa widgets padronizados
-- [ ] ✅ Confirmar imports corretos
-- [ ] ✅ Testar funcionalidade após mudanças
-- [ ] ✅ Executar `flutter analyze` (deve ser zero issues)
-
-#### 🎨 **Benefícios Alcançados:**
-
-1. **🔧 Zero Duplicação** - Cada widget existe em apenas um lugar
-2. **📐 Consistência Total** - API uniforme (`labelText`, `hintText`, `options`)
-3. **🏗️ Manutenibilidade** - Mudanças centralizadas
-4. **🚀 Performance** - Código otimizado sem duplicações
-5. **📖 Clareza** - Estrutura fácil de entender
-6. **✅ Qualidade** - Zero problemas no flutter analyze
-
----
-
-**Migração finalizada:** Dezembro 2024  
-**Status:** ✅ Produção - Totalmente funcional e padronizado  
-**Qualidade:** Zero issues no flutter analyze  
-**Próximo:** Manter padrão em novos desenvolvimentos
+- [ ] ✅ Usar `TextInputField`, `SelectInputField`, etc., importando de `widgets/form.dart`.
+- [ ] ✅ Usar `FormButton` para ações.
+- [ ] ✅ Usar `FormRow.top()` para alinhamento.
+- [ ] ✅ Usar `FormValidators` para validação.
