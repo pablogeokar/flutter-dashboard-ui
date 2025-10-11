@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'form_dialog.dart';
 import '../forms/form_components.dart';
+import '../forms/form_row.dart';
 
 /// Serviço com métodos estáticos para exibir diferentes tipos de FormDialog
 class FormDialogService {
@@ -155,9 +156,9 @@ class FormDialogService {
           helperText: 'Nome como deve aparecer nos documentos fiscais',
         ),
         SizedBox(height: 20),
-        Row(
-          children: [
-            Expanded(
+        FormRowFlex.top(
+          items: [
+            FormRowItem(
               flex: 2,
               child: DomaniTextField(
                 label: 'CPF/CNPJ',
@@ -167,8 +168,8 @@ class FormDialogService {
                 keyboardType: TextInputType.number,
               ),
             ),
-            SizedBox(width: 16),
-            Expanded(
+            FormRowItem(
+              flex: 1,
               child: DomaniDropdown<String>(
                 label: 'Tipo',
                 hint: 'Selecione',
@@ -182,25 +183,21 @@ class FormDialogService {
           ],
         ),
         SizedBox(height: 20),
-        Row(
+        FormRow.top(
           children: [
-            Expanded(
-              child: DomaniTextField(
-                label: 'Email',
-                hint: 'cliente@exemplo.com',
-                prefixIcon: Icons.email_outlined,
-                keyboardType: TextInputType.emailAddress,
-                helperText: 'Para envio de documentos fiscais',
-              ),
+            DomaniTextField(
+              label: 'Email',
+              hint: 'cliente@exemplo.com',
+              prefixIcon: Icons.email_outlined,
+              keyboardType: TextInputType.emailAddress,
+              helperText: 'Para envio de documentos fiscais',
             ),
-            SizedBox(width: 16),
-            Expanded(
-              child: DomaniTextField(
-                label: 'Telefone',
-                hint: '(11) 99999-9999',
-                prefixIcon: Icons.phone_outlined,
-                keyboardType: TextInputType.phone,
-              ),
+            DomaniTextField(
+              label: 'Telefone',
+              hint: '(11) 99999-9999',
+              prefixIcon: Icons.phone_outlined,
+              keyboardType: TextInputType.phone,
+              helperText: 'Contato principal do cliente',
             ),
           ],
         ),
@@ -212,22 +209,22 @@ class FormDialogService {
           helperText: 'Endereço para entrega e cobrança',
         ),
         SizedBox(height: 20),
-        Row(
-          children: [
-            Expanded(
+        FormRowFlex.top(
+          items: [
+            FormRowItem(
+              flex: 1,
               child: DomaniTextField(
                 label: 'CEP',
                 hint: '00000-000',
                 keyboardType: TextInputType.number,
               ),
             ),
-            SizedBox(width: 16),
-            Expanded(
+            FormRowItem(
               flex: 2,
               child: DomaniTextField(label: 'Cidade', hint: 'Nome da cidade'),
             ),
-            SizedBox(width: 16),
-            Expanded(
+            FormRowItem(
+              flex: 1,
               child: DomaniDropdown<String>(
                 label: 'UF',
                 hint: 'SP',
@@ -267,6 +264,7 @@ class FormDialogService {
                 prefixIcon: Icons.badge_outlined,
                 required: true,
                 keyboardType: TextInputType.number,
+                helperText: 'Documento principal da empresa',
               ),
             ),
             SizedBox(width: 16),
@@ -405,6 +403,7 @@ class FormDialogService {
                 prefixIcon: Icons.badge_outlined,
                 keyboardType: TextInputType.number,
                 required: true,
+                helperText: 'CNPJ da empresa configurada',
               ),
             ),
             SizedBox(width: 16),
