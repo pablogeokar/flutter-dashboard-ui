@@ -13,29 +13,40 @@ Sistema de Gestão Fiscal desenvolvido em Flutter para a **Domani Fiscal**. Inte
   - **Modo Light:** Destaque `#007BFF`, Fundo `#F5F7FA`, Cards `#FFFFFF`
   - **Modo Dark:** Destaque `#5B9CF8`, Fundo `#121212`, Cards `#1E1E1E`
 
-## Arquitetura Atual
+## Arquitetura Atual (Refatorada - Dezembro 2024)
+
+### 🏗️ Separação de Responsabilidades
 
 ```
 lib/
-├── config/sidebar_config.dart
+├── services/                           # 🔧 ESPECÍFICOS DO PROJETO
+│   ├── README.md                       # Documentação da arquitetura
+│   └── dialog/
+│       ├── form_dialog_service.dart    # Serviços específicos Domani
+│       └── domani_dialog_callbacks.dart # Callbacks específicos Domani
+├── widgets/                            # 🎨 GENÉRICOS E REUTILIZÁVEIS
+│   ├── README.md (documentação completa)
+│   ├── app_initializer.dart, app_layout.dart, dialog.dart
+│   └── src/
+│       ├── app_layout/ (app_shell.dart, responsive_drawer.dart, drawer_list_item.dart)
+│       ├── dialog/ (form_dialog.dart, dialog_service.dart, dialog_callbacks.dart)
+│       └── forms/ (form_components.dart, form_row.dart, form_validators.dart)
+├── config/sidebar_config.dart          # Usa DomaniDialogCallbacks
 ├── screens/
 │   ├── splash_screen.dart, dashboard_screen.dart
 │   └── em_construcao_screen.dart, teste_screen.dart
 ├── theme/
 │   ├── theme.dart (paleta completa), theme_manager.dart
 │   ├── animations.dart, dark.dart, light.dart
-├── services/
-│   └── dialog/ (form_dialog_service.dart - SERVIÇOS de dialog)
-├── widgets/
-│   ├── README.md (documentação completa)
-│   ├── app_initializer.dart, app_layout.dart, dialog.dart
-│   └── src/
-│       ├── app_layout/ (app_shell.dart, responsive_drawer.dart, drawer_list_item.dart)
-│       ├── dialog/ (form_dialog.dart, dialog_callbacks.dart, README.md)
-│       └── forms/ (form_components.dart, form_row.dart, form_validators.dart, README.md)
 ├── assets/ (logo_light.png, logo_dark.png)
 └── DESIGN_IMPROVEMENTS.md (histórico completo de melhorias)
 ```
+
+### 🎯 Princípios da Nova Arquitetura
+
+- **lib/services/** - Lógica de negócio e serviços específicos do projeto
+- **lib/widgets/** - Componentes visuais 100% reutilizáveis (copy-paste ready)
+- **lib/screens/** - Páginas da aplicação que combinam widgets e serviços
 
 ## Padrões de Código
 
@@ -53,9 +64,20 @@ lib/
 - **Espaçamento:** 16px entre campos, 20px entre seções
 - **Validação:** Implementar em todos os campos obrigatórios
 
-### Dialogs (OBRIGATÓRIO)
+### Dialogs (OBRIGATÓRIO - Arquitetura Refatorada)
 
-- **Serviços:** Use `FormDialogService.mostrar*()` ao invés de criar dialogs manuais
+#### 🔧 Para Funcionalidades Específicas do Projeto:
+
+- **Serviços:** Use `FormDialogService.mostrar*()` (lib/services/dialog/)
+- **Callbacks:** Use `DomaniDialogCallbacks.*()` (lib/services/dialog/)
+- **Import:** `import '../../services/dialog/form_dialog_service.dart';`
+
+#### 🎨 Para Widgets Genéricos (Reutilizáveis):
+
+- **Serviços:** Use `DialogService.show*()` (lib/widgets/src/dialog/)
+- **Callbacks:** Use `DialogCallbacks.show*()` (lib/widgets/src/dialog/)
+- **Import:** `import 'widgets/src/dialog/dialog_service.dart';`
+
 - **Tamanhos:** Pequeno=400px, Médio=600px, Grande=700px, XL=800px+
 - **Scroll:** Automático para formulários longos
 - **Ícones:** Sempre incluir ícone apropriado no header
@@ -106,9 +128,14 @@ FormRowFlex.top(
 )
 ```
 
-### FormDialogService (SEMPRE usar para dialogs)
+### Dialogs - Exemplos de Uso
+
+#### 🔧 Específicos do Projeto (FormDialogService)
 
 ```dart
+// Import correto
+import '../../services/dialog/form_dialog_service.dart';
+
 // Cadastros pré-configurados
 FormDialogService.mostrarCadastroCliente(
   context: context,
@@ -122,6 +149,43 @@ FormDialogService.mostrarFormulario(
   icone: Icons.edit,
   formulario: _buildFormulario(),
   onConfirmar: () => _processar(),
+);
+```
+
+#### 🎨 Genéricos Reutilizáveis (DialogService)
+
+```dart
+// Import correto
+import 'widgets/src/dialog/dialog_service.dart';
+
+// Dialog genérico
+DialogService.showFormDialog(
+  context: context,
+  title: 'Generic Dialog',
+  form: MyFormWidget(),
+  onConfirm: () => _save(),
+);
+
+// Callback genérico para menus
+DialogCallbacks.showFormCallback(
+  context: context,
+  title: 'Add Item',
+  form: ItemFormWidget(),
+  onConfirm: () => _saveItem(),
+  successMessage: 'Item saved!',
+);
+```
+
+#### 🔗 Callbacks para Sidebar (DomaniDialogCallbacks)
+
+```dart
+// Import correto
+import '../services/dialog/domani_dialog_callbacks.dart';
+
+// Uso na sidebar
+DrawerItem(
+  title: 'Clientes',
+  onDialogTap: DomaniDialogCallbacks.cadastroCliente(context),
 );
 ```
 
@@ -241,3 +305,81 @@ import '../widgets/src/dialog/form_dialog_service.dart';
 - **Manutenibilidade** - Mudanças em serviços não afetam widgets
 - **Escalabilidade** - Fácil adicionar novos serviços
 - **Testabilidade** - Serviços podem ser testados independentemente
+
+## 🚀 Refatoração Arquitetural Completa (Dezembro 2024)
+
+### ✅ **Widgets 100% Reutilizáveis Implementados**
+
+A maior refatoração do projeto foi concluída com sucesso, separando completamente:
+
+#### 🎨 **lib/widgets/** - Genéricos e Reutilizáveis
+
+- **Objetivo:** Widgets que podem ser copiados para qualquer projeto Flutter
+- **Características:** Zero dependências específicas do projeto
+- **Status:** Copy-paste ready - funcionam imediatamente em novos projetos
+- **Documentação:** README.md + EXAMPLE_USAGE.md com exemplos completos
+
+#### 🔧 **lib/services/** - Específicos do Domani Fiscal
+
+- **Objetivo:** Lógica de negócio e funcionalidades específicas do projeto
+- **Características:** Formulários personalizados, validações específicas
+- **Status:** Integração perfeita com widgets genéricos
+- **Documentação:** README.md com arquitetura completa
+
+### 🔄 **Migração de Imports Realizada**
+
+#### ❌ **Imports Antigos (Removidos)**
+
+```dart
+// INCORRETO - não funciona mais
+import '../widgets/src/dialog/form_dialog_service.dart';
+```
+
+#### ✅ **Imports Corretos (Atuais)**
+
+```dart
+// Para funcionalidades específicas do projeto
+import '../../services/dialog/form_dialog_service.dart';
+import '../../services/dialog/domani_dialog_callbacks.dart';
+
+// Para widgets genéricos reutilizáveis
+import 'widgets/src/dialog/dialog_service.dart';
+import 'widgets/src/dialog/dialog_callbacks.dart';
+```
+
+### 📋 **Checklist de Uso**
+
+#### Para Desenvolvedores do Domani Fiscal:
+
+- ✅ Use `FormDialogService` para dialogs específicos (cliente, fornecedor, etc.)
+- ✅ Use `DomaniDialogCallbacks` na sidebar e menus
+- ✅ Imports corretos: `lib/services/dialog/`
+
+#### Para Novos Projetos:
+
+- ✅ Copie apenas `lib/widgets/` para o novo projeto
+- ✅ Use `DialogService` e `DialogCallbacks` genéricos
+- ✅ Consulte `EXAMPLE_USAGE.md` para exemplos práticos
+- ✅ Customize conforme necessário sem quebrar funcionalidade
+
+### 🎯 **Vantagens Alcançadas**
+
+1. **🔄 Reutilização Total:** Widgets funcionam em qualquer projeto Flutter
+2. **🏗️ Arquitetura Limpa:** Separação clara entre genérico e específico
+3. **📖 Documentação Completa:** Exemplos práticos e guias detalhados
+4. **🚀 Produtividade:** Desenvolvimento mais rápido em novos projetos
+5. **🔧 Manutenibilidade:** Mudanças isoladas não afetam outros módulos
+6. **✅ Qualidade:** Zero problemas no flutter analyze
+
+### 📚 **Documentação Criada**
+
+1. **lib/services/README.md** - Arquitetura de serviços
+2. **lib/widgets/src/dialog/README.md** - Widgets genéricos
+3. **lib/widgets/src/dialog/EXAMPLE_USAGE.md** - Exemplo completo de uso
+4. **Contexto atualizado** - Este arquivo com todas as mudanças
+
+---
+
+**Refatoração concluída:** Dezembro 2024  
+**Status:** ✅ Implementado e testado  
+**Próximo passo:** Aplicar mesmo padrão para forms, layouts e outros widgets

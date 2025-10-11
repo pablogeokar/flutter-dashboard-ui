@@ -1,6 +1,6 @@
-# 💬 Sistema de Dialogs - Domani Fiscal
+# 💬 Sistema de Dialogs - Widgets Genéricos
 
-Sistema completo para criação e gerenciamento de dialogs modais profissionais.
+Sistema completo para criação e gerenciamento de dialogs modais profissionais, **completamente reutilizável** em qualquer projeto Flutter.
 
 ## 📁 Estrutura de Arquivos
 
@@ -8,9 +8,13 @@ Sistema completo para criação e gerenciamento de dialogs modais profissionais.
 dialog/
 ├── README.md                # Esta documentação
 ├── form_dialog.dart        # Widget base para dialogs de formulário
-├── form_dialog_service.dart # Serviços e formulários pré-configurados
-└── dialog_callbacks.dart   # Callbacks e integrações
+├── dialog_service.dart     # Serviço genérico para dialogs
+└── dialog_callbacks.dart   # Callbacks genéricos reutilizáveis
 ```
+
+## 🎯 **IMPORTANTE: Widgets Genéricos e Reutilizáveis**
+
+Todos os widgets nesta pasta são **completamente genéricos** e podem ser copiados para qualquer projeto Flutter sem modificações. Eles não contêm regras de negócio específicas.
 
 ## 🎯 Componentes Principais
 
@@ -37,15 +41,63 @@ FormDialog(
 - ✅ Animações suaves de entrada/saída
 - ✅ Responsivo e acessível
 
-### 2. **FormDialogService** - Serviços Pré-configurados
+### 2. **DialogService** - Serviço Genérico
 
-Métodos estáticos para dialogs comuns do sistema.
+Métodos estáticos genéricos para qualquer tipo de dialog.
 
 ```dart
-// Cadastro de cliente
-FormDialogService.mostrarCadastroCliente(
+// Dialog de formulário genérico
+DialogService.showFormDialog(
   context: context,
-  onConfirmar: () => _processarCadastro(),
+  title: 'Add Item',
+  subtitle: 'Enter item information',
+  form: MyFormWidget(),
+  onConfirm: () => _saveItem(),
+);
+
+// Dialog de confirmação
+DialogService.showConfirmationDialog(
+  context: context,
+  title: 'Delete Item',
+  message: 'Are you sure?',
+  onConfirm: () => _deleteItem(),
+);
+
+// Dialog de busca
+DialogService.showSearchDialog(
+  context: context,
+  title: 'Search Items',
+  searchForm: MySearchWidget(),
+  onSearch: () => _performSearch(),
+);
+```
+
+### 3. **DialogCallbacks** - Callbacks Genéricos
+
+Callbacks pré-configurados para usar em menus e botões.
+
+```dart
+// Callback para formulário
+DrawerItem(
+  title: 'Add Customer',
+  onTap: DialogCallbacks.showFormCallback(
+    context: context,
+    title: 'New Customer',
+    form: CustomerFormWidget(),
+    onConfirm: () => _saveCustomer(),
+    successMessage: 'Customer saved!',
+  ),
+);
+
+// Callback para confirmação
+IconButton(
+  icon: Icon(Icons.delete),
+  onPressed: DialogCallbacks.showConfirmationCallback(
+    context: context,
+    title: 'Delete Item',
+    message: 'Are you sure?',
+    onConfirm: () => _deleteItem(),
+  ),
 );
 
 // Cadastro de fornecedor

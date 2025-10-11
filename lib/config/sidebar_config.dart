@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../screens/em_construcao_screen.dart';
 import '../screens/dashboard_screen.dart';
 import '../widgets/app_layout.dart';
-import '../widgets/dialog.dart';
+import '../services/dialog/domani_dialog_callbacks.dart';
 
 /// Configuração dos itens da barra de navegação lateral
 class SidebarConfig {
@@ -23,12 +23,12 @@ class SidebarConfig {
         DrawerItem(
           title: 'Clientes',
           icon: Icons.people_rounded,
-          onDialogTap: DialogCallbacks.cadastroCliente(context),
+          onDialogTap: DomaniDialogCallbacks.cadastroCliente(context),
         ),
         DrawerItem(
           title: 'Fornecedores',
           icon: Icons.business_rounded,
-          onDialogTap: DialogCallbacks.cadastroFornecedor(context),
+          onDialogTap: DomaniDialogCallbacks.cadastroFornecedor(context),
         ),
         DrawerItem(
           title: 'Produtos/Serviços',
@@ -197,7 +197,7 @@ class SidebarConfig {
     DrawerItem(
       title: 'Configurações',
       icon: Icons.settings_rounded,
-      onDialogTap: DialogCallbacks.configuracoes(context),
+      onDialogTap: DomaniDialogCallbacks.configuracoes(context),
     ),
     DrawerItem(
       title: 'Suporte',
