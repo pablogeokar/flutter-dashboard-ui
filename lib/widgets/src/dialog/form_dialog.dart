@@ -205,7 +205,10 @@ class _FormDialogState extends State<FormDialog> with TickerProviderStateMixin {
   }
 
   Widget _buildContent() {
-    return Padding(padding: const EdgeInsets.all(24), child: widget.formulario);
+    return Padding(
+      padding: const EdgeInsets.all(24),
+      child: SingleChildScrollView(child: widget.formulario),
+    );
   }
 
   Widget _buildFooter() {

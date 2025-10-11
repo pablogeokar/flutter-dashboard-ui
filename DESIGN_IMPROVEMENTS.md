@@ -294,3 +294,68 @@ child: widget.isExpansionTitle
 ---
 
 **Correção Crítica**: Dezembro 2024 - Clique funcional implementado ✅
+
+## 📜 **Correção de Overflow - Scroll nos Dialogs**
+
+### Problema Identificado
+
+Os dialogs de formulário apresentavam overflow quando o conteúdo ultrapassava a altura disponível, causando erro:
+
+```
+A RenderFlex overflowed by 92 pixels on the bottom.
+Column Column:file:///lib/widgets/src/dialog/form_dialog_service.dart:147:12
+```
+
+### Causa Raiz
+
+A estrutura do `FormDialog` usava uma `Column` com `Flexible` para o conteúdo, mas sem scroll, causando overflow quando formulários longos (como cadastro de cliente/fornecedor) excediam a altura máxima do dialog.
+
+### Solução Implementada
+
+#### 1. **SingleChildScrollView Adicionado**
+
+```dart
+Widget _buildContent() {
+  return Padding(
+    padding: const EdgeInsets.all(24),
+    child: SingleChildScrollView(  // <- Scroll adicionado
+      child: widget.formulario,
+    ),
+  );
+}
+```
+
+#### 2. **Estrutura Mantida**
+
+- **Header**: Fixo no topo (título, subtítulo, ícone)
+- **Content**: Agora com scroll quando necessário
+- **Footer**: Fixo na parte inferior (botões de ação)
+
+#### 3. **Comportamento Resultante**
+
+- **Formulários pequenos**: Comportamento normal, sem scroll visível
+- **Formulários grandes**: Scroll automático no conteúdo, header/footer fixos
+- **UX preservada**: Botões sempre visíveis, navegação intuitiva
+
+### Benefícios
+
+- ✅ **Sem overflow**: Formulários de qualquer tamanho funcionam corretamente
+- ✅ **UX consistente**: Header e footer sempre visíveis
+- ✅ **Scroll intuitivo**: Apenas o conteúdo do formulário rola
+- ✅ **Responsivo**: Adapta-se a diferentes tamanhos de tela
+- ✅ **Acessível**: Funciona com teclado e leitores de tela
+
+### Casos de Uso Corrigidos
+
+- **Cadastro de Cliente**: Formulário com 8+ campos
+- **Cadastro de Fornecedor**: Formulário com informações fiscais
+- **Configurações**: Múltiplas opções de configuração
+- **Formulários futuros**: Qualquer formulário extenso
+
+### Arquivo Modificado
+
+- `lib/widgets/src/dialog/form_dialog.dart`
+
+---
+
+**Correção**: Dezembro 2024 - Scroll em dialogs implementado ✅
