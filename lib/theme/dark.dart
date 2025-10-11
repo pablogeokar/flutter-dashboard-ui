@@ -49,11 +49,14 @@ final darkTheme = ThemeData(
   ),
   cardTheme: CardThemeData(
     color: AppTheme.cardBackgroundDark,
-    elevation: 2, // Elevação mais sutil
+    elevation: 0, // Sem elevação no dark
     shadowColor: AppTheme.cardShadowDark,
     shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(AppTheme.borderRadiusL),
-      side: BorderSide(color: AppTheme.cardBorderDark, width: 1),
+      borderRadius: BorderRadius.circular(8), // border-radius: 8px
+      side: BorderSide(
+        color: AppTheme.cardBorderDark,
+        width: 1,
+      ), // Borda fina no dark
     ),
   ),
 );

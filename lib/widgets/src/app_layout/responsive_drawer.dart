@@ -104,13 +104,15 @@ class _ResponsiveDrawerState extends State<ResponsiveDrawer> {
         screenHeight < 700; // Detecta telas pequenas em altura
 
     final drawerColor = isDarkMode
-        ? AppTheme.drawerBackgroundDark
-        : AppTheme.cardBackgroundLight; // Usar cor de card para mais elegância
+        ? AppTheme
+              .drawerBackgroundDark // #191919
+        : AppTheme.drawerBackgroundLight; // #FFFFFF
 
     // Cor de gradiente sutil para dar profundidade
     final gradientColor = isDarkMode
         ? AppTheme.drawerBackgroundDark.withValues(alpha: 0.95)
-        : AppTheme.formFieldBackgroundLight; // Gradiente mais suave
+        : AppTheme
+              .drawerBackgroundLight; // Sem gradiente no claro para manter limpo
 
     final Widget drawerContent = Container(
       decoration: BoxDecoration(
@@ -189,13 +191,13 @@ class _ResponsiveDrawerState extends State<ResponsiveDrawer> {
               padding: EdgeInsets.all(responsiveSpacing),
               decoration: BoxDecoration(
                 color: isDarkMode
-                    ? AppTheme.drawerBackgroundDark.withValues(alpha: 0.7)
-                    : AppTheme.neutral100, // Cor mais escura para contraste
+                    ? AppTheme.cardBackgroundDark.withValues(alpha: 0.5)
+                    : AppTheme.neutral100,
                 borderRadius: BorderRadius.circular(AppTheme.borderRadiusM),
                 border: Border.all(
                   color: isDarkMode
-                      ? AppTheme.neutral600.withValues(alpha: 0.3)
-                      : AppTheme.formFieldBorderLight,
+                      ? AppTheme.cardBorderDark.withValues(alpha: 0.3)
+                      : AppTheme.neutral300,
                   width: 1,
                 ),
               ),
@@ -265,7 +267,7 @@ class _ResponsiveDrawerState extends State<ResponsiveDrawer> {
             ),
           ),
           SizedBox(
-            height: isSmallScreen ? responsiveSpacing : responsiveSpacingL,
+            height: AppTheme.spacingM, // Espaçamento fixo e compacto
           ),
           // Área principal expansível com itens principais
           Expanded(
@@ -282,7 +284,7 @@ class _ResponsiveDrawerState extends State<ResponsiveDrawer> {
           Padding(
             padding: EdgeInsets.symmetric(
               horizontal: responsiveSpacingL,
-              vertical: responsiveSpacing,
+              vertical: AppTheme.spacingS, // Espaçamento reduzido
             ),
             child: Container(
               height: 1,
@@ -309,7 +311,9 @@ class _ResponsiveDrawerState extends State<ResponsiveDrawer> {
               // Adiciona uma sombra sutil na parte superior para separar do conteúdo
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withValues(alpha: isDarkMode ? 0.3 : 0.1),
+                  color: Colors.black.withValues(
+                    alpha: isDarkMode ? 0.2 : 0.05,
+                  ),
                   blurRadius: 4,
                   offset: const Offset(0, -2),
                 ),
@@ -340,20 +344,20 @@ class _ResponsiveDrawerState extends State<ResponsiveDrawer> {
           boxShadow: [
             BoxShadow(
               color: isDarkMode
-                  ? Colors.black.withValues(alpha: 0.3)
-                  : Colors.black.withValues(alpha: 0.06),
+                  ? Colors.black.withValues(alpha: 0.2)
+                  : Colors.black.withValues(alpha: 0.04),
               blurRadius: 12,
               offset: const Offset(4, 0),
             ),
           ],
-          border: Border(
-            right: BorderSide(
-              color: isDarkMode
-                  ? AppTheme.neutral600.withValues(alpha: 0.3)
-                  : AppTheme.formFieldBorderLight,
-              width: 1,
-            ),
-          ),
+          border: isDarkMode
+              ? Border(
+                  right: BorderSide(
+                    color: AppTheme.cardBorderDark.withValues(alpha: 0.3),
+                    width: 1,
+                  ),
+                )
+              : null, // Sem borda no modo claro
         ),
         child: drawerContent,
       );
@@ -370,16 +374,45 @@ class _ResponsiveDrawerState extends State<ResponsiveDrawer> {
     List<DrawerItem> items, {
     bool isFooterList = false,
   }) {
-    return items.map((item) {
-      // Group item
+    List<Widget> widgets = [];
+
+    for (int i = 0; i < items.length; i++) {
+      final item = items[i];
+
+      // Adicionar o item
       if (item.subItems?.isNotEmpty ?? false) {
-        return _buildExpansionItem(item, isFooterList: isFooterList);
+        widgets.add(_buildExpansionItem(item, isFooterList: isFooterList));
+      } else {
+        widgets.add(_buildSingleItem(item, isFooterItem: isFooterList));
       }
-      // Normal item
-      else {
-        return _buildSingleItem(item, isFooterItem: isFooterList);
+
+      // Adicionar divisor entre grupos (exceto no último item)
+      if (!isFooterList && i < items.length - 1) {
+        widgets.add(_buildGroupDivider());
       }
-    }).toList();
+    }
+
+    return widgets;
+  }
+
+  // Divisor sutil entre grupos de itens
+  Widget _buildGroupDivider() {
+    return Container(
+      margin: EdgeInsets.symmetric(
+        vertical: AppTheme.spacingS, // Reduzido de spacingM para spacingS
+        horizontal: AppTheme.spacingM,
+      ),
+      height: 1,
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [
+            Colors.transparent,
+            Theme.of(context).colorScheme.outline.withValues(alpha: 0.2),
+            Colors.transparent,
+          ],
+        ),
+      ),
+    );
   }
 
   Widget _buildSingleItem(
@@ -468,13 +501,13 @@ class _ResponsiveDrawerState extends State<ResponsiveDrawer> {
       padding: const EdgeInsets.all(AppTheme.spacingM),
       decoration: BoxDecoration(
         color: isDarkMode
-            ? AppTheme.drawerBackgroundDark.withValues(alpha: 0.5)
-            : AppTheme.neutral100, // Cor mais escura para contraste
+            ? AppTheme.cardBackgroundDark.withValues(alpha: 0.5)
+            : AppTheme.neutral100,
         borderRadius: BorderRadius.circular(AppTheme.borderRadiusM),
         border: Border.all(
           color: isDarkMode
-              ? AppTheme.neutral600.withValues(alpha: 0.3)
-              : AppTheme.formFieldBorderLight,
+              ? AppTheme.cardBorderDark.withValues(alpha: 0.3)
+              : AppTheme.neutral300,
           width: 1,
         ),
       ),

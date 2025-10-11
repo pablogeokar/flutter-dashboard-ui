@@ -1,39 +1,47 @@
 import 'package:flutter/material.dart';
 
 class AppTheme {
-  // === PALETA DE CORES DOMANI FISCAL: Identidade Visual Profissional ===
+  // === PALETA DE CORES DOMANI FISCAL: Design Profissional Refinado ===
 
-  // Cores Primárias (Azul Confiança Fiscal)
+  // Cores Primárias (Azul Destaque Profissional)
   static const Color primaryLight = Color(
-    0xFF1E40AF,
-  ); // Azul confiança profissional para modo claro
+    0xFF007BFF,
+  ); // Azul vibrante para modo claro (#007BFF)
   static const Color primaryDark = Color(
-    0xFF3B82F6,
-  ); // Azul mais claro e acessível para modo dark
+    0xFF5B9CF8,
+  ); // Azul claro para contraste no modo dark (#5B9CF8)
 
-  // Cores Secundárias
+  // Cores Secundárias (Texto)
   static const Color secondaryLight = Color(
-    0xFF212529,
-  ); // Cinza escuro para texto (mantido)
+    0xFF333333,
+  ); // Texto principal modo claro
   static const Color secondaryDark = Color(
-    0xFFdee2e6,
-  ); // Cinza claro para textos no modo escuro (mantido)
+    0xFFE0E0E0,
+  ); // Texto principal modo dark
+
+  // Texto Secundário
+  static const Color textSecondaryLight = Color(
+    0xFF666666,
+  ); // Texto secundário modo claro
+  static const Color textSecondaryDark = Color(
+    0xFFB0B0B0,
+  ); // Texto secundário modo dark
 
   // Cores de Superfície (fundo principal da aplicação)
   static const Color surfaceLight = Color(
-    0xFFF8FAFC,
-  ); // Slate 50 - fundo profissional
+    0xFFF5F7FA,
+  ); // Fundo principal modo claro (#F5F7FA)
   static const Color surfaceDark = Color(
-    0xFF0F172A,
-  ); // Slate 900 - fundo dark refinado
+    0xFF121212,
+  ); // Fundo principal modo dark (#121212)
 
   // Cores de Fundo da Drawer (barra lateral)
   static const Color drawerBackgroundLight = Color(
-    0xFFF1F5F9,
-  ); // Slate 100 - sidebar profissional
+    0xFFFFFFFF,
+  ); // Sidebar branca no modo claro
   static const Color drawerBackgroundDark = Color(
-    0xFF334155,
-  ); // Slate 700 - sidebar dark refinada
+    0xFF191919,
+  ); // Sidebar dark refinada (#191919)
 
   // === CORES SEMÂNTICAS ===
 
@@ -80,8 +88,8 @@ class AppTheme {
   // === CORES INTERATIVAS ===
 
   // Estados de Hover
-  static const Color hoverLight = Color(0xFFf1f5f9);
-  static const Color hoverDark = Color(0xFF334155);
+  static const Color hoverLight = Color(0xFFF5F7FA); // Hover sutil no claro
+  static const Color hoverDark = Color(0xFF2A2A2A); // Hover no dark
 
   // Estados de Foco
   static const Color focusLight = Color(0xFF3b82f6);
@@ -120,18 +128,22 @@ class AppTheme {
   // === CORES PARA CARDS E CONTAINERS ===
 
   // Cards e containers - modo claro
-  static const Color cardBackgroundLight =
-      AppTheme.neutral50; // Cinza levíssimo para diferenciar
-  static const Color cardBorderLight =
-      AppTheme.neutral300; // Borda mais escura para visibilidade
-  static const Color cardShadowLight = Color(0x08000000); // Sombra muito sutil
+  static const Color cardBackgroundLight = Color(
+    0xFFFFFFFF,
+  ); // Fundo branco para cards no modo claro
+  static const Color cardBorderLight = Colors.transparent; // Sem borda no claro
+  static const Color cardShadowLight = Color(
+    0x0A000000,
+  ); // Sombra sutil (box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.04))
 
   // Cards e containers - modo escuro
   static const Color cardBackgroundDark = Color(
-    0xFF3A3A3A,
-  ); // Cinza claro para cards
-  static const Color cardBorderDark = AppTheme.neutral700; // Borda cinza neutra
-  static const Color cardShadowDark = Color(0x20000000); // Sombra mais intensa
+    0xFF1E1E1E,
+  ); // Fundo dos cards no modo dark (#1E1E1E)
+  static const Color cardBorderDark = Color(
+    0xFF2F2F2F,
+  ); // Borda fina para separar do fundo (#2F2F2F)
+  static const Color cardShadowDark = Color(0x00000000); // Sem sombra no dark
 
   // Bordas arredondadas padronizadas (valores de referência para uso nos widgets)
   static const double borderRadiusS = 8.0;

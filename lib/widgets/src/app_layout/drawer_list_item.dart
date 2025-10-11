@@ -33,8 +33,6 @@ class _DrawerListItemState extends State<DrawerListItem>
     with SingleTickerProviderStateMixin {
   bool _isHovered = false;
   late AnimationController _animationController;
-  late Animation<double> _scaleAnimation;
-  late Animation<double> _elevationAnimation;
 
   @override
   void initState() {
@@ -42,12 +40,6 @@ class _DrawerListItemState extends State<DrawerListItem>
     _animationController = AnimationController(
       duration: const Duration(milliseconds: 200),
       vsync: this,
-    );
-    _scaleAnimation = Tween<double>(begin: 1.0, end: 1.02).animate(
-      CurvedAnimation(parent: _animationController, curve: Curves.easeInOut),
-    );
-    _elevationAnimation = Tween<double>(begin: 0.0, end: 2.0).animate(
-      CurvedAnimation(parent: _animationController, curve: Curves.easeInOut),
     );
   }
 
@@ -76,56 +68,58 @@ class _DrawerListItemState extends State<DrawerListItem>
     Widget content = AnimatedBuilder(
       animation: _animationController,
       builder: (context, child) {
-        return Transform.scale(
-          scale: _scaleAnimation.value,
-          child: MouseRegion(
-            onEnter: (_) => _onHoverEnter(),
-            onExit: (_) => _onHoverExit(),
-            child: AnimatedContainer(
-              duration: const Duration(milliseconds: 200),
-              margin: EdgeInsets.symmetric(
-                vertical: AppTheme.spacingXS / 2,
-                horizontal: widget.isSubItem ? AppTheme.spacingS : 0,
-              ),
-              decoration: BoxDecoration(
-                color: _getBackgroundColor(isDarkMode, primaryColor),
-                borderRadius: BorderRadius.circular(AppTheme.borderRadiusM),
-                border: widget.isSelected
-                    ? Border.all(
-                        color: primaryColor.withValues(alpha: 0.3),
-                        width: 1.5,
-                      )
-                    : _isHovered
-                    ? Border.all(
-                        color: primaryColor.withValues(alpha: 0.2),
-                        width: 1,
-                      )
-                    : null,
-                boxShadow: widget.isSelected || _isHovered
-                    ? [
-                        BoxShadow(
-                          color: primaryColor.withValues(alpha: 0.1),
-                          blurRadius: _elevationAnimation.value * 2,
-                          offset: Offset(0, _elevationAnimation.value),
-                        ),
-                      ]
-                    : null,
-              ),
-              child: Material(
-                color: Colors.transparent,
-                child: InkWell(
-                  onTap: hasSubItems ? null : widget.onTap,
-                  borderRadius: BorderRadius.circular(AppTheme.borderRadiusM),
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: AppTheme.spacingM,
-                      vertical: AppTheme.spacingM,
+        return MouseRegion(
+          onEnter: (_) => _onHoverEnter(),
+          onExit: (_) => _onHoverExit(),
+          child: Stack(
+            children: [
+              // Indicador de item ativo (linha vertical de 4px na borda esquerda)
+              if (widget.isSelected && !widget.isSubItem)
+                Positioned(
+                  left: 0,
+                  top: 4,
+                  bottom: 4,
+                  child: AnimatedContainer(
+                    duration: const Duration(milliseconds: 200),
+                    width: 4,
+                    decoration: BoxDecoration(
+                      color: primaryColor,
+                      borderRadius: BorderRadius.circular(2),
                     ),
-                    child: _buildItemContent(isDarkMode, primaryColor),
+                  ),
+                ),
+
+              // Container principal do item
+              AnimatedContainer(
+                duration: const Duration(milliseconds: 200),
+                margin: EdgeInsets.symmetric(
+                  vertical: 1, // Espaçamento mínimo entre itens
+                  horizontal: widget.isSubItem ? AppTheme.spacingS : 0,
+                ),
+                decoration: BoxDecoration(
+                  color: _getBackgroundColor(isDarkMode, primaryColor),
+                  borderRadius: BorderRadius.circular(AppTheme.borderRadiusM),
+                ),
+                child: Material(
+                  color: Colors.transparent,
+                  child: InkWell(
+                    onTap: hasSubItems ? null : widget.onTap,
+                    borderRadius: BorderRadius.circular(AppTheme.borderRadiusM),
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: widget.isSelected && !widget.isSubItem
+                            ? AppTheme.spacingM +
+                                  8 // Espaço extra para o indicador
+                            : AppTheme.spacingM,
+                        vertical:
+                            AppTheme.spacingS, // Padding vertical compacto
+                      ),
+                      child: _buildItemContent(isDarkMode, primaryColor),
+                    ),
                   ),
                 ),
               ),
-            ),
+            ],
           ),
         );
       },
@@ -143,11 +137,9 @@ class _DrawerListItemState extends State<DrawerListItem>
 
   Color _getBackgroundColor(bool isDarkMode, Color primaryColor) {
     if (widget.isSelected) {
-      return primaryColor.withValues(alpha: isDarkMode ? 0.15 : 0.1);
+      return primaryColor.withValues(alpha: isDarkMode ? 0.12 : 0.08);
     } else if (_isHovered) {
-      return isDarkMode
-          ? AppTheme.hoverDark.withValues(alpha: 0.3)
-          : AppTheme.hoverLight;
+      return isDarkMode ? AppTheme.hoverDark : AppTheme.hoverLight;
     }
     return Colors.transparent;
   }
@@ -157,32 +149,36 @@ class _DrawerListItemState extends State<DrawerListItem>
 
     return Row(
       children: [
-        // Container do ícone com animação
+        // Container do ícone com animação - design mais elegante
         AnimatedContainer(
           duration: const Duration(milliseconds: 200),
-          width: 36,
-          height: 36,
+          width: 32,
+          height: 32,
           decoration: BoxDecoration(
             color: _getIconBackgroundColor(isDarkMode, primaryColor),
-            borderRadius: BorderRadius.circular(AppTheme.borderRadiusS),
+            borderRadius: BorderRadius.circular(6), // Cantos menos arredondados
           ),
           child: Icon(
-            widget.item.icon,
-            size: 18,
+            // Usar ícone preenchido quando selecionado
+            widget.isSelected && _hasFilledVariant(widget.item.icon)
+                ? _getFilledIcon(widget.item.icon)
+                : widget.item.icon,
+            size: 16,
             color: _getIconColor(isDarkMode, primaryColor),
           ),
         ),
 
         SizedBox(width: AppTheme.spacingM),
 
-        // Texto do item
+        // Texto do item com tipografia aprimorada
         Expanded(
           child: Text(
             widget.item.title,
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
               fontWeight: widget.isSelected ? FontWeight.w600 : FontWeight.w500,
               color: _getTextColor(isDarkMode, primaryColor),
-              height: 1.2,
+              height: 1.3,
+              fontSize: 14, // Tamanho consistente
             ),
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
@@ -212,11 +208,57 @@ class _DrawerListItemState extends State<DrawerListItem>
     );
   }
 
+  // Função para verificar se o ícone tem variante preenchida
+  bool _hasFilledVariant(IconData icon) {
+    final iconsWithFilledVariants = {
+      Icons.dashboard_rounded,
+      Icons.people_rounded,
+      Icons.business_rounded,
+      Icons.inventory_2_rounded,
+      Icons.account_tree_rounded,
+      Icons.gavel_rounded,
+      Icons.calculate_rounded,
+      Icons.description_rounded,
+      Icons.assignment_rounded,
+      Icons.event_rounded,
+      Icons.analytics_rounded,
+      Icons.balance_rounded,
+      Icons.trending_up_rounded,
+      Icons.account_balance_wallet_rounded,
+      Icons.settings_rounded,
+      Icons.help_outline_rounded,
+    };
+    return iconsWithFilledVariants.contains(icon);
+  }
+
+  // Função para obter o ícone preenchido
+  IconData _getFilledIcon(IconData icon) {
+    final iconMapping = {
+      Icons.dashboard_rounded: Icons.dashboard,
+      Icons.people_rounded: Icons.people,
+      Icons.business_rounded: Icons.business,
+      Icons.inventory_2_rounded: Icons.inventory_2,
+      Icons.account_tree_rounded: Icons.account_tree,
+      Icons.gavel_rounded: Icons.gavel,
+      Icons.calculate_rounded: Icons.calculate,
+      Icons.description_rounded: Icons.description,
+      Icons.assignment_rounded: Icons.assignment,
+      Icons.event_rounded: Icons.event,
+      Icons.analytics_rounded: Icons.analytics,
+      Icons.balance_rounded: Icons.balance,
+      Icons.trending_up_rounded: Icons.trending_up,
+      Icons.account_balance_wallet_rounded: Icons.account_balance_wallet,
+      Icons.settings_rounded: Icons.settings,
+      Icons.help_outline_rounded: Icons.help,
+    };
+    return iconMapping[icon] ?? icon;
+  }
+
   Color _getIconBackgroundColor(bool isDarkMode, Color primaryColor) {
     if (widget.isSelected) {
       return primaryColor;
     } else if (_isHovered) {
-      return primaryColor.withValues(alpha: isDarkMode ? 0.2 : 0.1);
+      return primaryColor.withValues(alpha: isDarkMode ? 0.15 : 0.1);
     }
     return Colors.transparent;
   }

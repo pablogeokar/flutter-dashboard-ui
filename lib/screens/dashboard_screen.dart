@@ -80,15 +80,21 @@ class _DashboardScreenState extends State<DashboardScreen> {
           ),
           decoration: BoxDecoration(
             color: isDarkMode
-                ? AppTheme.neutral800.withValues(alpha: 0.3)
-                : AppTheme.neutral100,
-            borderRadius: BorderRadius.circular(AppTheme.borderRadiusM),
-            border: Border.all(
-              color: isDarkMode
-                  ? AppTheme.neutral600.withValues(alpha: 0.3)
-                  : AppTheme.neutral300,
-              width: 1,
-            ),
+                ? AppTheme.cardBackgroundDark
+                : AppTheme.cardBackgroundLight,
+            borderRadius: BorderRadius.circular(8),
+            border: isDarkMode
+                ? Border.all(color: AppTheme.cardBorderDark, width: 1)
+                : Border.all(color: AppTheme.neutral300, width: 1),
+            boxShadow: isDarkMode
+                ? null
+                : [
+                    BoxShadow(
+                      color: AppTheme.cardShadowLight,
+                      blurRadius: 4,
+                      offset: const Offset(0, 2),
+                    ),
+                  ],
           ),
           child: Row(
             mainAxisSize: MainAxisSize.min,
@@ -194,24 +200,25 @@ class _DashboardScreenState extends State<DashboardScreen> {
       padding: EdgeInsets.all(AppTheme.spacingL),
       decoration: BoxDecoration(
         color: isDarkMode
-            ? AppTheme.neutral800.withValues(alpha: 0.4)
-            : Colors.white,
-        borderRadius: BorderRadius.circular(AppTheme.borderRadiusL),
-        border: Border.all(
-          color: isDarkMode
-              ? AppTheme.neutral700.withValues(alpha: 0.3)
-              : AppTheme.neutral200.withValues(alpha: 0.5),
-          width: 1,
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: isDarkMode
-                ? Colors.black.withValues(alpha: 0.1)
-                : Colors.black.withValues(alpha: 0.03),
-            blurRadius: 8,
-            offset: const Offset(0, 2),
-          ),
-        ],
+            ? AppTheme
+                  .cardBackgroundDark // #1E1E1E
+            : AppTheme.cardBackgroundLight, // #FFFFFF
+        borderRadius: BorderRadius.circular(8), // border-radius: 8px
+        border: isDarkMode
+            ? Border.all(
+                color: AppTheme.cardBorderDark, // #2F2F2F
+                width: 1,
+              )
+            : null, // Sem borda no modo claro
+        boxShadow: isDarkMode
+            ? null // Sem sombra no modo dark
+            : [
+                BoxShadow(
+                  color: AppTheme.cardShadowLight, // rgba(0, 0, 0, 0.04)
+                  blurRadius: 4,
+                  offset: const Offset(0, 2),
+                ),
+              ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -242,39 +249,47 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
           SizedBox(height: AppTheme.spacingM),
 
+          // Título do card com hierarquia tipográfica
           Text(
             title,
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              color: Theme.of(
-                context,
-              ).colorScheme.onSurface.withValues(alpha: 0.7),
+            style: Theme.of(context).textTheme.titleMedium?.copyWith(
+              color: isDarkMode
+                  ? AppTheme
+                        .textSecondaryDark // #B0B0B0
+                  : AppTheme.textSecondaryLight, // #666666
               fontWeight: FontWeight.w500,
             ),
           ),
 
           SizedBox(height: AppTheme.spacingS),
 
+          // Valor principal com destaque
           Text(
             value,
             style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-              fontWeight: FontWeight.w700,
-              color: Theme.of(context).colorScheme.onSurface,
+              fontWeight: FontWeight.bold, // font-weight: bold
+              color: isDarkMode
+                  ? AppTheme
+                        .secondaryDark // #E0E0E0
+                  : AppTheme.secondaryLight, // #333333
             ),
           ),
 
           SizedBox(height: AppTheme.spacingS),
 
+          // Detalhes com tamanho menor
           Text(
             change,
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
               color: changePositive == null
-                  ? Theme.of(
-                      context,
-                    ).colorScheme.onSurface.withValues(alpha: 0.6)
+                  ? (isDarkMode
+                        ? AppTheme.textSecondaryDark
+                        : AppTheme.textSecondaryLight)
                   : changePositive
                   ? AppTheme.successLight
                   : AppTheme.errorLight,
               fontWeight: FontWeight.w600,
+              fontSize: 12, // font-size: smaller
             ),
           ),
         ],
@@ -314,24 +329,21 @@ class _DashboardScreenState extends State<DashboardScreen> {
       padding: EdgeInsets.all(AppTheme.spacingL),
       decoration: BoxDecoration(
         color: isDarkMode
-            ? AppTheme.neutral800.withValues(alpha: 0.4)
-            : Colors.white,
-        borderRadius: BorderRadius.circular(AppTheme.borderRadiusL),
-        border: Border.all(
-          color: isDarkMode
-              ? AppTheme.neutral700.withValues(alpha: 0.3)
-              : AppTheme.neutral200.withValues(alpha: 0.5),
-          width: 1,
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: isDarkMode
-                ? Colors.black.withValues(alpha: 0.1)
-                : Colors.black.withValues(alpha: 0.03),
-            blurRadius: 8,
-            offset: const Offset(0, 2),
-          ),
-        ],
+            ? AppTheme.cardBackgroundDark
+            : AppTheme.cardBackgroundLight,
+        borderRadius: BorderRadius.circular(8),
+        border: isDarkMode
+            ? Border.all(color: AppTheme.cardBorderDark, width: 1)
+            : null,
+        boxShadow: isDarkMode
+            ? null
+            : [
+                BoxShadow(
+                  color: AppTheme.cardShadowLight,
+                  blurRadius: 4,
+                  offset: const Offset(0, 2),
+                ),
+              ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -441,24 +453,21 @@ class _DashboardScreenState extends State<DashboardScreen> {
       padding: EdgeInsets.all(AppTheme.spacingL),
       decoration: BoxDecoration(
         color: isDarkMode
-            ? AppTheme.neutral800.withValues(alpha: 0.4)
-            : Colors.white,
-        borderRadius: BorderRadius.circular(AppTheme.borderRadiusL),
-        border: Border.all(
-          color: isDarkMode
-              ? AppTheme.neutral700.withValues(alpha: 0.3)
-              : AppTheme.neutral200.withValues(alpha: 0.5),
-          width: 1,
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: isDarkMode
-                ? Colors.black.withValues(alpha: 0.1)
-                : Colors.black.withValues(alpha: 0.03),
-            blurRadius: 8,
-            offset: const Offset(0, 2),
-          ),
-        ],
+            ? AppTheme.cardBackgroundDark
+            : AppTheme.cardBackgroundLight,
+        borderRadius: BorderRadius.circular(8),
+        border: isDarkMode
+            ? Border.all(color: AppTheme.cardBorderDark, width: 1)
+            : null,
+        boxShadow: isDarkMode
+            ? null
+            : [
+                BoxShadow(
+                  color: AppTheme.cardShadowLight,
+                  blurRadius: 4,
+                  offset: const Offset(0, 2),
+                ),
+              ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -479,73 +488,68 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
           SizedBox(height: AppTheme.spacingL),
 
-          ...activities
-              .map(
-                (activity) => Padding(
-                  padding: EdgeInsets.only(bottom: AppTheme.spacingM),
-                  child: Row(
-                    children: [
-                      Container(
-                        padding: EdgeInsets.all(AppTheme.spacingS),
-                        decoration: BoxDecoration(
-                          color: (activity['color'] as Color).withValues(
-                            alpha: 0.1,
-                          ),
-                          borderRadius: BorderRadius.circular(
-                            AppTheme.borderRadiusS,
-                          ),
-                        ),
-                        child: Icon(
-                          activity['icon'] as IconData,
-                          size: 16,
-                          color: activity['color'] as Color,
-                        ),
+          ...activities.map(
+            (activity) => Padding(
+              padding: EdgeInsets.only(bottom: AppTheme.spacingM),
+              child: Row(
+                children: [
+                  Container(
+                    padding: EdgeInsets.all(AppTheme.spacingS),
+                    decoration: BoxDecoration(
+                      color: (activity['color'] as Color).withValues(
+                        alpha: 0.1,
                       ),
-
-                      SizedBox(width: AppTheme.spacingM),
-
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              activity['title'] as String,
-                              style: Theme.of(context).textTheme.bodyMedium
-                                  ?.copyWith(
-                                    fontWeight: FontWeight.w600,
-                                    color: Theme.of(
-                                      context,
-                                    ).colorScheme.onSurface,
-                                  ),
-                            ),
-                            SizedBox(height: 2),
-                            Text(
-                              activity['subtitle'] as String,
-                              style: Theme.of(context).textTheme.bodySmall
-                                  ?.copyWith(
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .onSurface
-                                        .withValues(alpha: 0.6),
-                                  ),
-                            ),
-                          ],
-                        ),
+                      borderRadius: BorderRadius.circular(
+                        AppTheme.borderRadiusS,
                       ),
-
-                      Text(
-                        activity['time'] as String,
-                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: Theme.of(
-                            context,
-                          ).colorScheme.onSurface.withValues(alpha: 0.5),
-                        ),
-                      ),
-                    ],
+                    ),
+                    child: Icon(
+                      activity['icon'] as IconData,
+                      size: 16,
+                      color: activity['color'] as Color,
+                    ),
                   ),
-                ),
-              )
-              .toList(),
+
+                  SizedBox(width: AppTheme.spacingM),
+
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          activity['title'] as String,
+                          style: Theme.of(context).textTheme.bodyMedium
+                              ?.copyWith(
+                                fontWeight: FontWeight.w600,
+                                color: Theme.of(context).colorScheme.onSurface,
+                              ),
+                        ),
+                        SizedBox(height: 2),
+                        Text(
+                          activity['subtitle'] as String,
+                          style: Theme.of(context).textTheme.bodySmall
+                              ?.copyWith(
+                                color: Theme.of(
+                                  context,
+                                ).colorScheme.onSurface.withValues(alpha: 0.6),
+                              ),
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  Text(
+                    activity['time'] as String,
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: Theme.of(
+                        context,
+                      ).colorScheme.onSurface.withValues(alpha: 0.5),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
         ],
       ),
     );
@@ -556,30 +560,25 @@ class _DashboardScreenState extends State<DashboardScreen> {
     bool isDarkMode,
     double screenWidth,
   ) {
-    final isLargeScreen = screenWidth >= AppTheme.breakpointLarge;
-
     return Container(
       padding: EdgeInsets.all(AppTheme.spacingL),
       decoration: BoxDecoration(
         color: isDarkMode
-            ? AppTheme.neutral800.withValues(alpha: 0.4)
-            : Colors.white,
-        borderRadius: BorderRadius.circular(AppTheme.borderRadiusL),
-        border: Border.all(
-          color: isDarkMode
-              ? AppTheme.neutral700.withValues(alpha: 0.3)
-              : AppTheme.neutral200.withValues(alpha: 0.5),
-          width: 1,
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: isDarkMode
-                ? Colors.black.withValues(alpha: 0.1)
-                : Colors.black.withValues(alpha: 0.03),
-            blurRadius: 8,
-            offset: const Offset(0, 2),
-          ),
-        ],
+            ? AppTheme.cardBackgroundDark
+            : AppTheme.cardBackgroundLight,
+        borderRadius: BorderRadius.circular(8),
+        border: isDarkMode
+            ? Border.all(color: AppTheme.cardBorderDark, width: 1)
+            : null,
+        boxShadow: isDarkMode
+            ? null
+            : [
+                BoxShadow(
+                  color: AppTheme.cardShadowLight,
+                  blurRadius: 4,
+                  offset: const Offset(0, 2),
+                ),
+              ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

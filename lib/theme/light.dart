@@ -47,11 +47,11 @@ final lightTheme = ThemeData(
   ),
   cardTheme: CardThemeData(
     color: AppTheme.cardBackgroundLight,
-    elevation: 2, // Elevação mais sutil
+    elevation: 0, // Sem elevação, usando sombra customizada
     shadowColor: AppTheme.cardShadowLight,
     shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(AppTheme.borderRadiusL),
-      side: BorderSide(color: AppTheme.cardBorderLight, width: 1),
+      borderRadius: BorderRadius.circular(8), // border-radius: 8px
+      side: BorderSide.none, // Sem borda no modo claro
     ),
   ),
 );
