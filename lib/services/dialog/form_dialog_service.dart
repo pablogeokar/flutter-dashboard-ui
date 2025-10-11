@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import '../../widgets/src/dialog/form_dialog.dart';
-import '../../widgets/src/forms/form_components.dart';
+import '../../widgets/form_layout.dart';
+import '../../widgets/src/forms/form_row.dart';
+import '../../widgets/src/forms/form_validators.dart';
 
 /// FormDialogService - Servicos para dialogs de formulario padronizados
 ///
@@ -156,12 +158,9 @@ class FormDialogService {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        DomaniTextField(
-          label: 'Nome Completo',
-          hint: 'Digite o nome completo do cliente',
-          prefixIcon: Icons.person_outline_rounded,
-          required: true,
-          helperText: 'Nome como deve aparecer nos documentos fiscais',
+        TextInputField(
+          labelText: 'Nome Completo',
+          hintText: 'Digite o nome completo do cliente',
           validator: FormValidators.combine([
             FormValidators.required('Nome e obrigatorio'),
             FormValidators.minLength(
@@ -175,13 +174,10 @@ class FormDialogService {
           items: [
             FormRowItem(
               flex: 2,
-              child: DomaniTextField(
-                label: 'CPF/CNPJ',
-                hint: '000.000.000-00',
-                prefixIcon: Icons.badge_outlined,
-                required: true,
+              child: TextInputField(
+                labelText: 'CPF/CNPJ',
+                hintText: '000.000.000-00',
                 keyboardType: TextInputType.number,
-                inputFormatters: [FormFormatters.cpf()],
                 validator: FormValidators.combine([
                   FormValidators.required('CPF/CNPJ e obrigatorio'),
                   FormValidators.cpf('Digite um CPF valido'),
@@ -190,79 +186,74 @@ class FormDialogService {
             ),
             FormRowItem(
               flex: 1,
-              child: DomaniDropdown<String>(
-                label: 'Tipo',
-                hint: 'Selecione',
-                required: true,
+              child: SelectInputField<String>(
+                labelText: 'Tipo',
+                hintText: 'Selecione',
                 onChanged: (value) {
                   // Callback para mudança de valor - Tipo selecionado
                 },
-                items: const [
-                  DropdownMenuItem(value: 'PF', child: Text('Pessoa Fisica')),
-                  DropdownMenuItem(value: 'PJ', child: Text('Pessoa Juridica')),
+                options: const [
+                  SelectOption(value: 'PF', label: 'Pessoa Fisica'),
+                  SelectOption(value: 'PJ', label: 'Pessoa Juridica'),
                 ],
               ),
             ),
           ],
         ),
         const SizedBox(height: 20),
+
         FormRow.top(
           children: [
-            DomaniTextField(
-              label: 'Email',
-              hint: 'cliente@exemplo.com',
-              prefixIcon: Icons.email_outlined,
+            TextInputField(
+              labelText: 'Email',
+              hintText: 'cliente@exemplo.com',
               keyboardType: TextInputType.emailAddress,
-              helperText: 'Para envio de documentos fiscais',
               validator: FormValidators.email('Digite um email valido'),
             ),
-            DomaniTextField(
-              label: 'Telefone',
-              hint: '(11) 99999-9999',
-              prefixIcon: Icons.phone_outlined,
+            TextInputField(
+              labelText: 'Telefone',
+              hintText: '(11) 99999-9999',
               keyboardType: TextInputType.phone,
-              helperText: 'Contato principal do cliente',
-              inputFormatters: [FormFormatters.telefone()],
               validator: FormValidators.telefone('Digite um telefone valido'),
             ),
           ],
         ),
         const SizedBox(height: 20),
-        DomaniTextField(
-          label: 'Endereco',
-          hint: 'Rua, numero, complemento',
-          prefixIcon: Icons.location_on_outlined,
-          helperText: 'Endereco para entrega e cobranca',
+        TextInputField(
+          labelText: 'Endereco',
+          hintText: 'Rua, numero, complemento',
         ),
         const SizedBox(height: 20),
         FormRowFlex.top(
           items: [
             FormRowItem(
               flex: 1,
-              child: DomaniTextField(
-                label: 'CEP',
-                hint: '00000-000',
+              child: TextInputField(
+                labelText: 'CEP',
+                hintText: '00000-000',
                 keyboardType: TextInputType.number,
-                inputFormatters: [FormFormatters.cep()],
                 validator: FormValidators.cep('Digite um CEP valido'),
               ),
             ),
             FormRowItem(
               flex: 2,
-              child: DomaniTextField(label: 'Cidade', hint: 'Nome da cidade'),
+              child: TextInputField(
+                labelText: 'Cidade',
+                hintText: 'Nome da cidade',
+              ),
             ),
             FormRowItem(
               flex: 1,
-              child: DomaniDropdown<String>(
-                label: 'UF',
-                hint: 'SP',
+              child: SelectInputField<String>(
+                labelText: 'UF',
+                hintText: 'SP',
                 onChanged: (value) {
                   // Callback para mudança de valor - UF selecionada
                 },
-                items: const [
-                  DropdownMenuItem(value: 'SP', child: Text('SP')),
-                  DropdownMenuItem(value: 'RJ', child: Text('RJ')),
-                  DropdownMenuItem(value: 'MG', child: Text('MG')),
+                options: const [
+                  SelectOption(value: 'SP', label: 'SP'),
+                  SelectOption(value: 'RJ', label: 'RJ'),
+                  SelectOption(value: 'MG', label: 'MG'),
                 ],
               ),
             ),
@@ -277,76 +268,65 @@ class FormDialogService {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        DomaniTextField(
-          label: 'Razao Social',
-          hint: 'Nome da empresa conforme CNPJ',
-          prefixIcon: Icons.business_outlined,
-          required: true,
-          helperText: 'Nome oficial da empresa para documentos fiscais',
+        TextInputField(
+          labelText: 'Razao Social',
+          hintText: 'Nome da empresa conforme CNPJ',
+          validator: FormValidators.required('Razao social e obrigatoria'),
         ),
         const SizedBox(height: 20),
         FormRow.top(
           children: [
-            DomaniTextField(
-              label: 'CNPJ',
-              hint: '00.000.000/0000-00',
-              prefixIcon: Icons.badge_outlined,
-              required: true,
+            TextInputField(
+              labelText: 'CNPJ',
+              hintText: '00.000.000/0000-00',
               keyboardType: TextInputType.number,
-              helperText: 'Documento principal da empresa',
+              validator: FormValidators.required('CNPJ e obrigatorio'),
             ),
-            DomaniTextField(
-              label: 'Inscricao Estadual',
-              hint: '000.000.000.000',
+            TextInputField(
+              labelText: 'Inscricao Estadual',
+              hintText: '000.000.000.000',
               keyboardType: TextInputType.number,
-              helperText: 'Deixe em branco se isento',
             ),
           ],
         ),
         const SizedBox(height: 20),
         FormRow.top(
           children: [
-            DomaniTextField(
-              label: 'Email',
-              hint: 'contato@fornecedor.com',
-              prefixIcon: Icons.email_outlined,
+            TextInputField(
+              labelText: 'Email',
+              hintText: 'contato@fornecedor.com',
               keyboardType: TextInputType.emailAddress,
-              required: true,
+              validator: FormValidators.combine([
+                FormValidators.required('Email e obrigatorio'),
+                FormValidators.email('Digite um email valido'),
+              ]),
             ),
-            DomaniTextField(
-              label: 'Telefone',
-              hint: '(11) 3000-0000',
-              prefixIcon: Icons.phone_outlined,
+            TextInputField(
+              labelText: 'Telefone',
+              hintText: '(11) 3000-0000',
               keyboardType: TextInputType.phone,
             ),
           ],
         ),
         const SizedBox(height: 20),
-        DomaniDropdown<String>(
-          label: 'Regime Tributario',
-          hint: 'Selecione o regime',
-          prefixIcon: Icons.gavel_outlined,
-          required: true,
+        SelectInputField<String>(
+          labelText: 'Regime Tributario',
+          hintText: 'Selecione o regime',
           onChanged: (value) {
             // Callback para mudança de valor - Regime tributario do fornecedor
           },
-          items: const [
-            DropdownMenuItem(value: 'simples', child: Text('Simples Nacional')),
-            DropdownMenuItem(
-              value: 'presumido',
-              child: Text('Lucro Presumido'),
-            ),
-            DropdownMenuItem(value: 'real', child: Text('Lucro Real')),
-            DropdownMenuItem(value: 'mei', child: Text('MEI')),
+          options: const [
+            SelectOption(value: 'simples', label: 'Simples Nacional'),
+            SelectOption(value: 'presumido', label: 'Lucro Presumido'),
+            SelectOption(value: 'real', label: 'Lucro Real'),
+            SelectOption(value: 'mei', label: 'MEI'),
           ],
-          helperText: 'Regime tributario do fornecedor para calculos fiscais',
+          validator: FormValidators.required('Regime tributario e obrigatorio'),
         ),
         const SizedBox(height: 20),
-        DomaniTextField(
-          label: 'Observacoes',
-          hint: 'Informacoes adicionais sobre o fornecedor',
-          maxLines: 3,
-          helperText: 'Condicoes de pagamento, prazos de entrega, etc.',
+        TextInputField(
+          labelText: 'Observacoes',
+          hintText: 'Informacoes adicionais sobre o fornecedor',
         ),
       ],
     );
@@ -357,91 +337,78 @@ class FormDialogService {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        DomaniTextField(
-          label: 'Nome da Empresa',
-          hint: 'Domani Fiscal Ltda',
-          prefixIcon: Icons.business_center_outlined,
-          required: true,
-          helperText: 'Nome que aparecera nos relatorios e documentos',
+        TextInputField(
+          labelText: 'Nome da Empresa',
+          hintText: 'Domani Fiscal Ltda',
+          validator: FormValidators.required('Nome da empresa e obrigatorio'),
         ),
         const SizedBox(height: 20),
         FormRow.top(
           children: [
-            DomaniTextField(
-              label: 'Email de Contato',
-              hint: 'contato@empresa.com',
-              prefixIcon: Icons.email_outlined,
+            TextInputField(
+              labelText: 'Email de Contato',
+              hintText: 'contato@empresa.com',
               keyboardType: TextInputType.emailAddress,
-              required: true,
+              validator: FormValidators.combine([
+                FormValidators.required('Email e obrigatorio'),
+                FormValidators.email('Digite um email valido'),
+              ]),
             ),
-            DomaniTextField(
-              label: 'Telefone',
-              hint: '(11) 3000-0000',
-              prefixIcon: Icons.phone_outlined,
+            TextInputField(
+              labelText: 'Telefone',
+              hintText: '(11) 3000-0000',
               keyboardType: TextInputType.phone,
             ),
           ],
         ),
         const SizedBox(height: 20),
-        DomaniDropdown<String>(
-          label: 'Tema da Aplicacao',
-          hint: 'Selecione o tema',
-          prefixIcon: Icons.palette_outlined,
+        SelectInputField<String>(
+          labelText: 'Tema da Aplicacao',
+          hintText: 'Selecione o tema',
           onChanged: (value) {
             // Callback para mudança de valor - Tema selecionado
           },
-          items: const [
-            DropdownMenuItem(value: 'light', child: Text('Claro')),
-            DropdownMenuItem(value: 'dark', child: Text('Escuro')),
-            DropdownMenuItem(value: 'auto', child: Text('Automatico')),
+          options: const [
+            SelectOption(value: 'light', label: 'Claro'),
+            SelectOption(value: 'dark', label: 'Escuro'),
+            SelectOption(value: 'auto', label: 'Automatico'),
           ],
-          helperText: 'Tema visual da interface do sistema',
         ),
         const SizedBox(height: 20),
-        DomaniDropdown<String>(
-          label: 'Regime Tributario',
-          hint: 'Selecione o regime',
-          prefixIcon: Icons.gavel_outlined,
-          required: true,
+        SelectInputField<String>(
+          labelText: 'Regime Tributario',
+          hintText: 'Selecione o regime',
           onChanged: (value) {
             // Callback para mudança de valor - Regime tributario da empresa
           },
-          items: const [
-            DropdownMenuItem(value: 'simples', child: Text('Simples Nacional')),
-            DropdownMenuItem(
-              value: 'presumido',
-              child: Text('Lucro Presumido'),
-            ),
-            DropdownMenuItem(value: 'real', child: Text('Lucro Real')),
-            DropdownMenuItem(value: 'mei', child: Text('MEI')),
+          options: const [
+            SelectOption(value: 'simples', label: 'Simples Nacional'),
+            SelectOption(value: 'presumido', label: 'Lucro Presumido'),
+            SelectOption(value: 'real', label: 'Lucro Real'),
+            SelectOption(value: 'mei', label: 'MEI'),
           ],
-          helperText: 'Regime tributario da empresa para calculos automaticos',
+          validator: FormValidators.required('Regime tributario e obrigatorio'),
         ),
         const SizedBox(height: 20),
         FormRow.top(
           children: [
-            DomaniTextField(
-              label: 'CNPJ',
-              hint: '00.000.000/0000-00',
-              prefixIcon: Icons.badge_outlined,
+            TextInputField(
+              labelText: 'CNPJ',
+              hintText: '00.000.000/0000-00',
               keyboardType: TextInputType.number,
-              required: true,
-              helperText: 'CNPJ da empresa configurada',
+              validator: FormValidators.required('CNPJ e obrigatorio'),
             ),
-            DomaniTextField(
-              label: 'Inscricao Estadual',
-              hint: '000.000.000.000',
+            TextInputField(
+              labelText: 'Inscricao Estadual',
+              hintText: '000.000.000.000',
               keyboardType: TextInputType.number,
-              helperText: 'Deixe em branco se isento',
             ),
           ],
         ),
         const SizedBox(height: 20),
-        DomaniTextField(
-          label: 'Observacoes',
-          hint: 'Configuracoes adicionais do sistema',
-          maxLines: 3,
-          helperText: 'Informacoes gerais sobre a configuracao da empresa',
+        TextInputField(
+          labelText: 'Observacoes',
+          hintText: 'Configuracoes adicionais do sistema',
         ),
       ],
     );

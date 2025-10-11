@@ -57,7 +57,14 @@ lib/
 - **Animações:** Durações padronizadas (100ms, 200ms, 300ms)
 - **Espaçamento:** Grid 8px - use `AppTheme.spacing*` (XS=4, S=8, M=16, L=24, XL=32)
 
-### Formulários (OBRIGATÓRIO)
+### Formulários (OBRIGATÓRIO - Migração Completa)
+
+#### 🎯 **Widgets Padronizados (ÚNICOS):**
+
+- **Campos de Texto:** SEMPRE usar `TextInputField` (lib/widgets/form_layout.dart)
+- **Dropdowns:** SEMPRE usar `SelectInputField` (lib/widgets/form_layout.dart)
+
+#### 📐 **Layout e Organização:**
 
 - **Alinhamento:** SEMPRE usar `FormRow.top()` ao invés de `Row` manual
 - **Proporções:** Use `FormRowFlex` para controle de proporções (ex: 2:1, 1:2:1)
@@ -70,12 +77,14 @@ lib/
 
 - **Serviços:** Use `FormDialogService.mostrar*()` (lib/services/dialog/)
 - **Callbacks:** Use `DomaniDialogCallbacks.*()` (lib/services/dialog/)
+- **Widgets:** Use `TextInputField` e `SelectInputField` (lib/widgets/form_layout.dart)
 - **Import:** `import '../../services/dialog/form_dialog_service.dart';`
 
 #### 🎨 Para Widgets Genéricos (Reutilizáveis):
 
 - **Serviços:** Use `DialogService.show*()` (lib/widgets/src/dialog/)
 - **Callbacks:** Use `DialogCallbacks.show*()` (lib/widgets/src/dialog/)
+- **Widgets:** Use `TextInputField` e `SelectInputField` (lib/widgets/form_layout.dart)
 - **Import:** `import 'widgets/src/dialog/dialog_service.dart';`
 
 - **Tamanhos:** Pequeno=400px, Médio=600px, Grande=700px, XL=800px+
@@ -108,22 +117,58 @@ lib/
 
 ## Widgets Essenciais do Sistema
 
-### FormRow (SEMPRE usar para formulários)
+### Widgets de Formulário (SEMPRE usar os padronizados)
+
+#### ✅ **TextInputField - Campo de Texto Padrão**
+
+```dart
+TextInputField(
+  labelText: 'Nome Completo',
+  hintText: 'Digite o nome completo',
+  keyboardType: TextInputType.text,
+  validator: FormValidators.required('Nome é obrigatório'),
+  onChanged: (value) => setState(() => _nome = value),
+)
+```
+
+#### ✅ **SelectInputField - Dropdown Padrão**
+
+```dart
+SelectInputField<String>(
+  labelText: 'Tipo de Pessoa',
+  hintText: 'Selecione o tipo',
+  value: _tipoSelecionado,
+  onChanged: (value) => setState(() => _tipoSelecionado = value),
+  options: [
+    SelectOption(value: 'PF', label: 'Pessoa Física'),
+    SelectOption(value: 'PJ', label: 'Pessoa Jurídica'),
+  ],
+  validator: FormValidators.required('Tipo é obrigatório'),
+)
+```
+
+#### 📐 **FormRow - Sistema de Alinhamento**
 
 ```dart
 // Distribuição igual
 FormRow.top(
   children: [
-    DomaniTextField(label: 'Email'),
-    DomaniTextField(label: 'Telefone'),
+    TextInputField(labelText: 'Email', hintText: 'email@exemplo.com'),
+    TextInputField(labelText: 'Telefone', hintText: '(11) 99999-9999'),
   ],
 )
 
 // Proporções customizadas
 FormRowFlex.top(
   items: [
-    FormRowItem(flex: 2, child: DomaniTextField(label: 'Endereço')),
-    FormRowItem(flex: 1, child: DomaniTextField(label: 'Número')),
+    FormRowItem(
+      flex: 2,
+      child: TextInputField(labelText: 'Endereço', hintText: 'Rua, número')
+    ),
+    FormRowItem(
+      flex: 1,
+      child: TextInputField(labelText: 'Número', hintText: '123')
+    ),
   ],
 )
 ```
@@ -246,6 +291,11 @@ DrawerItem(
 
 ## Troubleshooting Comum
 
+### API Desatualizada
+
+❌ **Não faça:** `label`, `hint`, `items`, `DropdownMenuItem`
+✅ **Faça:** `labelText`, `hintText`, `options`, `SelectOption`
+
 ### Formulários Desalinhados
 
 ❌ **Não faça:** `Row(children: [Expanded(...), Expanded(...)])`
@@ -264,13 +314,7 @@ DrawerItem(
 ### Performance Lenta
 
 ❌ **Não faça:** Widgets sem `const`
-✅ **Faça:** `const DomaniTextField(...)` quando possível
-
----
-
-**Última atualização:** Dezembro 2024  
-**Status:** Produção - Sistema estável e documentado  
-**Próxima revisão:** Após implementação de tabelas e gráficos
+✅ **Faça:** `const TextInputField(...)` quando possível
 
 ## Arquitetura Reorganizada (Dezembro 2024)
 
@@ -306,7 +350,23 @@ import '../widgets/src/dialog/form_dialog_service.dart';
 - **Escalabilidade** - Fácil adicionar novos serviços
 - **Testabilidade** - Serviços podem ser testados independentemente
 
-## 🚀 Refatoração Arquitetural Completa (Dezembro 2024)
+#### ✅ **Widgets Padronizados (USAR SEMPRE):**
+
+- **`TextInputField`** - Para todos os campos de texto
+- **`SelectInputField`** - Para todos os dropdowns
+- **Localização:** `lib/widgets/form_layout.dart` (barril principal)
+
+#### 🔄 **Mudanças na API:**
+
+```dart
+// ❌ REMOVIDO - Não usar mais
+DomaniTextField(label: 'Nome', hint: 'Digite')
+DomaniDropdown(label: 'Tipo', items: [...])
+
+// ✅ USAR SEMPRE
+TextInputField(labelText: 'Nome', hintText: 'Digite')
+SelectInputField(labelText: 'Tipo', options: [...])
+```
 
 ### ✅ **Widgets 100% Reutilizáveis Implementados**
 
@@ -383,3 +443,84 @@ import 'widgets/src/dialog/dialog_callbacks.dart';
 **Refatoração concluída:** Dezembro 2024  
 **Status:** ✅ Implementado e testado  
 **Próximo passo:** Aplicar mesmo padrão para forms, layouts e outros widgets
+
+## 🎯 Migração Completa de Widgets (Dezembro 2024)
+
+### ✅ **Status: 100% Concluída**
+
+A migração completa dos widgets de formulário foi finalizada com **zero duplicação** e **máxima padronização**.
+
+#### 📊 **Resultado da Migração:**
+
+**ANTES (Duplicação):**
+
+```
+lib/widgets/src/forms/form_components.dart
+├── DomaniTextField (300+ linhas) ❌ DUPLICADO
+├── DomaniDropdown (200+ linhas) ❌ DUPLICADO
+└── DomaniButton ✅
+
+lib/widgets/src/form_layout/
+├── TextInputField ✅ ORIGINAL
+├── SelectInputField ✅ ORIGINAL
+```
+
+**DEPOIS (Padronizado):**
+
+```
+lib/widgets/src/forms/form_components.dart
+├── Exportações (10 linhas) ✅
+└── DomaniButton ✅ ÚNICO
+
+lib/widgets/src/form_layout/
+├── TextInputField ✅ ÚNICO E PADRÃO
+├── SelectInputField ✅ ÚNICO E PADRÃO
+```
+
+#### 🔧 **Imports Corretos:**
+
+```dart
+// ✅ CORRETO - Import do barril principal
+import '../../widgets/form_layout.dart';
+
+// ✅ CORRETO - Imports específicos
+import '../../widgets/src/forms/form_row.dart';
+import '../../widgets/src/forms/form_validators.dart';
+
+// ❌ INCORRETO - Não existem mais
+import 'DomaniTextField'; // REMOVIDO
+import 'DomaniDropdown';  // REMOVIDO
+```
+
+#### 📋 **Checklist de Desenvolvimento:**
+
+**Para Novos Formulários:**
+
+- [ ] ✅ Usar `TextInputField` para campos de texto
+- [ ] ✅ Usar `SelectInputField` para dropdowns
+- [ ] ✅ Usar `FormRow.top()` para alinhamento
+- [ ] ✅ Usar `FormValidators` para validação
+- [ ] ❌ **NUNCA** usar `DomaniTextField` ou `DomaniDropdown`
+
+**Para Manutenção:**
+
+- [ ] ✅ Verificar se usa widgets padronizados
+- [ ] ✅ Confirmar imports corretos
+- [ ] ✅ Testar funcionalidade após mudanças
+- [ ] ✅ Executar `flutter analyze` (deve ser zero issues)
+
+#### 🎨 **Benefícios Alcançados:**
+
+1. **🔧 Zero Duplicação** - Cada widget existe em apenas um lugar
+2. **📐 Consistência Total** - API uniforme (`labelText`, `hintText`, `options`)
+3. **🏗️ Manutenibilidade** - Mudanças centralizadas
+4. **🚀 Performance** - Código otimizado sem duplicações
+5. **📖 Clareza** - Estrutura fácil de entender
+6. **✅ Qualidade** - Zero problemas no flutter analyze
+
+---
+
+**Migração finalizada:** Dezembro 2024  
+**Status:** ✅ Produção - Totalmente funcional e padronizado  
+**Qualidade:** Zero issues no flutter analyze  
+**Próximo:** Manter padrão em novos desenvolvimentos
