@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../screens/em_construcao_screen.dart';
 import '../screens/dashboard_screen.dart';
 import '../widgets/app_layout.dart';
-import '../services/dialog/domani_dialog_callbacks.dart';
+import '../services/dialog/callbacks.dart';
 
 /// Configuração dos itens da barra de navegação lateral
 class SidebarConfig {

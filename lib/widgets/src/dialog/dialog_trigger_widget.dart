@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../services/dialog/form_dialog_service.dart';
+import '../../../services/dialog/form.dart';
 
 /// Widget que automaticamente abre um FormDialog quando é exibido
 /// Útil para usar em itens da drawer que devem abrir dialogs
