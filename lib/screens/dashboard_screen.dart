@@ -30,9 +30,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
           // Cards de estatísticas
           _buildContainerCards(context, isDarkMode, screenWidth),
 
-          // Cards de métricas principais
-          _buildMetricsCards(context, isDarkMode, screenWidth),
-
           SizedBox(height: AppTheme.spacingXL),
 
           // Seção de gráficos e atividades
@@ -128,262 +125,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
           ),
         ),
       ],
-    );
-  }
-
-  Widget _buildMetricsCards(
-    BuildContext context,
-
-    bool isDarkMode,
-
-    double screenWidth,
-  ) {
-    final isLargeScreen = screenWidth >= AppTheme.breakpointLarge;
-
-    return GridView.count(
-      shrinkWrap: true,
-
-      physics: const NeverScrollableScrollPhysics(),
-
-      crossAxisCount: isLargeScreen ? 4 : 2,
-
-      crossAxisSpacing: AppTheme.spacingL,
-
-      mainAxisSpacing: AppTheme.spacingL,
-
-      childAspectRatio: isLargeScreen ? 1.5 : 1.2, // Mais largos e menos altos
-
-      children: [
-        _buildMetricCard(
-          context,
-
-          isDarkMode,
-
-          title: 'Receita Mensal',
-
-          value: 'R\$ 125.430,00',
-
-          change: '+12%',
-
-          changePositive: true,
-
-          icon: Icons.trending_up_rounded,
-
-          type: 'success',
-        ),
-
-        _buildMetricCard(
-          context,
-
-          isDarkMode,
-
-          title: 'ICMS a Recolher',
-
-          value: 'R\$ 8.750,00',
-
-          change: 'Vence 15/12',
-
-          changePositive: null,
-
-          icon: Icons.gavel_rounded,
-
-          type: 'warning',
-        ),
-
-        _buildMetricCard(
-          context,
-
-          isDarkMode,
-
-          title: 'Documentos Pendentes',
-
-          value: '23',
-
-          change: '-5 hoje',
-
-          changePositive: true,
-
-          icon: Icons.assignment_late_rounded,
-
-          type: 'error',
-        ),
-
-        _buildMetricCard(
-          context,
-
-          isDarkMode,
-
-          title: 'Compliance Score',
-
-          value: '94%',
-
-          change: '+2% mês',
-
-          changePositive: true,
-
-          icon: Icons.verified_rounded,
-
-          type: 'success',
-        ),
-      ],
-    );
-  }
-
-  Widget _buildMetricCard(
-    BuildContext context,
-
-    bool isDarkMode, {
-
-    required String title,
-
-    required String value,
-
-    required String change,
-
-    required bool? changePositive,
-
-    required IconData icon,
-
-    required String type,
-  }) {
-    final Color color;
-
-    switch (type) {
-      case 'success':
-        color = isDarkMode ? AppTheme.successDark : AppTheme.successLight;
-
-        break;
-
-      case 'warning':
-        color = isDarkMode ? AppTheme.warningDark : AppTheme.warningLight;
-
-        break;
-
-      case 'error':
-        color = isDarkMode ? AppTheme.errorDark : AppTheme.errorLight;
-
-        break;
-
-      default:
-        color = isDarkMode ? AppTheme.infoDark : AppTheme.infoLight;
-    }
-
-    return Container(
-      padding: EdgeInsets.all(AppTheme.spacingL),
-
-      decoration: BoxDecoration(
-        color: isDarkMode
-            ? AppTheme.cardBackgroundDark
-            : AppTheme.cardBackgroundLight,
-
-        borderRadius: BorderRadius.circular(
-          AppTheme.borderRadiusM,
-        ), // Bordas mais suaves
-
-        border: Border.all(
-          color: isDarkMode
-              ? AppTheme.cardBorderDark
-              : AppTheme.neutral200, // Borda para ambos os temas
-
-          width: 1,
-        ),
-
-        boxShadow: isDarkMode
-            ? null
-            : [
-                BoxShadow(
-                  color: AppTheme.cardShadowLight,
-
-                  blurRadius: 4,
-
-                  offset: const Offset(0, 2),
-                ),
-              ],
-      ),
-
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-
-        mainAxisAlignment:
-            MainAxisAlignment.spaceBetween, // Distribui o conteúdo
-
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-
-            children: [
-              Container(
-                padding: EdgeInsets.all(AppTheme.spacingS),
-
-                decoration: BoxDecoration(
-                  color: color.withValues(alpha: 0.1),
-
-                  borderRadius: BorderRadius.circular(AppTheme.borderRadiusS),
-                ),
-
-                child: Icon(icon, size: 20, color: color),
-              ),
-
-              if (changePositive != null)
-                Icon(
-                  changePositive
-                      ? Icons.trending_up_rounded
-                      : Icons.trending_down_rounded,
-
-                  size: 16,
-
-                  color: changePositive
-                      ? AppTheme.successLight
-                      : AppTheme.errorLight,
-                ),
-            ],
-          ),
-
-          // Título do card com hierarquia tipográfica
-          Text(
-            title,
-
-            style: Theme.of(context).textTheme.titleMedium?.copyWith(
-              color: isDarkMode
-                  ? AppTheme
-                        .textSecondaryDark // #B0B0B0
-                  : AppTheme.textSecondaryLight, // #666666
-
-              fontWeight: FontWeight.w500,
-            ),
-          ),
-
-          // Valor principal com destaque
-          Text(
-            value,
-
-            style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-              fontWeight: FontWeight.bold, // font-weight: bold
-
-              color: color,
-            ),
-          ),
-
-          // Detalhes com tamanho menor
-          Text(
-            change,
-
-            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-              color: changePositive == null
-                  ? (isDarkMode
-                        ? AppTheme.textSecondaryDark
-                        : AppTheme.textSecondaryLight)
-                  : changePositive
-                  ? AppTheme.successLight
-                  : AppTheme.errorLight,
-
-              fontWeight: FontWeight.w600,
-
-              fontSize: 12, // font-size: smaller
-            ),
-          ),
-        ],
-      ),
     );
   }
 
@@ -779,11 +520,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
         spacing: AppTheme.spacingM,
         runSpacing: AppTheme.spacingM,
         children: cards.map((card) {
-          return Container(
-            width: 280,
-            height: 160,
-            child: card,
-          );
+          return SizedBox(width: 280, height: 160, child: card);
         }).toList(),
       );
     }
@@ -809,7 +546,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
       child: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [color, color.withOpacity(0.7)],
+            colors: [color, color.withValues(alpha: 0.7)],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),
@@ -836,22 +573,23 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     children: [
                       Text(
                         title,
-                        style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                              color: Colors.white.withOpacity(0.8),
+                        style: Theme.of(context).textTheme.titleMedium
+                            ?.copyWith(
+                              color: Colors.white.withValues(alpha: 0.8),
                               fontWeight: FontWeight.w500,
                             ),
                       ),
                       SizedBox(height: AppTheme.spacingXS),
                       Text(
                         value,
-                        style: Theme.of(context)
-                            .textTheme
-                            .headlineSmall
+                        style: Theme.of(context).textTheme.headlineSmall
                             ?.copyWith(
                               color: Colors.white,
                               fontWeight: FontWeight.bold,
                               fontSize: AppTheme.getResponsiveFontSize(
-                                  screenWidth, 22),
+                                screenWidth,
+                                22,
+                              ),
                             ),
                       ),
                       SizedBox(height: AppTheme.spacingS),
@@ -863,17 +601,15 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                   ? Icons.arrow_upward_rounded
                                   : Icons.arrow_downward_rounded,
                               size: 14,
-                              color: Colors.white.withOpacity(0.8),
+                              color: Colors.white.withValues(alpha: 0.8),
                             ),
                           if (detailsPositive != null)
                             SizedBox(width: AppTheme.spacingXS),
                           Text(
                             details,
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodySmall
+                            style: Theme.of(context).textTheme.bodySmall
                                 ?.copyWith(
-                                  color: Colors.white.withOpacity(0.9),
+                                  color: Colors.white.withValues(alpha: 0.9),
                                   fontWeight: FontWeight.w600,
                                 ),
                           ),
