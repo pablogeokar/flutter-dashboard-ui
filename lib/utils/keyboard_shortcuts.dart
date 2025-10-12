@@ -6,9 +6,13 @@ class KeyboardShortcuts {
   // Método para obter os atalhos
   static Map<LogicalKeySet, Intent> getShortcuts() {
     return {
-      // Navegação básica
+      // Atalho para alternar tema
       LogicalKeySet(LogicalKeyboardKey.control, LogicalKeyboardKey.keyT):
           const ToggleThemeIntent(),
+
+      // Atalho para abrir a busca
+      LogicalKeySet(LogicalKeyboardKey.control, LogicalKeyboardKey.keyK):
+          const SearchIntent(),
     };
   }
 }
@@ -17,6 +21,10 @@ class KeyboardShortcuts {
 
 class ToggleThemeIntent extends Intent {
   const ToggleThemeIntent();
+}
+
+class SearchIntent extends Intent {
+  const SearchIntent();
 }
 
 // === ACTIONS (Ações) ===
@@ -29,6 +37,18 @@ class ToggleThemeAction extends Action<ToggleThemeIntent> {
   @override
   Object? invoke(ToggleThemeIntent intent) {
     onToggle();
+    return null;
+  }
+}
+
+class SearchAction extends Action<SearchIntent> {
+  final VoidCallback onSearch;
+
+  SearchAction({required this.onSearch});
+
+  @override
+  Object? invoke(SearchIntent intent) {
+    onSearch();
     return null;
   }
 }

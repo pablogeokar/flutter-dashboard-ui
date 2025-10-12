@@ -4,6 +4,8 @@ import '/theme/theme.dart';
 import '/theme/theme_manager.dart';
 import '/theme/animations.dart';
 
+import 'command_palette.dart';
+
 /// A `AppBar` customizada e transparente da aplicação.
 ///
 /// Implementa `PreferredSizeWidget` para garantir que ela tenha a altura
@@ -131,7 +133,7 @@ class ModernAppBar extends StatelessWidget implements PreferredSizeWidget {
         actions: [
           // Busca global inteligente
           if (isLargeScreen) ...[
-            _GlobalSearchField(),
+            const _GlobalSearchField(),
             const SizedBox(width: AppTheme.spacingM),
           ],
 
@@ -424,164 +426,81 @@ class _SimpleAvatarState extends State<_SimpleAvatar> {
   }
 }
 
-/// Campo de busca global inteligente
-class _GlobalSearchField extends StatefulWidget {
-  @override
-  State<_GlobalSearchField> createState() => _GlobalSearchFieldState();
+void _showCommandPalette(BuildContext context) {
+  showDialog(
+    context: context,
+    builder: (context) => const CommandPalette(),
+  );
 }
 
-class _GlobalSearchFieldState extends State<_GlobalSearchField> {
-  bool _isHovered = false;
-  bool _isFocused = false;
-  final TextEditingController _controller = TextEditingController();
-  final FocusNode _focusNode = FocusNode();
-
-  @override
-  void initState() {
-    super.initState();
-    _focusNode.addListener(() {
-      setState(() {
-        _isFocused = _focusNode.hasFocus;
-      });
-    });
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    _focusNode.dispose();
-    super.dispose();
-  }
+/// Campo de busca global que abre a paleta de comandos.
+class _GlobalSearchField extends StatelessWidget {
+  const _GlobalSearchField({super.key});
 
   @override
   Widget build(BuildContext context) {
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
-    final isActive = _isHovered || _isFocused;
 
     return MouseRegion(
-      onEnter: (_) => setState(() => _isHovered = true),
-      onExit: (_) => setState(() => _isHovered = false),
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 200),
-        width: isActive ? 280 : 240,
-        height: 36,
-        decoration: BoxDecoration(
-          color: isDarkMode
-              ? AppTheme.formFieldBackgroundDark
-              : AppTheme.formFieldBackgroundLight,
-          borderRadius: BorderRadius.circular(AppTheme.borderRadiusM),
-          border: Border.all(
-            color: isActive
-                ? Theme.of(context).colorScheme.primary
-                : isDarkMode
-                ? AppTheme.formFieldBorderDark
-                : AppTheme.formFieldBorderLight,
-            width: isActive ? 1.5 : 1,
+      cursor: SystemMouseCursors.click,
+      child: GestureDetector(
+        onTap: () => _showCommandPalette(context),
+        child: Container(
+          width: 240,
+          height: 36,
+          decoration: BoxDecoration(
+            color: isDarkMode
+                ? AppTheme.formFieldBackgroundDark
+                : AppTheme.formFieldBackgroundLight,
+            borderRadius: BorderRadius.circular(AppTheme.borderRadiusM),
+            border: Border.all(
+              color: isDarkMode
+                  ? AppTheme.formFieldBorderDark
+                  : AppTheme.formFieldBorderLight,
+              width: 1,
+            ),
           ),
-          boxShadow: isActive
-              ? [
-                  BoxShadow(
-                    color: Theme.of(
-                      context,
-                    ).colorScheme.primary.withValues(alpha: 0.1),
-                    blurRadius: 8,
-                    offset: const Offset(0, 2),
+          child: Row(
+            children: [
+              const SizedBox(width: 12),
+              Icon(
+                Icons.search_rounded,
+                size: 18,
+                color: Theme.of(context).colorScheme.onSurface.withOpacity(0.5),
+              ),
+              const SizedBox(width: 8),
+              Text(
+                'Buscar...',
+                style: TextStyle(
+                  fontSize: 13,
+                  color: Theme.of(context).colorScheme.onSurface.withOpacity(0.5),
+                ),
+              ),
+              const Spacer(),
+              Container(
+                margin: const EdgeInsets.only(right: 8),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 6,
+                  vertical: 2,
+                ),
+                decoration: BoxDecoration(
+                  color: isDarkMode
+                      ? AppTheme.neutral700.withOpacity(0.5)
+                      : AppTheme.neutral200.withOpacity(0.7),
+                  borderRadius: BorderRadius.circular(4),
+                ),
+                child: Text(
+                  'Ctrl+K',
+                  style: TextStyle(
+                    fontSize: 10,
+                    fontWeight: FontWeight.w500,
+                    color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
                   ),
-                ]
-              : null,
-        ),
-        child: TextField(
-          controller: _controller,
-          focusNode: _focusNode,
-          style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontSize: 13),
-          decoration: InputDecoration(
-            hintText: 'Buscar clientes, produtos, relatórios...',
-            hintStyle: TextStyle(
-              fontSize: 13,
-              color: Theme.of(
-                context,
-              ).colorScheme.onSurface.withValues(alpha: 0.5),
-            ),
-            prefixIcon: Icon(
-              Icons.search_rounded,
-              size: 18,
-              color: isActive
-                  ? Theme.of(context).colorScheme.primary
-                  : Theme.of(
-                      context,
-                    ).colorScheme.onSurface.withValues(alpha: 0.5),
-            ),
-            suffixIcon: _controller.text.isNotEmpty
-                ? IconButton(
-                    icon: Icon(
-                      Icons.clear_rounded,
-                      size: 16,
-                      color: Theme.of(
-                        context,
-                      ).colorScheme.onSurface.withValues(alpha: 0.5),
-                    ),
-                    onPressed: () {
-                      _controller.clear();
-                      setState(() {});
-                    },
-                  )
-                : Container(
-                    margin: const EdgeInsets.only(right: 8),
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 6,
-                      vertical: 2,
-                    ),
-                    decoration: BoxDecoration(
-                      color: isDarkMode
-                          ? AppTheme.neutral700.withValues(alpha: 0.5)
-                          : AppTheme.neutral200.withValues(alpha: 0.7),
-                      borderRadius: BorderRadius.circular(4),
-                    ),
-                    child: Text(
-                      'Ctrl+K',
-                      style: TextStyle(
-                        fontSize: 10,
-                        fontWeight: FontWeight.w500,
-                        color: Theme.of(
-                          context,
-                        ).colorScheme.onSurface.withValues(alpha: 0.6),
-                      ),
-                    ),
-                  ),
-            border: InputBorder.none,
-            contentPadding: const EdgeInsets.symmetric(
-              horizontal: 12,
-              vertical: 8,
-            ),
+                ),
+              ),
+            ],
           ),
-          onChanged: (value) {
-            setState(() {});
-            // Implementar lógica de busca aqui
-          },
-          onSubmitted: (value) {
-            // Implementar ação de busca aqui
-            _showSearchResults(value);
-          },
         ),
-      ),
-    );
-  }
-
-  void _showSearchResults(String query) {
-    if (query.trim().isEmpty) return;
-
-    // Implementar modal de resultados de busca
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text('Resultados da busca'),
-        content: Text('Buscando por: "$query"'),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: Text('Fechar'),
-          ),
-        ],
       ),
     );
   }

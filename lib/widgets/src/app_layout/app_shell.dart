@@ -6,6 +6,7 @@ import 'breadcrumb.dart';
 import '../../../utils/keyboard_shortcuts.dart';
 import '../../../theme/theme_manager.dart';
 import '../../../config/sidebar_config.dart';
+import 'command_palette.dart';
 
 /// O widget `AppShell` é o "invólucro" principal da aplicação.
 ///
@@ -262,6 +263,13 @@ class _AppShellState extends State<AppShell> {
     }
   }
 
+  void _showCommandPalette(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) => const CommandPalette(),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final themeManager = Provider.of<ThemeManager>(context, listen: false);
@@ -272,6 +280,9 @@ class _AppShellState extends State<AppShell> {
         actions: {
           ToggleThemeIntent: ToggleThemeAction(
             onToggle: () => themeManager.toggleTheme(),
+          ),
+          SearchIntent: SearchAction(
+            onSearch: () => _showCommandPalette(context),
           ),
         },
         child: Focus(
