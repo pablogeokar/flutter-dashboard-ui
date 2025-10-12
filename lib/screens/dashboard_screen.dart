@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../theme/theme.dart';
 import '../widgets/src/forms/button.dart';
 
@@ -25,6 +26,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
           _buildDashboardHeader(context, isDarkMode, screenWidth),
 
           SizedBox(height: AppTheme.spacingXL),
+
+          // Cards de estatísticas
+          _buildContainerCards(),
 
           // Cards de métricas principais
           _buildMetricsCards(context, isDarkMode, screenWidth),
@@ -710,6 +714,106 @@ class _DashboardScreenState extends State<DashboardScreen> {
             ],
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildContainerCards() {
+    return (GridView.count(
+      crossAxisCount: 4,
+      shrinkWrap: true,
+      physics: NeverScrollableScrollPhysics(),
+      childAspectRatio: 1.9,
+      children: [
+        _buildCard(
+          context,
+          title: 'Total Sales',
+          value: 'R\$ 24,80',
+          icon: Icons.attach_money_outlined,
+          color: Color(0xFF4CAF50),
+        ),
+        _buildCard(
+          context,
+          title: 'Total Orders',
+          value: 'R\$ 12,28',
+          icon: Icons.shopping_basket_rounded,
+          color: Color(0xFF2196F3),
+        ),
+        _buildCard(
+          context,
+          title: 'Total Products',
+          value: '9.600',
+          icon: Icons.inventory_2_rounded,
+          color: Color(0xFFFF5722),
+        ),
+        _buildCard(
+          context,
+          title: 'Total Custumers',
+          value: '2.360',
+          icon: Icons.groups_2_rounded,
+          color: Color(0xFF9C27B0),
+        ),
+      ],
+    ));
+  }
+
+  Widget _buildCard(
+    BuildContext context, {
+    required String title,
+    required String value,
+    required IconData icon,
+    required Color color,
+  }) {
+    return Card(
+      elevation: 0,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+      child: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [color, color.withValues(alpha: 0.7)],
+            //begin: Alignment.topLeft,
+            //end: Alignment.bottomRight,
+          ),
+          borderRadius: BorderRadius.circular(15),
+        ),
+        child: Stack(
+          children: [
+            Positioned(
+              right: -20,
+              top: -20,
+              child: Opacity(
+                opacity: 0.3,
+                child: Icon(icon, size: 80, color: Colors.white),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(icon, color: Colors.white, size: 30),
+                  SizedBox(height: 10),
+                  Text(
+                    title,
+                    style: GoogleFonts.poppins(
+                      color: Colors.white70,
+                      fontSize: 14,
+                    ),
+                  ),
+                  Text(
+                    value,
+                    style: GoogleFonts.poppins(
+                      color: Colors.white,
+                      fontSize: 22,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
