@@ -725,52 +725,68 @@ class _DashboardScreenState extends State<DashboardScreen> {
   ) {
     final isLargeScreen = screenWidth >= AppTheme.breakpointLarge;
 
-    return GridView.count(
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      crossAxisCount: isLargeScreen ? 4 : 2,
-      crossAxisSpacing: AppTheme.spacingL,
-      mainAxisSpacing: AppTheme.spacingL,
-      childAspectRatio: isLargeScreen ? 1.9 : 1.5,
-      children: [
-        _buildCard(
-          context,
-          title: 'Receita Mensal',
-          value: 'R\$ 125.430,00',
-          details: '+12%',
-          detailsPositive: true,
-          icon: Icons.trending_up_rounded,
-          color: isDarkMode ? AppTheme.successDark : AppTheme.successLight,
-        ),
-        _buildCard(
-          context,
-          title: 'ICMS a Recolher',
-          value: 'R\$ 8.750,00',
-          details: 'Vence 15/12',
-          detailsPositive: null,
-          icon: Icons.gavel_rounded,
-          color: isDarkMode ? AppTheme.warningDark : AppTheme.warningLight,
-        ),
-        _buildCard(
-          context,
-          title: 'Documentos Pendentes',
-          value: '23',
-          details: '-5 hoje',
-          detailsPositive: false,
-          icon: Icons.assignment_late_rounded,
-          color: isDarkMode ? AppTheme.errorDark : AppTheme.errorLight,
-        ),
-        _buildCard(
-          context,
-          title: 'Compliance Score',
-          value: '94%',
-          details: '+2% mês',
-          detailsPositive: true,
-          icon: Icons.verified_rounded,
-          color: isDarkMode ? AppTheme.infoDark : AppTheme.infoLight,
-        ),
-      ],
-    );
+    final List<Widget> cards = [
+      _buildCard(
+        context,
+        title: 'Receita Mensal',
+        value: 'R\$ 125.430,00',
+        details: '+12%',
+        detailsPositive: true,
+        icon: Icons.trending_up_rounded,
+        color: isDarkMode ? AppTheme.successDark : AppTheme.successLight,
+      ),
+      _buildCard(
+        context,
+        title: 'ICMS a Recolher',
+        value: 'R\$ 8.750,00',
+        details: 'Vence 15/12',
+        detailsPositive: null,
+        icon: Icons.gavel_rounded,
+        color: isDarkMode ? AppTheme.warningDark : AppTheme.warningLight,
+      ),
+      _buildCard(
+        context,
+        title: 'Documentos Pendentes',
+        value: '23',
+        details: '-5 hoje',
+        detailsPositive: false,
+        icon: Icons.assignment_late_rounded,
+        color: isDarkMode ? AppTheme.errorDark : AppTheme.errorLight,
+      ),
+      _buildCard(
+        context,
+        title: 'Compliance Score',
+        value: '94%',
+        details: '+2% mês',
+        detailsPositive: true,
+        icon: Icons.verified_rounded,
+        color: isDarkMode ? AppTheme.infoDark : AppTheme.infoLight,
+      ),
+    ];
+
+    if (isLargeScreen) {
+      return GridView.count(
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
+        crossAxisCount: 4,
+        crossAxisSpacing: AppTheme.spacingL,
+        mainAxisSpacing: AppTheme.spacingL,
+        childAspectRatio: 2.2,
+        children: cards,
+      );
+    } else {
+      return Wrap(
+        spacing: AppTheme.spacingM,
+        runSpacing: AppTheme.spacingM,
+        children: cards.map((card) {
+          return Container(
+            width: 280,
+            height: 160,
+            child: card,
+          );
+        }).toList(),
+      );
+    }
   }
 
   Widget _buildCard(
@@ -815,42 +831,53 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Icon(icon, color: Colors.white, size: 30),
-                  const Spacer(),
-                  Text(
-                    title,
-                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                          color: Colors.white.withOpacity(0.8),
-                          fontWeight: FontWeight.w500,
-                        ),
-                  ),
-                  SizedBox(height: AppTheme.spacingXS),
-                  Text(
-                    value,
-                    style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: AppTheme.getResponsiveFontSize(screenWidth, 22),
-                        ),
-                  ),
-                  SizedBox(height: AppTheme.spacingS),
-                  Row(
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      if (detailsPositive != null)
-                        Icon(
-                          detailsPositive
-                              ? Icons.arrow_upward_rounded
-                              : Icons.arrow_downward_rounded,
-                          size: 14,
-                          color: Colors.white.withOpacity(0.8),
-                        ),
-                      if (detailsPositive != null)
-                        SizedBox(width: AppTheme.spacingXS),
                       Text(
-                        details,
-                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                              color: Colors.white.withOpacity(0.9),
-                              fontWeight: FontWeight.w600,
+                        title,
+                        style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                              color: Colors.white.withOpacity(0.8),
+                              fontWeight: FontWeight.w500,
                             ),
+                      ),
+                      SizedBox(height: AppTheme.spacingXS),
+                      Text(
+                        value,
+                        style: Theme.of(context)
+                            .textTheme
+                            .headlineSmall
+                            ?.copyWith(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: AppTheme.getResponsiveFontSize(
+                                  screenWidth, 22),
+                            ),
+                      ),
+                      SizedBox(height: AppTheme.spacingS),
+                      Row(
+                        children: [
+                          if (detailsPositive != null)
+                            Icon(
+                              detailsPositive
+                                  ? Icons.arrow_upward_rounded
+                                  : Icons.arrow_downward_rounded,
+                              size: 14,
+                              color: Colors.white.withOpacity(0.8),
+                            ),
+                          if (detailsPositive != null)
+                            SizedBox(width: AppTheme.spacingXS),
+                          Text(
+                            details,
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodySmall
+                                ?.copyWith(
+                                  color: Colors.white.withOpacity(0.9),
+                                  fontWeight: FontWeight.w600,
+                                ),
+                          ),
+                        ],
                       ),
                     ],
                   ),
