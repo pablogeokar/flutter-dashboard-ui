@@ -192,6 +192,36 @@ FormRowFlex.top(
 )
 ```
 
+### Cards - Exemplos de Uso
+
+#### ✅ **InfoCard - Card de Informações Padrão**
+
+Use este widget para exibir um card de destaque com gradiente, ícone e métricas.
+
+```dart
+InfoCard(
+  title: 'Receita Mensal',
+  value: 'R\$ 125.430,00',
+  details: '+12%',
+  detailsPositive: true,
+  icon: Icons.trending_up_rounded,
+  color: isDarkMode ? AppTheme.successDark : AppTheme.successLight,
+)
+```
+
+#### ✅ **InfoCardGrid - Container Responsivo para Cards**
+
+Este widget organiza uma lista de `InfoCard` em um layout responsivo. Em telas grandes, exibe um grid. Em telas menores, exibe um layout com quebra de linha (`Wrap`).
+
+```dart
+InfoCardGrid(
+  children: [
+    InfoCard(...),
+    InfoCard(...),
+  ],
+)
+```
+
 ### Dialogs - Exemplos de Uso
 
 #### 🔧 Específicos do Projeto (FormDialogService)

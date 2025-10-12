@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-
+import 'package:dashboard_ui/widgets/form.dart';
 import '../theme/theme.dart';
-import '../widgets/src/forms/button.dart';
+import 'package:dashboard_ui/widgets/cards.dart';
 
 /// Tela principal do dashboard com métricas fiscais
 class DashboardScreen extends StatefulWidget {
@@ -18,19 +18,58 @@ class _DashboardScreenState extends State<DashboardScreen> {
     final screenWidth = MediaQuery.of(context).size.width;
 
     return SingleChildScrollView(
-      padding: EdgeInsets.all(AppTheme.spacingL),
+      padding: const EdgeInsets.all(AppTheme.spacingL),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // Header do dashboard
           _buildDashboardHeader(context, isDarkMode, screenWidth),
 
-          SizedBox(height: AppTheme.spacingXL),
+          const SizedBox(height: AppTheme.spacingXL),
 
           // Cards de estatísticas
-          _buildContainerCards(context, isDarkMode, screenWidth),
+          InfoCardGrid(
+            children: [
+              InfoCard(
+                title: 'Receita Mensal',
+                value: 'R\$ 125.430,00',
+                details: '+12%',
+                detailsPositive: true,
+                icon: Icons.trending_up_rounded,
+                color: isDarkMode
+                    ? AppTheme.successDark
+                    : AppTheme.successLight,
+              ),
+              InfoCard(
+                title: 'ICMS a Recolher',
+                value: 'R\$ 8.750,00',
+                details: 'Vence 15/12',
+                detailsPositive: null,
+                icon: Icons.gavel_rounded,
+                color: isDarkMode
+                    ? AppTheme.warningDark
+                    : AppTheme.warningLight,
+              ),
+              InfoCard(
+                title: 'Documentos Pendentes',
+                value: '23',
+                details: '-5 hoje',
+                detailsPositive: false,
+                icon: Icons.assignment_late_rounded,
+                color: isDarkMode ? AppTheme.errorDark : AppTheme.errorLight,
+              ),
+              InfoCard(
+                title: 'Compliance Score',
+                value: '94%',
+                details: '+2% mês',
+                detailsPositive: true,
+                icon: Icons.verified_rounded,
+                color: isDarkMode ? AppTheme.infoDark : AppTheme.infoLight,
+              ),
+            ],
+          ),
 
-          SizedBox(height: AppTheme.spacingXL),
+          const SizedBox(height: AppTheme.spacingXL),
 
           // Seção de gráficos e atividades
           _buildChartsAndActivities(context, isDarkMode, screenWidth),
@@ -455,173 +494,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
             ],
           ),
         ],
-      ),
-    );
-  }
-
-  Widget _buildContainerCards(
-    BuildContext context,
-    bool isDarkMode,
-    double screenWidth,
-  ) {
-    final isLargeScreen = screenWidth >= AppTheme.breakpointLarge;
-
-    final List<Widget> cards = [
-      _buildCard(
-        context,
-        title: 'Receita Mensal',
-        value: 'R\$ 125.430,00',
-        details: '+12%',
-        detailsPositive: true,
-        icon: Icons.trending_up_rounded,
-        color: isDarkMode ? AppTheme.successDark : AppTheme.successLight,
-      ),
-      _buildCard(
-        context,
-        title: 'ICMS a Recolher',
-        value: 'R\$ 8.750,00',
-        details: 'Vence 15/12',
-        detailsPositive: null,
-        icon: Icons.gavel_rounded,
-        color: isDarkMode ? AppTheme.warningDark : AppTheme.warningLight,
-      ),
-      _buildCard(
-        context,
-        title: 'Documentos Pendentes',
-        value: '23',
-        details: '-5 hoje',
-        detailsPositive: false,
-        icon: Icons.assignment_late_rounded,
-        color: isDarkMode ? AppTheme.errorDark : AppTheme.errorLight,
-      ),
-      _buildCard(
-        context,
-        title: 'Compliance Score',
-        value: '94%',
-        details: '+2% mês',
-        detailsPositive: true,
-        icon: Icons.verified_rounded,
-        color: isDarkMode ? AppTheme.infoDark : AppTheme.infoLight,
-      ),
-    ];
-
-    if (isLargeScreen) {
-      return GridView.count(
-        shrinkWrap: true,
-        physics: const NeverScrollableScrollPhysics(),
-        crossAxisCount: 4,
-        crossAxisSpacing: AppTheme.spacingL,
-        mainAxisSpacing: AppTheme.spacingL,
-        childAspectRatio: 2.2,
-        children: cards,
-      );
-    } else {
-      return Wrap(
-        spacing: AppTheme.spacingM,
-        runSpacing: AppTheme.spacingM,
-        children: cards.map((card) {
-          return SizedBox(width: 280, height: 160, child: card);
-        }).toList(),
-      );
-    }
-  }
-
-  Widget _buildCard(
-    BuildContext context, {
-    required String title,
-    required String value,
-    required String details,
-    required bool? detailsPositive,
-    required IconData icon,
-    required Color color,
-  }) {
-    final screenWidth = MediaQuery.of(context).size.width;
-
-    return Card(
-      elevation: 0,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(AppTheme.borderRadiusM),
-      ),
-      clipBehavior: Clip.antiAlias,
-      child: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [color, color.withValues(alpha: 0.7)],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
-        ),
-        child: Stack(
-          children: [
-            Positioned(
-              right: -20,
-              top: -20,
-              child: Opacity(
-                opacity: 0.2,
-                child: Icon(icon, size: 100, color: Colors.white),
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.all(AppTheme.spacingM),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Icon(icon, color: Colors.white, size: 30),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        title,
-                        style: Theme.of(context).textTheme.titleMedium
-                            ?.copyWith(
-                              color: Colors.white.withValues(alpha: 0.8),
-                              fontWeight: FontWeight.w500,
-                            ),
-                      ),
-                      SizedBox(height: AppTheme.spacingXS),
-                      Text(
-                        value,
-                        style: Theme.of(context).textTheme.headlineSmall
-                            ?.copyWith(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              fontSize: AppTheme.getResponsiveFontSize(
-                                screenWidth,
-                                22,
-                              ),
-                            ),
-                      ),
-                      SizedBox(height: AppTheme.spacingS),
-                      Row(
-                        children: [
-                          if (detailsPositive != null)
-                            Icon(
-                              detailsPositive
-                                  ? Icons.arrow_upward_rounded
-                                  : Icons.arrow_downward_rounded,
-                              size: 14,
-                              color: Colors.white.withValues(alpha: 0.8),
-                            ),
-                          if (detailsPositive != null)
-                            SizedBox(width: AppTheme.spacingXS),
-                          Text(
-                            details,
-                            style: Theme.of(context).textTheme.bodySmall
-                                ?.copyWith(
-                                  color: Colors.white.withValues(alpha: 0.9),
-                                  fontWeight: FontWeight.w600,
-                                ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
       ),
     );
   }
