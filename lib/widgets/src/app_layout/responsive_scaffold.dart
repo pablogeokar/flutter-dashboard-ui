@@ -165,7 +165,7 @@ class _ResponsiveScaffoldState extends State<ResponsiveScaffold> {
             ? AppTheme.surfaceDark.withValues(
                 alpha: 0.7,
               ) // Slate 900 com transparência
-            : Colors.white, // Branco puro para modo claro
+            : Colors.transparent, // Usa o fundo do Scaffold
         borderRadius: BorderRadius.circular(AppTheme.borderRadiusL),
         border: Border.all(
           color: isDarkMode

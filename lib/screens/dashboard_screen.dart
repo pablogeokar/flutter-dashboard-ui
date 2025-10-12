@@ -129,58 +129,97 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   Widget _buildMetricsCards(
     BuildContext context,
+
     bool isDarkMode,
+
     double screenWidth,
   ) {
     final isLargeScreen = screenWidth >= AppTheme.breakpointLarge;
 
     return GridView.count(
       shrinkWrap: true,
+
       physics: const NeverScrollableScrollPhysics(),
+
       crossAxisCount: isLargeScreen ? 4 : 2,
+
       crossAxisSpacing: AppTheme.spacingL,
+
       mainAxisSpacing: AppTheme.spacingL,
-      childAspectRatio: isLargeScreen ? 1.2 : 1.1,
+
+      childAspectRatio: isLargeScreen ? 1.5 : 1.2, // Mais largos e menos altos
+
       children: [
         _buildMetricCard(
           context,
+
           isDarkMode,
+
           title: 'Receita Mensal',
+
           value: 'R\$ 125.430,00',
+
           change: '+12%',
+
           changePositive: true,
+
           icon: Icons.trending_up_rounded,
-          color: AppTheme.successLight,
+
+          type: 'success',
         ),
+
         _buildMetricCard(
           context,
+
           isDarkMode,
+
           title: 'ICMS a Recolher',
+
           value: 'R\$ 8.750,00',
+
           change: 'Vence 15/12',
+
           changePositive: null,
+
           icon: Icons.gavel_rounded,
-          color: AppTheme.warningLight,
+
+          type: 'warning',
         ),
+
         _buildMetricCard(
           context,
+
           isDarkMode,
+
           title: 'Documentos Pendentes',
+
           value: '23',
+
           change: '-5 hoje',
+
           changePositive: true,
+
           icon: Icons.assignment_late_rounded,
-          color: AppTheme.errorLight,
+
+          type: 'error',
         ),
+
         _buildMetricCard(
           context,
+
           isDarkMode,
+
           title: 'Compliance Score',
+
           value: '94%',
+
           change: '+2% mês',
+
           changePositive: true,
+
           icon: Icons.verified_rounded,
-          color: AppTheme.successLight,
+
+          type: 'success',
         ),
       ],
     );
@@ -188,58 +227,107 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   Widget _buildMetricCard(
     BuildContext context,
+
     bool isDarkMode, {
+
     required String title,
+
     required String value,
+
     required String change,
+
     required bool? changePositive,
+
     required IconData icon,
-    required Color color,
+
+    required String type,
   }) {
+    final Color color;
+
+    switch (type) {
+      case 'success':
+        color = isDarkMode ? AppTheme.successDark : AppTheme.successLight;
+
+        break;
+
+      case 'warning':
+        color = isDarkMode ? AppTheme.warningDark : AppTheme.warningLight;
+
+        break;
+
+      case 'error':
+        color = isDarkMode ? AppTheme.errorDark : AppTheme.errorLight;
+
+        break;
+
+      default:
+        color = isDarkMode ? AppTheme.infoDark : AppTheme.infoLight;
+    }
+
     return Container(
       padding: EdgeInsets.all(AppTheme.spacingL),
+
       decoration: BoxDecoration(
         color: isDarkMode
-            ? AppTheme
-                  .cardBackgroundDark // #1E1E1E
-            : AppTheme.cardBackgroundLight, // #FFFFFF
-        borderRadius: BorderRadius.circular(8), // border-radius: 8px
-        border: isDarkMode
-            ? Border.all(
-                color: AppTheme.cardBorderDark, // #2F2F2F
-                width: 1,
-              )
-            : null, // Sem borda no modo claro
+            ? AppTheme.cardBackgroundDark
+            : AppTheme.cardBackgroundLight,
+
+        borderRadius: BorderRadius.circular(
+          AppTheme.borderRadiusM,
+        ), // Bordas mais suaves
+
+        border: Border.all(
+          color: isDarkMode
+              ? AppTheme.cardBorderDark
+              : AppTheme.neutral200, // Borda para ambos os temas
+
+          width: 1,
+        ),
+
         boxShadow: isDarkMode
-            ? null // Sem sombra no modo dark
+            ? null
             : [
                 BoxShadow(
-                  color: AppTheme.cardShadowLight, // rgba(0, 0, 0, 0.04)
+                  color: AppTheme.cardShadowLight,
+
                   blurRadius: 4,
+
                   offset: const Offset(0, 2),
                 ),
               ],
       ),
+
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
+
+        mainAxisAlignment:
+            MainAxisAlignment.spaceBetween, // Distribui o conteúdo
+
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
             children: [
               Container(
                 padding: EdgeInsets.all(AppTheme.spacingS),
+
                 decoration: BoxDecoration(
                   color: color.withValues(alpha: 0.1),
+
                   borderRadius: BorderRadius.circular(AppTheme.borderRadiusS),
                 ),
+
                 child: Icon(icon, size: 20, color: color),
               ),
+
               if (changePositive != null)
                 Icon(
                   changePositive
                       ? Icons.trending_up_rounded
                       : Icons.trending_down_rounded,
+
                   size: 16,
+
                   color: changePositive
                       ? AppTheme.successLight
                       : AppTheme.errorLight,
@@ -247,39 +335,35 @@ class _DashboardScreenState extends State<DashboardScreen> {
             ],
           ),
 
-          SizedBox(height: AppTheme.spacingM),
-
           // Título do card com hierarquia tipográfica
           Text(
             title,
+
             style: Theme.of(context).textTheme.titleMedium?.copyWith(
               color: isDarkMode
                   ? AppTheme
                         .textSecondaryDark // #B0B0B0
                   : AppTheme.textSecondaryLight, // #666666
+
               fontWeight: FontWeight.w500,
             ),
           ),
 
-          SizedBox(height: AppTheme.spacingS),
-
           // Valor principal com destaque
           Text(
             value,
+
             style: Theme.of(context).textTheme.headlineSmall?.copyWith(
               fontWeight: FontWeight.bold, // font-weight: bold
-              color: isDarkMode
-                  ? AppTheme
-                        .secondaryDark // #E0E0E0
-                  : AppTheme.secondaryLight, // #333333
+
+              color: color,
             ),
           ),
-
-          SizedBox(height: AppTheme.spacingS),
 
           // Detalhes com tamanho menor
           Text(
             change,
+
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
               color: changePositive == null
                   ? (isDarkMode
@@ -288,7 +372,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   : changePositive
                   ? AppTheme.successLight
                   : AppTheme.errorLight,
+
               fontWeight: FontWeight.w600,
+
               fontSize: 12, // font-size: smaller
             ),
           ),

@@ -14,15 +14,60 @@ class _CommandPaletteState extends State<CommandPalette> {
 
   // Placeholder data with groups
   final List<Map<String, dynamic>> _allItems = [
-    {'group': 'Navegação', 'title': 'Dashboard', 'icon': Icons.dashboard_rounded, 'onTap': () {}},
-    {'group': 'Cadastros', 'title': 'Clientes', 'icon': Icons.people_rounded, 'onTap': () {}},
-    {'group': 'Cadastros', 'title': 'Fornecedores', 'icon': Icons.business_rounded, 'onTap': () {}},
-    {'group': 'Fiscal', 'title': 'Apuração ICMS', 'icon': Icons.calculate_rounded, 'onTap': () {}},
-    {'group': 'Fiscal', 'title': 'SPED Fiscal', 'icon': Icons.description_rounded, 'onTap': () {}},
-    {'group': 'Relatórios', 'title': 'Balancetes', 'icon': Icons.balance_rounded, 'onTap': () {}},
-    {'group': 'Relatórios', 'title': 'DRE', 'icon': Icons.trending_up_rounded, 'onTap': () {}},
-    {'group': 'Ações', 'title': 'Lançar Nota Fiscal', 'icon': Icons.add_circle_outline_rounded, 'onTap': () {}},
-    {'group': 'Ações', 'title': 'Configurações', 'icon': Icons.settings_rounded, 'onTap': () {}},
+    {
+      'group': 'Navegação',
+      'title': 'Dashboard',
+      'icon': Icons.dashboard_rounded,
+      'onTap': () {},
+    },
+    {
+      'group': 'Cadastros',
+      'title': 'Clientes',
+      'icon': Icons.people_rounded,
+      'onTap': () {},
+    },
+    {
+      'group': 'Cadastros',
+      'title': 'Fornecedores',
+      'icon': Icons.business_rounded,
+      'onTap': () {},
+    },
+    {
+      'group': 'Fiscal',
+      'title': 'Apuração ICMS',
+      'icon': Icons.calculate_rounded,
+      'onTap': () {},
+    },
+    {
+      'group': 'Fiscal',
+      'title': 'SPED Fiscal',
+      'icon': Icons.description_rounded,
+      'onTap': () {},
+    },
+    {
+      'group': 'Relatórios',
+      'title': 'Balancetes',
+      'icon': Icons.balance_rounded,
+      'onTap': () {},
+    },
+    {
+      'group': 'Relatórios',
+      'title': 'DRE',
+      'icon': Icons.trending_up_rounded,
+      'onTap': () {},
+    },
+    {
+      'group': 'Ações',
+      'title': 'Lançar Nota Fiscal',
+      'icon': Icons.add_circle_outline_rounded,
+      'onTap': () {},
+    },
+    {
+      'group': 'Ações',
+      'title': 'Configurações',
+      'icon': Icons.settings_rounded,
+      'onTap': () {},
+    },
   ];
 
   List<Map<String, dynamic>> _filteredItems = [];
@@ -50,14 +95,18 @@ class _CommandPaletteState extends State<CommandPalette> {
       _filteredItems = _allItems;
     } else {
       _filteredItems = _allItems
-          .where((item) =>
-              item['title'].toLowerCase().contains(_searchText.toLowerCase()))
+          .where(
+            (item) =>
+                item['title'].toLowerCase().contains(_searchText.toLowerCase()),
+          )
           .toList();
     }
     setState(() {});
   }
 
-  Map<String, List<Map<String, dynamic>>> _groupItems(List<Map<String, dynamic>> items) {
+  Map<String, List<Map<String, dynamic>>> _groupItems(
+    List<Map<String, dynamic>> items,
+  ) {
     final Map<String, List<Map<String, dynamic>>> grouped = {};
     for (var item in items) {
       final groupName = item['group'] as String;
@@ -80,15 +129,16 @@ class _CommandPaletteState extends State<CommandPalette> {
       insetPadding: const EdgeInsets.all(20),
       child: Center(
         child: ConstrainedBox(
-          constraints: const BoxConstraints(
-            maxWidth: 600,
-            maxHeight: 450,
-          ),
+          constraints: const BoxConstraints(maxWidth: 600, maxHeight: 450),
           child: Container(
             decoration: BoxDecoration(
-              color: isDarkMode ? AppTheme.cardBackgroundDark : AppTheme.cardBackgroundLight,
+              color: isDarkMode
+                  ? AppTheme.cardBackgroundDark
+                  : AppTheme.cardBackgroundLight,
               borderRadius: BorderRadius.circular(AppTheme.borderRadiusL),
-              border: isDarkMode ? Border.all(color: AppTheme.cardBorderDark) : null,
+              border: isDarkMode
+                  ? Border.all(color: AppTheme.cardBorderDark)
+                  : null,
             ),
             child: Column(
               children: [
@@ -104,7 +154,9 @@ class _CommandPaletteState extends State<CommandPalette> {
                         return _buildGroup(context, groupName, items);
                       } else {
                         return Column(
-                          children: _filteredItems.map((item) => _buildItem(context, item)).toList(),
+                          children: _filteredItems
+                              .map((item) => _buildItem(context, item))
+                              .toList(),
                         );
                       }
                     },
@@ -125,16 +177,26 @@ class _CommandPaletteState extends State<CommandPalette> {
       style: Theme.of(context).textTheme.bodyLarge,
       decoration: InputDecoration(
         hintText: 'Digite um comando ou busque...',
-        prefixIcon: Icon(Icons.search_rounded, color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6)),
+        prefixIcon: Icon(
+          Icons.search_rounded,
+          color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
+        ),
         border: InputBorder.none,
         contentPadding: const EdgeInsets.all(AppTheme.spacingL),
       ),
     );
   }
 
-  Widget _buildGroup(BuildContext context, String title, List<Map<String, dynamic>> items) {
+  Widget _buildGroup(
+    BuildContext context,
+    String title,
+    List<Map<String, dynamic>> items,
+  ) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: AppTheme.spacingM, vertical: AppTheme.spacingS),
+      padding: const EdgeInsets.symmetric(
+        horizontal: AppTheme.spacingM,
+        vertical: AppTheme.spacingS,
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -143,7 +205,9 @@ class _CommandPaletteState extends State<CommandPalette> {
             child: Text(
               title,
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                color: Theme.of(context).colorScheme.onSurface.withOpacity(0.5),
+                color: Theme.of(
+                  context,
+                ).colorScheme.onSurface.withValues(alpha: 0.5),
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -164,12 +228,24 @@ class _CommandPaletteState extends State<CommandPalette> {
         },
         borderRadius: BorderRadius.circular(AppTheme.borderRadiusS),
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: AppTheme.spacingM, vertical: AppTheme.spacingS),
+          padding: const EdgeInsets.symmetric(
+            horizontal: AppTheme.spacingM,
+            vertical: AppTheme.spacingS,
+          ),
           child: Row(
             children: [
-              Icon(item['icon'] as IconData, size: 20, color: Theme.of(context).colorScheme.onSurface.withOpacity(0.8)),
+              Icon(
+                item['icon'] as IconData,
+                size: 20,
+                color: Theme.of(
+                  context,
+                ).colorScheme.onSurface.withValues(alpha: 0.8),
+              ),
               const SizedBox(width: AppTheme.spacingM),
-              Text(item['title'] as String, style: Theme.of(context).textTheme.bodyMedium),
+              Text(
+                item['title'] as String,
+                style: Theme.of(context).textTheme.bodyMedium,
+              ),
             ],
           ),
         ),

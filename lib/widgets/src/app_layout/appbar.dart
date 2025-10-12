@@ -427,15 +427,12 @@ class _SimpleAvatarState extends State<_SimpleAvatar> {
 }
 
 void _showCommandPalette(BuildContext context) {
-  showDialog(
-    context: context,
-    builder: (context) => const CommandPalette(),
-  );
+  showDialog(context: context, builder: (context) => const CommandPalette());
 }
 
 /// Campo de busca global que abre a paleta de comandos.
 class _GlobalSearchField extends StatelessWidget {
-  const _GlobalSearchField({super.key});
+  const _GlobalSearchField();
 
   @override
   Widget build(BuildContext context) {
@@ -466,27 +463,28 @@ class _GlobalSearchField extends StatelessWidget {
               Icon(
                 Icons.search_rounded,
                 size: 18,
-                color: Theme.of(context).colorScheme.onSurface.withOpacity(0.5),
+                color: Theme.of(
+                  context,
+                ).colorScheme.onSurface.withValues(alpha: 0.5),
               ),
               const SizedBox(width: 8),
               Text(
                 'Buscar...',
                 style: TextStyle(
                   fontSize: 13,
-                  color: Theme.of(context).colorScheme.onSurface.withOpacity(0.5),
+                  color: Theme.of(
+                    context,
+                  ).colorScheme.onSurface.withValues(alpha: 0.5),
                 ),
               ),
               const Spacer(),
               Container(
                 margin: const EdgeInsets.only(right: 8),
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 6,
-                  vertical: 2,
-                ),
+                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                 decoration: BoxDecoration(
                   color: isDarkMode
-                      ? AppTheme.neutral700.withOpacity(0.5)
-                      : AppTheme.neutral200.withOpacity(0.7),
+                      ? AppTheme.neutral700.withValues(alpha: 0.5)
+                      : AppTheme.neutral200.withValues(alpha: 0.7),
                   borderRadius: BorderRadius.circular(4),
                 ),
                 child: Text(
@@ -494,7 +492,9 @@ class _GlobalSearchField extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 10,
                     fontWeight: FontWeight.w500,
-                    color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+                    color: Theme.of(
+                      context,
+                    ).colorScheme.onSurface.withValues(alpha: 0.6),
                   ),
                 ),
               ),

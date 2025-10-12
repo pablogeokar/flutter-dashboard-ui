@@ -9,9 +9,16 @@ Sistema de Gestão Fiscal desenvolvido em Flutter para a **Domani Fiscal**. Inte
 - **Idioma:** Português do Brasil (pt-BR) em todo código, comentários e interface
 - **Nomenclatura:** Funções, variáveis e componentes em português
 - **Branding:** Sempre usar "Domani Fiscal" (nunca "Dashboard UI")
-- **Paleta de Cores Atualizada:**
-  - **Modo Light:** Destaque `#007BFF`, Fundo `#F5F7FA`, Cards `#FFFFFF`
-  - **Modo Dark:** Destaque `#5B9CF8`, Fundo `#121212`, Cards `#1E1E1E`
+- **Paleta de Cores Atualizada (Outubro 2025):**
+  - **Modo Light:**
+    - **Destaque:** `#007BFF` (Azul primário)
+    - **Fundo Principal:** `#EDF1F5` (Cinza suave para conforto visual)
+    - **Fundo Sidebar:** `#F5F7FA` (Tom intermediário para separação)
+    - **Cards:** `#FFFFFF` (Branco para áreas de conteúdo)
+  - **Modo Dark:**
+    - **Destaque:** `#5B9CF8`
+    - **Fundo Principal:** `#121212`
+    - **Cards:** `#1E1E1E`
 
 ## Arquitetura Atual (Refatorada - Outubro 2025)
 
@@ -47,6 +54,25 @@ lib/
 - **lib/services/** - Lógica de negócio e serviços específicos do projeto
 - **lib/widgets/** - Componentes visuais 100% reutilizáveis (copy-paste ready)
 - **lib/screens/** - Páginas da aplicação que combinam widgets e serviços
+
+## Recursos e Padrões de UI
+
+### 💬 Paleta de Comandos (Busca Global)
+
+A aplicação implementa uma busca global no estilo "Paleta de Comandos", acessível pela barra de navegação superior ou pelo atalho `Ctrl+K`.
+
+- **Ativação:** Clique no campo de busca na `AppBar` ou use o atalho de teclado.
+- **Widget Principal:** `lib/widgets/src/app_layout/command_palette.dart`
+- **Funcionamento:** Um diálogo modal (`CommandPalette`) é exibido, permitindo ao usuário buscar e filtrar uma lista de ações e itens de navegação.
+- **Padrão de Atalho:** A lógica é centralizada usando um `SearchIntent` e `SearchAction`, definidos em `lib/utils/keyboard_shortcuts.dart` e implementados em `lib/widgets/src/app_layout/app_shell.dart`.
+
+### 🔔 Serviço de Feedback (Notificações)
+
+Para exibir mensagens de feedback (sucesso, erro, aviso), o sistema utiliza um serviço customizado que renderiza uma notificação no topo da tela.
+
+- **Serviço:** `SnackBarService` (localizado em `lib/widgets/feedback.dart`)
+- **Implementação:** Este serviço foi refatorado para usar uma `Overlay` do Flutter em vez do `SnackBar` padrão. Isso garante controle total sobre a posição (topo da tela), aparência e animação, desacoplando o feedback do `Scaffold`.
+- **Uso:** `SnackBarService.showSuccess(context, message: 'Operação concluída!');`
 
 ## Padrões de Código
 
