@@ -21,7 +21,7 @@ class ModernAppBar extends StatelessWidget implements PreferredSizeWidget {
       decoration: BoxDecoration(
         color: isDarkMode
             ? AppTheme.drawerBackgroundDark.withValues(alpha: 0.95)
-            : Colors.white.withValues(alpha: 0.95),
+            : Colors.transparent,
         border: Border(
           bottom: BorderSide(
             color: isDarkMode
