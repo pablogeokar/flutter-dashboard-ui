@@ -186,7 +186,10 @@ class _ResponsiveDrawerState extends State<ResponsiveDrawer> {
           ),
           // Card de status/informações
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: responsiveSpacing),
+            padding: EdgeInsets.symmetric(
+              horizontal: responsiveSpacing,
+              vertical: responsiveSpacing,
+            ),
             child: Container(
               padding: EdgeInsets.all(
                 AppTheme.spacingS,
@@ -276,10 +279,8 @@ class _ResponsiveDrawerState extends State<ResponsiveDrawer> {
           // Área principal expansível com itens principais
           Expanded(
             child: SingleChildScrollView(
-              padding: EdgeInsets.symmetric(
-                horizontal: isSmallScreen
-                    ? responsiveSpacingS
-                    : responsiveSpacing,
+              padding: const EdgeInsets.symmetric(
+                horizontal: 8, // Padding horizontal mínimo
               ),
               child: Column(children: _buildItemList(widget.itensPrincipais)),
             ),
@@ -288,7 +289,7 @@ class _ResponsiveDrawerState extends State<ResponsiveDrawer> {
           Padding(
             padding: EdgeInsets.symmetric(
               horizontal: responsiveSpacingL,
-              vertical: AppTheme.spacingXS, // Espaçamento ainda mais reduzido
+              vertical: 2, // Espaçamento mínimo absoluto
             ),
             child: Container(
               height: 1,
@@ -402,9 +403,9 @@ class _ResponsiveDrawerState extends State<ResponsiveDrawer> {
   // Divisor sutil entre grupos de itens
   Widget _buildGroupDivider() {
     return Container(
-      margin: EdgeInsets.symmetric(
-        vertical: AppTheme.spacingXS, // Ainda mais reduzido para compactar
-        horizontal: AppTheme.spacingM,
+      margin: const EdgeInsets.symmetric(
+        vertical: 2, // Espaçamento mínimo absoluto entre grupos
+        horizontal: 16,
       ),
       height: 1,
       decoration: BoxDecoration(

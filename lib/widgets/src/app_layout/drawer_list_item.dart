@@ -2,16 +2,16 @@ import 'package:flutter/material.dart';
 import '../../../theme/theme.dart';
 import 'drawer_item.dart';
 
-/// Widget para renderizar itens individuais da barra lateral de navegação
+/// Widget ultra-compacto para renderizar itens da barra lateral de navegação
 class DrawerListItem extends StatefulWidget {
   final DrawerItem item;
   final bool isSelected;
   final VoidCallback onTap;
   final bool isSubItem;
   final bool isFooterItem;
-  final bool isExpansionTitle; // Para indicar se está dentro de ExpansionTile
-  final int? badgeCount; // Para indicadores numéricos
-  final bool? hasAlert; // Para indicadores de alerta
+  final bool isExpansionTitle;
+  final int? badgeCount;
+  final bool? hasAlert;
 
   const DrawerListItem({
     super.key,
@@ -29,35 +29,8 @@ class DrawerListItem extends StatefulWidget {
   State<DrawerListItem> createState() => _DrawerListItemState();
 }
 
-class _DrawerListItemState extends State<DrawerListItem>
-    with SingleTickerProviderStateMixin {
+class _DrawerListItemState extends State<DrawerListItem> {
   bool _isHovered = false;
-  late AnimationController _animationController;
-
-  @override
-  void initState() {
-    super.initState();
-    _animationController = AnimationController(
-      duration: const Duration(milliseconds: 200),
-      vsync: this,
-    );
-  }
-
-  @override
-  void dispose() {
-    _animationController.dispose();
-    super.dispose();
-  }
-
-  void _onHoverEnter() {
-    setState(() => _isHovered = true);
-    _animationController.forward();
-  }
-
-  void _onHoverExit() {
-    setState(() => _isHovered = false);
-    _animationController.reverse();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -65,102 +38,135 @@ class _DrawerListItemState extends State<DrawerListItem>
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
     final primaryColor = Theme.of(context).colorScheme.primary;
 
-    Widget content = AnimatedBuilder(
-      animation: _animationController,
-      builder: (context, child) {
-        return MouseRegion(
-          onEnter: (_) => _onHoverEnter(),
-          onExit: (_) => _onHoverExit(),
-          // Cursor pointer para itens clicáveis (incluindo títulos de ExpansionTile)
-          cursor: (hasSubItems && !widget.isExpansionTitle)
-              ? SystemMouseCursors.basic
-              : SystemMouseCursors.click,
-          child: Stack(
-            children: [
-              // Indicador de item ativo (linha vertical de 4px na borda esquerda)
-              if (widget.isSelected && !widget.isSubItem)
-                Positioned(
-                  left: 0,
-                  top: 4,
-                  bottom: 4,
-                  child: AnimatedContainer(
-                    duration: const Duration(milliseconds: 200),
-                    width: 4,
-                    decoration: BoxDecoration(
-                      color: primaryColor,
-                      borderRadius: BorderRadius.circular(2),
-                    ),
-                  ),
-                ),
-
-              // Container principal do item
-              AnimatedContainer(
-                duration: const Duration(milliseconds: 200),
-                margin: EdgeInsets.symmetric(
-                  vertical: 0.5, // Espaçamento ainda mais mínimo entre itens
-                  horizontal: widget.isSubItem
-                      ? AppTheme.spacingXS
-                      : 0, // Reduzido para subitens
-                ),
+    Widget content = MouseRegion(
+      onEnter: (_) => setState(() => _isHovered = true),
+      onExit: (_) => setState(() => _isHovered = false),
+      cursor: (hasSubItems && !widget.isExpansionTitle)
+          ? SystemMouseCursors.basic
+          : SystemMouseCursors.click,
+      child: Stack(
+        children: [
+          // Indicador de item ativo (linha vertical)
+          if (widget.isSelected && !widget.isSubItem)
+            Positioned(
+              left: 0,
+              top: 2,
+              bottom: 2,
+              child: Container(
+                width: 3,
                 decoration: BoxDecoration(
-                  color: _getBackgroundColor(isDarkMode, primaryColor),
-                  borderRadius: BorderRadius.circular(AppTheme.borderRadiusM),
-                ),
-                child: Material(
-                  color: Colors.transparent,
-                  child: widget.isExpansionTitle
-                      ? // Para títulos de ExpansionTile, não usar InkWell (deixar o ExpansionTile controlar)
-                        Padding(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: widget.isSelected && !widget.isSubItem
-                                ? AppTheme.spacingM +
-                                      8 // Espaço extra para o indicador
-                                : AppTheme.spacingM,
-                            vertical:
-                                AppTheme.spacingS, // Padding vertical compacto
-                          ),
-                          child: _buildItemContent(isDarkMode, primaryColor),
-                        )
-                      : InkWell(
-                          // Para itens normais, usar InkWell
-                          onTap: hasSubItems ? null : widget.onTap,
-                          borderRadius: BorderRadius.circular(
-                            AppTheme.borderRadiusM,
-                          ),
-                          mouseCursor: hasSubItems
-                              ? SystemMouseCursors.basic
-                              : SystemMouseCursors.click,
-                          child: Padding(
-                            padding: EdgeInsets.symmetric(
-                              horizontal: widget.isSelected && !widget.isSubItem
-                                  ? AppTheme.spacingS +
-                                        8 // Espaço extra para o indicador - reduzido
-                                  : AppTheme
-                                        .spacingS, // Reduzido padding horizontal
-                              vertical: AppTheme
-                                  .spacingXS, // Padding vertical ainda mais compacto
-                            ),
-                            child: _buildItemContent(isDarkMode, primaryColor),
-                          ),
-                        ),
+                  color: primaryColor,
+                  borderRadius: BorderRadius.circular(1.5),
                 ),
               ),
-            ],
+            ),
+
+          // Container principal ultra-compacto
+          Container(
+            margin: const EdgeInsets.symmetric(
+              vertical: 0,
+            ), // Zero margin vertical
+            decoration: BoxDecoration(
+              color: _getBackgroundColor(isDarkMode, primaryColor),
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Material(
+              color: Colors.transparent,
+              child: widget.isExpansionTitle
+                  ? _buildContent(isDarkMode, primaryColor, hasSubItems)
+                  : InkWell(
+                      onTap: hasSubItems ? null : widget.onTap,
+                      borderRadius: BorderRadius.circular(8),
+                      mouseCursor: hasSubItems
+                          ? SystemMouseCursors.basic
+                          : SystemMouseCursors.click,
+                      child: _buildContent(
+                        isDarkMode,
+                        primaryColor,
+                        hasSubItems,
+                      ),
+                    ),
+            ),
           ),
-        );
-      },
+        ],
+      ),
     );
 
     if (widget.isSubItem) {
       return Padding(
-        padding: EdgeInsets.only(
-          left: AppTheme.spacingM,
-        ), // Reduzido de spacingL para spacingM
+        padding: const EdgeInsets.only(
+          left: 12,
+        ), // Indentação mínima para subitens
         child: content,
       );
     }
 
     return content;
+  }
+
+  Widget _buildContent(bool isDarkMode, Color primaryColor, bool hasSubItems) {
+    return Padding(
+      padding: EdgeInsets.symmetric(
+        horizontal: widget.isSelected && !widget.isSubItem
+            ? 10
+            : 6, // Padding mínimo
+        vertical: 6, // Padding vertical ultra-compacto
+      ),
+      child: Row(
+        children: [
+          // Ícone compacto
+          Container(
+            width: 24, // Ícone ainda menor
+            height: 24,
+            decoration: BoxDecoration(
+              color: _getIconBackgroundColor(isDarkMode, primaryColor),
+              borderRadius: BorderRadius.circular(4),
+            ),
+            child: Icon(
+              widget.isSelected && _hasFilledVariant(widget.item.icon)
+                  ? _getFilledIcon(widget.item.icon)
+                  : widget.item.icon,
+              size: 14, // Ícone menor
+              color: _getIconColor(isDarkMode, primaryColor),
+            ),
+          ),
+
+          const SizedBox(width: 8), // Espaçamento mínimo
+          // Texto compacto
+          Expanded(
+            child: Text(
+              widget.item.title,
+              style: TextStyle(
+                fontWeight: widget.isSelected
+                    ? FontWeight.w600
+                    : FontWeight.w400,
+                color: _getTextColor(isDarkMode, primaryColor),
+                fontSize: 12.5, // Fonte ainda menor
+                height: 1.1, // Line-height ultra-compacto
+              ),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+
+          // Indicadores
+          ..._buildIndicators(isDarkMode, primaryColor),
+
+          // Seta para subitens
+          if (hasSubItems && !widget.isExpansionTitle) ...[
+            const SizedBox(width: 4),
+            Icon(
+              Icons.chevron_right_rounded,
+              size: 14,
+              color: _getTextColor(
+                isDarkMode,
+                primaryColor,
+              ).withValues(alpha: 0.6),
+            ),
+          ],
+        ],
+      ),
+    );
   }
 
   Color _getBackgroundColor(bool isDarkMode, Color primaryColor) {
@@ -170,119 +176,6 @@ class _DrawerListItemState extends State<DrawerListItem>
       return isDarkMode ? AppTheme.hoverDark : AppTheme.hoverLight;
     }
     return Colors.transparent;
-  }
-
-  Widget _buildItemContent(bool isDarkMode, Color primaryColor) {
-    final bool hasSubItems = widget.item.subItems?.isNotEmpty ?? false;
-
-    return Row(
-      children: [
-        // Container do ícone com animação - design mais elegante
-        AnimatedContainer(
-          duration: const Duration(milliseconds: 200),
-          width: 28, // Reduzido de 32 para 28
-          height: 28, // Reduzido de 32 para 28
-          decoration: BoxDecoration(
-            color: _getIconBackgroundColor(isDarkMode, primaryColor),
-            borderRadius: BorderRadius.circular(6), // Cantos menos arredondados
-          ),
-          child: Icon(
-            // Usar ícone preenchido quando selecionado
-            widget.isSelected && _hasFilledVariant(widget.item.icon)
-                ? _getFilledIcon(widget.item.icon)
-                : widget.item.icon,
-            size: 15, // Reduzido de 16 para 15
-            color: _getIconColor(isDarkMode, primaryColor),
-          ),
-        ),
-
-        SizedBox(
-          width: AppTheme.spacingS,
-        ), // Reduzido espaçamento entre ícone e texto
-        // Texto do item com tipografia aprimorada
-        Expanded(
-          child: Text(
-            widget.item.title,
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              fontWeight: widget.isSelected
-                  ? FontWeight.w600
-                  : FontWeight.w400, // Reduzido peso da fonte
-              color: _getTextColor(isDarkMode, primaryColor),
-              height: 1.2, // Reduzido line-height para mais compacto
-              fontSize: 13, // Reduzido tamanho da fonte
-            ),
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-          ),
-        ),
-
-        // Indicadores e badges
-        ..._buildIndicators(isDarkMode, primaryColor),
-
-        // Seta para itens com subitens (apenas se não for título de ExpansionTile)
-        if (hasSubItems && !widget.isExpansionTitle) ...[
-          SizedBox(width: AppTheme.spacingS),
-          AnimatedRotation(
-            turns: 0, // Pode ser usado para rotacionar a seta quando expandido
-            duration: const Duration(milliseconds: 200),
-            child: Icon(
-              Icons.chevron_right_rounded,
-              size: 16,
-              color: _getTextColor(
-                isDarkMode,
-                primaryColor,
-              ).withValues(alpha: 0.6),
-            ),
-          ),
-        ],
-      ],
-    );
-  }
-
-  // Função para verificar se o ícone tem variante preenchida
-  bool _hasFilledVariant(IconData icon) {
-    final iconsWithFilledVariants = {
-      Icons.dashboard_rounded,
-      Icons.people_rounded,
-      Icons.business_rounded,
-      Icons.inventory_2_rounded,
-      Icons.account_tree_rounded,
-      Icons.gavel_rounded,
-      Icons.calculate_rounded,
-      Icons.description_rounded,
-      Icons.assignment_rounded,
-      Icons.event_rounded,
-      Icons.analytics_rounded,
-      Icons.balance_rounded,
-      Icons.trending_up_rounded,
-      Icons.account_balance_wallet_rounded,
-      Icons.settings_rounded,
-      Icons.help_outline_rounded,
-    };
-    return iconsWithFilledVariants.contains(icon);
-  }
-
-  // Função para obter o ícone preenchido
-  IconData _getFilledIcon(IconData icon) {
-    final iconMapping = {
-      Icons.dashboard_rounded: Icons.dashboard,
-      Icons.people_rounded: Icons.people,
-      Icons.business_rounded: Icons.business,
-      Icons.inventory_2_rounded: Icons.inventory_2,
-      Icons.account_tree_rounded: Icons.account_tree,
-      Icons.gavel_rounded: Icons.gavel,
-      Icons.calculate_rounded: Icons.calculate,
-      Icons.description_rounded: Icons.description,
-      Icons.assignment_rounded: Icons.assignment,
-      Icons.event_rounded: Icons.event,
-      Icons.analytics_rounded: Icons.analytics,
-      Icons.balance_rounded: Icons.balance,
-      Icons.trending_up_rounded: Icons.trending_up,
-      Icons.account_balance_wallet_rounded: Icons.account_balance_wallet,
-      Icons.settings_rounded: Icons.settings,
-      Icons.help_outline_rounded: Icons.help,
-    };
-    return iconMapping[icon] ?? icon;
   }
 
   Color _getIconBackgroundColor(bool isDarkMode, Color primaryColor) {
@@ -312,24 +205,68 @@ class _DrawerListItemState extends State<DrawerListItem>
     return Theme.of(context).colorScheme.onSurface;
   }
 
+  bool _hasFilledVariant(IconData icon) {
+    final iconsWithFilledVariants = {
+      Icons.dashboard_rounded,
+      Icons.people_rounded,
+      Icons.business_rounded,
+      Icons.inventory_2_rounded,
+      Icons.account_tree_rounded,
+      Icons.gavel_rounded,
+      Icons.calculate_rounded,
+      Icons.description_rounded,
+      Icons.assignment_rounded,
+      Icons.event_rounded,
+      Icons.analytics_rounded,
+      Icons.balance_rounded,
+      Icons.trending_up_rounded,
+      Icons.account_balance_wallet_rounded,
+      Icons.settings_rounded,
+      Icons.help_outline_rounded,
+    };
+    return iconsWithFilledVariants.contains(icon);
+  }
+
+  IconData _getFilledIcon(IconData icon) {
+    final iconMapping = {
+      Icons.dashboard_rounded: Icons.dashboard,
+      Icons.people_rounded: Icons.people,
+      Icons.business_rounded: Icons.business,
+      Icons.inventory_2_rounded: Icons.inventory_2,
+      Icons.account_tree_rounded: Icons.account_tree,
+      Icons.gavel_rounded: Icons.gavel,
+      Icons.calculate_rounded: Icons.calculate,
+      Icons.description_rounded: Icons.description,
+      Icons.assignment_rounded: Icons.assignment,
+      Icons.event_rounded: Icons.event,
+      Icons.analytics_rounded: Icons.analytics,
+      Icons.balance_rounded: Icons.balance,
+      Icons.trending_up_rounded: Icons.trending_up,
+      Icons.account_balance_wallet_rounded: Icons.account_balance_wallet,
+      Icons.settings_rounded: Icons.settings,
+      Icons.help_outline_rounded: Icons.help,
+    };
+    return iconMapping[icon] ?? icon;
+  }
+
   List<Widget> _buildIndicators(bool isDarkMode, Color primaryColor) {
     List<Widget> indicators = [];
 
-    // Badge numérico
+    // Badge numérico compacto
     if (widget.badgeCount != null && widget.badgeCount! > 0) {
       indicators.add(
         Container(
-          margin: EdgeInsets.only(left: AppTheme.spacingS),
-          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+          margin: const EdgeInsets.only(left: 4),
+          padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 1),
           decoration: BoxDecoration(
             color: AppTheme.errorLight,
-            borderRadius: BorderRadius.circular(10),
+            borderRadius: BorderRadius.circular(8),
           ),
           child: Text(
             widget.badgeCount! > 99 ? '99+' : widget.badgeCount.toString(),
             style: const TextStyle(
               color: Colors.white,
-              fontSize: 10,
+              fontSize: 9,
               fontWeight: FontWeight.w600,
             ),
           ),
@@ -337,23 +274,16 @@ class _DrawerListItemState extends State<DrawerListItem>
       );
     }
 
-    // Indicador de alerta
+    // Indicador de alerta compacto
     if (widget.hasAlert == true) {
       indicators.add(
         Container(
-          margin: EdgeInsets.only(left: AppTheme.spacingS),
-          width: 8,
-          height: 8,
+          margin: const EdgeInsets.only(left: 4),
+          width: 6,
+          height: 6,
           decoration: BoxDecoration(
             color: AppTheme.warningLight,
-            borderRadius: BorderRadius.circular(4),
-            boxShadow: [
-              BoxShadow(
-                color: AppTheme.warningLight.withValues(alpha: 0.3),
-                blurRadius: 4,
-                spreadRadius: 1,
-              ),
-            ],
+            borderRadius: BorderRadius.circular(3),
           ),
         ),
       );
