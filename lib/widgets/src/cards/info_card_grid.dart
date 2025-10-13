@@ -16,21 +16,23 @@ class InfoCardGrid extends StatelessWidget {
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
         crossAxisCount: 4,
-        crossAxisSpacing: AppTheme.spacingL,
-        mainAxisSpacing: AppTheme.spacingL,
-        childAspectRatio: 2.2,
+        crossAxisSpacing:
+            AppTheme.spacingM, // Reduzido de spacingL para spacingM
+        mainAxisSpacing:
+            AppTheme.spacingM, // Reduzido de spacingL para spacingM
+        childAspectRatio: 2.4, // Aumentado para cards mais compactos
         children: children,
       );
     } else {
       return Wrap(
-        spacing: AppTheme.spacingM,
-        runSpacing: AppTheme.spacingM,
+        spacing: AppTheme.spacingS, // Reduzido de spacingM para spacingS
+        runSpacing: AppTheme.spacingS, // Reduzido de spacingM para spacingS
         children: children.map((card) {
-          return Container(
-            width: 280,
-            height: 160,
+          return SizedBox(
+            width: 260,
+            height: 140,
             child: card,
-          );
+          ); // Reduzido tamanho: 280x160 -> 260x140
         }).toList(),
       );
     }

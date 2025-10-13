@@ -29,16 +29,16 @@ class AppTheme {
 
   // Cores de Superfície (fundo principal da aplicação)
   static const Color surfaceLight = Color(
-    0xFFEDF1F5,
-  ); // Fundo principal modo claro (#EDF1F5) - Mais escuro para conforto visual
+    0xFFE8EDF3,
+  ); // Fundo principal modo claro (#E8EDF3) - Mais escuro para melhor contraste em monitores antigos
   static const Color surfaceDark = Color(
     0xFF121212,
   ); // Fundo principal modo dark (#121212)
 
   // Cores de Fundo da Drawer (barra lateral)
   static const Color drawerBackgroundLight = Color(
-    0xFFF5F7FA,
-  ); // Sidebar um pouco mais clara que o fundo (#F5F7FA)
+    0xFFDCE4EC,
+  ); // Sidebar com mais contraste no modo light (#DCE4EC) - Mais escura para melhor contraste
   static const Color drawerBackgroundDark = Color(
     0xFF191919,
   ); // Sidebar dark refinada (#191919)

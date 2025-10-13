@@ -97,8 +97,10 @@ class _DrawerListItemState extends State<DrawerListItem>
               AnimatedContainer(
                 duration: const Duration(milliseconds: 200),
                 margin: EdgeInsets.symmetric(
-                  vertical: 1, // Espaçamento mínimo entre itens
-                  horizontal: widget.isSubItem ? AppTheme.spacingS : 0,
+                  vertical: 0.5, // Espaçamento ainda mais mínimo entre itens
+                  horizontal: widget.isSubItem
+                      ? AppTheme.spacingXS
+                      : 0, // Reduzido para subitens
                 ),
                 decoration: BoxDecoration(
                   color: _getBackgroundColor(isDarkMode, primaryColor),
@@ -131,11 +133,12 @@ class _DrawerListItemState extends State<DrawerListItem>
                           child: Padding(
                             padding: EdgeInsets.symmetric(
                               horizontal: widget.isSelected && !widget.isSubItem
-                                  ? AppTheme.spacingM +
-                                        8 // Espaço extra para o indicador
-                                  : AppTheme.spacingM,
+                                  ? AppTheme.spacingS +
+                                        8 // Espaço extra para o indicador - reduzido
+                                  : AppTheme
+                                        .spacingS, // Reduzido padding horizontal
                               vertical: AppTheme
-                                  .spacingS, // Padding vertical compacto
+                                  .spacingXS, // Padding vertical ainda mais compacto
                             ),
                             child: _buildItemContent(isDarkMode, primaryColor),
                           ),
@@ -150,7 +153,9 @@ class _DrawerListItemState extends State<DrawerListItem>
 
     if (widget.isSubItem) {
       return Padding(
-        padding: EdgeInsets.only(left: AppTheme.spacingL),
+        padding: EdgeInsets.only(
+          left: AppTheme.spacingM,
+        ), // Reduzido de spacingL para spacingM
         child: content,
       );
     }
@@ -175,8 +180,8 @@ class _DrawerListItemState extends State<DrawerListItem>
         // Container do ícone com animação - design mais elegante
         AnimatedContainer(
           duration: const Duration(milliseconds: 200),
-          width: 32,
-          height: 32,
+          width: 28, // Reduzido de 32 para 28
+          height: 28, // Reduzido de 32 para 28
           decoration: BoxDecoration(
             color: _getIconBackgroundColor(isDarkMode, primaryColor),
             borderRadius: BorderRadius.circular(6), // Cantos menos arredondados
@@ -186,22 +191,25 @@ class _DrawerListItemState extends State<DrawerListItem>
             widget.isSelected && _hasFilledVariant(widget.item.icon)
                 ? _getFilledIcon(widget.item.icon)
                 : widget.item.icon,
-            size: 16,
+            size: 15, // Reduzido de 16 para 15
             color: _getIconColor(isDarkMode, primaryColor),
           ),
         ),
 
-        SizedBox(width: AppTheme.spacingM),
-
+        SizedBox(
+          width: AppTheme.spacingS,
+        ), // Reduzido espaçamento entre ícone e texto
         // Texto do item com tipografia aprimorada
         Expanded(
           child: Text(
             widget.item.title,
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              fontWeight: widget.isSelected ? FontWeight.w600 : FontWeight.w500,
+              fontWeight: widget.isSelected
+                  ? FontWeight.w600
+                  : FontWeight.w400, // Reduzido peso da fonte
               color: _getTextColor(isDarkMode, primaryColor),
-              height: 1.3,
-              fontSize: 14, // Tamanho consistente
+              height: 1.2, // Reduzido line-height para mais compacto
+              fontSize: 13, // Reduzido tamanho da fonte
             ),
             maxLines: 1,
             overflow: TextOverflow.ellipsis,

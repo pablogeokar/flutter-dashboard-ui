@@ -188,16 +188,19 @@ class _ResponsiveDrawerState extends State<ResponsiveDrawer> {
           Padding(
             padding: EdgeInsets.symmetric(horizontal: responsiveSpacing),
             child: Container(
-              padding: EdgeInsets.all(responsiveSpacing),
+              padding: EdgeInsets.all(
+                AppTheme.spacingS,
+              ), // Reduzido de responsiveSpacing para spacingS
               decoration: BoxDecoration(
                 color: isDarkMode
                     ? AppTheme.cardBackgroundDark.withValues(alpha: 0.5)
-                    : AppTheme.neutral100,
+                    : AppTheme.neutral200, // Mais contraste no modo light
                 borderRadius: BorderRadius.circular(AppTheme.borderRadiusM),
                 border: Border.all(
                   color: isDarkMode
                       ? AppTheme.cardBorderDark.withValues(alpha: 0.3)
-                      : AppTheme.neutral300,
+                      : AppTheme
+                            .neutral400, // Borda mais escura para melhor contraste
                   width: 1,
                 ),
               ),
@@ -221,7 +224,7 @@ class _ResponsiveDrawerState extends State<ResponsiveDrawer> {
                       size: AppTheme.getResponsiveIconSize(screenWidth, 20),
                     ),
                   ),
-                  SizedBox(width: responsiveSpacing),
+                  SizedBox(width: AppTheme.spacingS), // Reduzido espaçamento
                   // Informações do usuário
                   Expanded(
                     child: Column(
@@ -232,19 +235,20 @@ class _ResponsiveDrawerState extends State<ResponsiveDrawer> {
                           style: TextStyle(
                             fontSize: AppTheme.getResponsiveFontSize(
                               screenWidth,
-                              15,
+                              14, // Reduzido de 15 para 14
                             ),
-                            fontWeight: FontWeight.w700,
+                            fontWeight:
+                                FontWeight.w600, // Reduzido de w700 para w600
                             color: Theme.of(context).colorScheme.onSurface,
                           ),
                         ),
-                        const SizedBox(height: 4),
+                        const SizedBox(height: 2), // Reduzido de 4 para 2
                         Text(
                           'Domani Fiscal',
                           style: TextStyle(
                             fontSize: AppTheme.getResponsiveFontSize(
                               screenWidth,
-                              13,
+                              12, // Reduzido de 13 para 12
                             ),
                             fontWeight: FontWeight.w500,
                             color: Theme.of(context).colorScheme.primary,
@@ -267,7 +271,7 @@ class _ResponsiveDrawerState extends State<ResponsiveDrawer> {
             ),
           ),
           SizedBox(
-            height: AppTheme.spacingM, // Espaçamento fixo e compacto
+            height: AppTheme.spacingS, // Espaçamento ainda mais compacto
           ),
           // Área principal expansível com itens principais
           Expanded(
@@ -284,7 +288,7 @@ class _ResponsiveDrawerState extends State<ResponsiveDrawer> {
           Padding(
             padding: EdgeInsets.symmetric(
               horizontal: responsiveSpacingL,
-              vertical: AppTheme.spacingS, // Espaçamento reduzido
+              vertical: AppTheme.spacingXS, // Espaçamento ainda mais reduzido
             ),
             child: Container(
               height: 1,
@@ -399,7 +403,7 @@ class _ResponsiveDrawerState extends State<ResponsiveDrawer> {
   Widget _buildGroupDivider() {
     return Container(
       margin: EdgeInsets.symmetric(
-        vertical: AppTheme.spacingS, // Reduzido de spacingM para spacingS
+        vertical: AppTheme.spacingXS, // Ainda mais reduzido para compactar
         horizontal: AppTheme.spacingM,
       ),
       height: 1,
@@ -497,8 +501,8 @@ class _ResponsiveDrawerState extends State<ResponsiveDrawer> {
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
 
     return Container(
-      margin: const EdgeInsets.all(AppTheme.spacingM),
-      padding: const EdgeInsets.all(AppTheme.spacingM),
+      margin: const EdgeInsets.all(AppTheme.spacingS), // Reduzido margin
+      padding: const EdgeInsets.all(AppTheme.spacingS), // Reduzido padding
       decoration: BoxDecoration(
         color: isDarkMode
             ? AppTheme.cardBackgroundDark.withValues(alpha: 0.5)
