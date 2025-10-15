@@ -123,8 +123,8 @@ class _DrawerListItemState extends State<DrawerListItem> {
               borderRadius: BorderRadius.circular(4),
             ),
             child: Icon(
-              widget.isSelected && _hasFilledVariant(widget.item.icon)
-                  ? _getFilledIcon(widget.item.icon)
+              widget.isSelected
+                  ? widget.item.selectedIcon ?? widget.item.icon
                   : widget.item.icon,
               size: 14, // Ícone menor
               color: _getIconColor(isDarkMode, primaryColor),
@@ -203,50 +203,6 @@ class _DrawerListItemState extends State<DrawerListItem> {
       return primaryColor;
     }
     return Theme.of(context).colorScheme.onSurface;
-  }
-
-  bool _hasFilledVariant(IconData icon) {
-    final iconsWithFilledVariants = {
-      Icons.dashboard_rounded,
-      Icons.people_rounded,
-      Icons.business_rounded,
-      Icons.inventory_2_rounded,
-      Icons.account_tree_rounded,
-      Icons.gavel_rounded,
-      Icons.calculate_rounded,
-      Icons.description_rounded,
-      Icons.assignment_rounded,
-      Icons.event_rounded,
-      Icons.analytics_rounded,
-      Icons.balance_rounded,
-      Icons.trending_up_rounded,
-      Icons.account_balance_wallet_rounded,
-      Icons.settings_rounded,
-      Icons.help_outline_rounded,
-    };
-    return iconsWithFilledVariants.contains(icon);
-  }
-
-  IconData _getFilledIcon(IconData icon) {
-    final iconMapping = {
-      Icons.dashboard_rounded: Icons.dashboard,
-      Icons.people_rounded: Icons.people,
-      Icons.business_rounded: Icons.business,
-      Icons.inventory_2_rounded: Icons.inventory_2,
-      Icons.account_tree_rounded: Icons.account_tree,
-      Icons.gavel_rounded: Icons.gavel,
-      Icons.calculate_rounded: Icons.calculate,
-      Icons.description_rounded: Icons.description,
-      Icons.assignment_rounded: Icons.assignment,
-      Icons.event_rounded: Icons.event,
-      Icons.analytics_rounded: Icons.analytics,
-      Icons.balance_rounded: Icons.balance,
-      Icons.trending_up_rounded: Icons.trending_up,
-      Icons.account_balance_wallet_rounded: Icons.account_balance_wallet,
-      Icons.settings_rounded: Icons.settings,
-      Icons.help_outline_rounded: Icons.help,
-    };
-    return iconMapping[icon] ?? icon;
   }
 
   List<Widget> _buildIndicators(bool isDarkMode, Color primaryColor) {
