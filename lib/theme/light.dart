@@ -5,14 +5,14 @@ import 'theme.dart';
 final lightTheme = ThemeData(
   useMaterial3: true,
   textTheme: GoogleFonts.interTextTheme(AppTheme.textTheme).apply(
-    bodyColor: AppTheme.secondaryLight,
-    displayColor: AppTheme.secondaryLight,
+    bodyColor: AppTheme.textPrimaryLight,
+    displayColor: AppTheme.textPrimaryLight,
   ),
   scaffoldBackgroundColor: Colors.transparent,
   colorScheme:
       ColorScheme.fromSeed(
         seedColor: AppTheme.primaryLight,
-        secondary: AppTheme.secondaryLight,
+        secondary: AppTheme.textPrimaryLight,
         tertiary: AppTheme.neutral1,
         surface: AppTheme.surfaceLight,
         brightness: Brightness.light,
